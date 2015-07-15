@@ -3,11 +3,12 @@ from django.contrib import admin
 from .models import Question,Choice
 # Register your models here.
 
-class ChoiceInline(admin.StackedInline):
+class ChoiceInline(admin.TabularInline):
     model = Choice
     extra = 3
 
 class QuestionAdmin(admin.ModelAdmin):
+    # this is used to change the display in the admin
     fieldsets = [
     (None, {'fields':['question_text']}),
     ('Date information',{'fields': ['pub_date'],'classes':['collapse']}),
