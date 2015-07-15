@@ -219,18 +219,21 @@
             </style>
 
         </head>
+        {% if Editor_list %}
+        {% for Editor in Editor_list %}
+
         <body>
             <div class="editor_technical_contact_container">
                 <div class="editor_technical_contact">
 	                <h3>Editor Technical Contact:</h3>
-	                <p><span class="ref">(12)</span>&lt;&lt;Title&gt;&gt;<span class="ref">(13)</span>&lt;&lt;Name&gt;&gt;<span class="ref">(14)</span>&lt;&lt;Surname&gt;&gt;</p>
-	                <p><span class="ref">(15)</span>&lt;&lt;Email&gt;&gt;</p>
-	                <p><span class="ref">(16)</span>&lt;&lt;International phone number&gt;&gt;</p>
+	                <p><span class="ref">(12)</span>{{ Editor.Title }}<span class="ref">(13)</span>{{Editor.Name}}<span class="ref">(14)</span>{{Editor.Surname}}</p>
+	                <p><span class="ref">(15)</span>{{ Editor.Email }}</p>
+	                <p><span class="ref">(16)</span>{{  Editor.InternationalPhoneNumber }}</p>
                 </div>
             </div>
             <div class="main">
                 <h1>Adaptive Upload</h1>
-                <h2><span class="ref">(1)</span>&lt;&lt;Editor&gt;&gt; - <span class="ref">(2)</span>&lt;&lt;Publication Title&gt;&gt;</h2>
+                <h2><span class="ref">(1)</span>{{ Editor.Editor }}<span class="ref">(2)</span>Publication Title</h2>
                 <form  id= "example" name="test" method="post" action="">
                     <fieldset>
                         {% csrf_token %}
@@ -239,7 +242,7 @@
                     </fieldset>
                     <fieldset>
                     <legend>Publication:</legend>
-                    <input type="text" id="champ_date1" name="date_p" size="25" value="<<Publication Start Date>>"><input type="text" value="<<Publication start time>>"/>
+                    <input type="text" id="champ_date1" name="date_p" size="25" value="<<Publication Start Date>>"><input type="date" id = "pub_start_time" value="<<Publication start time>>"/>
                     <div id="calendarMain1"></div>
                         <script type="text/javascript">
                             calInit("calendarMain1", "", "champ_date1", "jsCalendar", "day", "selectedDay");
@@ -250,7 +253,7 @@
                         <script type="text/javascript">
                             calInit("calendarMain2", "", "champ_date2", "jsCalendar", "day", "selectedDay");
                         </script>
-                    <input type="text" name = "pub_number" value="<<Publication number>>" /><br/>
+                    <input type="number"  name = "pub_number" id = "pub_number" value="<<Publication number>>" />Publication number<br/>
                     </fieldset>
                     <fieldset>
                         <legend>Status:</legend>
@@ -266,6 +269,24 @@
             </div>
 
             <script>
+
+                // initialisation
+                window.onload = function(){
+                    var currentDate = new Date();
+                    year = currentDate.getYear();
+                    month = currentDate.getMonth();
+                    day = currentDate.getDay();
+                    time = "9:00:00"
+                    date = new Date();
+                    date.setYear(year);
+                    date.setMonth(month);
+                    date.setDate(day);
+                    date.setHours(9);
+                    date.setMinutes(0);
+                    date.setSeconds(0);
+                    document.getElementById('pub_start_time').value = date;
+                }
+
                 var r = new Resumable({
                   target:'',
                  chunkSize:1*256*1024,
@@ -273,6 +294,7 @@
                 var date1 = document.getElementById('champ_date1');
                 var date2 = document.getElementById('champ_date2');
                 var form = document.getElementById('example');
+                var p_number = document.getElementById('pub_number')
 
                 var file_resumable;
 
@@ -284,6 +306,11 @@
                         alert("Please input the date publication")
                         event.preventDefault();
                         }
+
+                    if(!p_number.value){
+                        alert("Please input the publication number")
+                        event.preventDefault();
+                    }
 
                     if(!date2.value){
                         alert("Please input the date fin publication")
@@ -388,4 +415,7 @@
 
             </script>
         </body>
+         {{ break }}
+        {% endfor %}
+        {% endif %}
     </html>
