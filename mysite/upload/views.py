@@ -7,7 +7,6 @@ import base64
 import mymodule
 
 
-
 # Create your views here.
 def index(request):
 

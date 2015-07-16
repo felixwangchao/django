@@ -182,12 +182,12 @@ def rename_file(file_real, Date_p,Date_f_p,Pub_number):
     if len(List) > 1 and (List[len(List)-1] == 'pdf'):
         filename_tmp = ".".join(List[0:len(List)-1])
         file_name_final = filename_tmp.decode('utf-8') +'_'+ Date_p_tmp + '_'+Date_f_p_tmp+'_'+Pub_number+ '.' + List[len(List)-1]
-        path_old = os.path.join(temp_base,file_name_old)
+        path_old = os.path.join(temp_base,file_name_old.decode('utf-8'))
         path_final = os.path.join(temp_base,file_name_final)
-        os.rename(path_old,path_final) 			
+        os.rename(path_old.encode('utf-8'),path_final.encode('utf-8'))
     else:
         file_name_final = file_name_old.decode('utf-8') + '_'+Date_p_tmp+'_'+Date_p_tmp+'_'+Pub_number
-        path_old = os.path.join(temp_base,file_name_old)
+        path_old = os.path.join(temp_base,file_name_old.decode('utf-8'))
         path_final = os.path.join(temp_base,file_name_final)
-        os.rename(path_old,path_final)     
+        os.rename(path_old.encode('utf-8'),path_final.encode('utf-8'))
 

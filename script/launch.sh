@@ -1,0 +1,23 @@
+# This script is not the setup script
+# This is fot the test
+
+supervisorctl stop all
+rm -r ~/ENV/tutorial/mysite
+cp -r ../mysite ~/ENV/tutorial/
+echo "******"
+echo "******"
+echo "******"
+echo "******"
+echo "******"
+echo "******"
+echo "******"
+echo "******"
+echo "******"
+echo "******"
+echo "******"
+echo "******"
+echo "******"
+echo "******"
+echo "******"
+supervisorctl start Django_upload_application
+gedit /var/log/supervisor/Django.upload_application_stderr.log
