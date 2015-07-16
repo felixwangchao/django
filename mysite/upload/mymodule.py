@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Auteur: Chao
 # Filename: mymodule.py
 
@@ -23,9 +24,14 @@ def handler_rs_GET(_GET):
     # create a tempory directory
     temp_dir = "{}{}".format(temp_base, _GET['resumableIdentifier'])
     # create a path for the chunk
+    print "*****************************************"
+    print "just avant un accent!!!!!"
+    print "*****************************************"
     chunk_file = "{}/{}.part{}".format(temp_dir, _GET['resumableFilename'],  _GET['resumableChunkNumber'])
     # if this directory has already been created, it means that this chunk has already been sended
- 
+    print "*****************************************"
+    print "accent finished!!!!!"
+    print "*****************************************"
     if not os.path.isfile(chunk_file):
         print "Not Found"
         return False

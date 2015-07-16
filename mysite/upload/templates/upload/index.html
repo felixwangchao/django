@@ -1,5 +1,7 @@
  <html>
-        <head><title>Upload</title>
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <title>Upload</title>
             <script src="http://blog.niap3d.com/download/jsSimpleDatePickr/jsSimpleDatePickr.js"></script>
             <script src="http://blog.niap3d.com/download/jsSimpleDatePickr/jsSimpleDatePickrInit.js"></script>
             <script src="https://raw.githubusercontent.com/23/resumable.js/master/resumable.js"></script>
@@ -219,8 +221,7 @@
             </style>
 
         </head>
-        {% if Editor_list %}
-        {% for Editor in Editor_list %}
+        {% if Editor %}
 
         <body>
             <div class="editor_technical_contact_container">
@@ -233,7 +234,7 @@
             </div>
             <div class="main">
                 <h1>Adaptive Upload</h1>
-                <h2><span class="ref">(1)</span>{{ Editor.Editor }}<span class="ref">(2)</span>Publication Title</h2>
+                <h2><span class="ref">(1)</span>{{ Editor.Editor }}<span class="ref">(2)</span>{{ Publication.PublicationTitle }}</h2>
                 <form  id= "example" name="test" method="post" action="">
                     <fieldset>
                         {% csrf_token %}
@@ -242,7 +243,7 @@
                     </fieldset>
                     <fieldset>
                     <legend>Publication:</legend>
-                    <input type="text" id="champ_date1" name="date_p" size="25" value="<<Publication Start Date>>"><input type="date" id = "pub_start_time" value="<<Publication start time>>"/>
+                    <input type="text" id="champ_date1" name="date_p" size="25" value="<<Publication Start Date>>"><input type="text" id = "pub_start_time" value="<<Publication start time>>"/>
                     <div id="calendarMain1"></div>
                         <script type="text/javascript">
                             calInit("calendarMain1", "", "champ_date1", "jsCalendar", "day", "selectedDay");
@@ -253,7 +254,7 @@
                         <script type="text/javascript">
                             calInit("calendarMain2", "", "champ_date2", "jsCalendar", "day", "selectedDay");
                         </script>
-                    <input type="number"  name = "pub_number" id = "pub_number" value="<<Publication number>>" />Publication number<br/>
+                    Pub num:<input type="number"  name = "pub_number" id = "pub_number" value="<<Publication number>>" /><br/>
                     </fieldset>
                     <fieldset>
                         <legend>Status:</legend>
@@ -277,14 +278,7 @@
                     month = currentDate.getMonth();
                     day = currentDate.getDay();
                     time = "9:00:00"
-                    date = new Date();
-                    date.setYear(year);
-                    date.setMonth(month);
-                    date.setDate(day);
-                    date.setHours(9);
-                    date.setMinutes(0);
-                    date.setSeconds(0);
-                    document.getElementById('pub_start_time').value = date;
+                    document.getElementById('pub_start_time').value = time;
                 }
 
                 var r = new Resumable({
@@ -415,7 +409,5 @@
 
             </script>
         </body>
-         {{ break }}
-        {% endfor %}
         {% endif %}
     </html>
