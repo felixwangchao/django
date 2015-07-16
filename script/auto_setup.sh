@@ -58,6 +58,9 @@ echo "********************"
 echo activate fini
 echo "********************"
 
+echo "installation de Django"
+pip install Django==1.8.3
+echo "installation de gunicorn"
 pip install gunicorn
 echo First /test
 cd mysite 
@@ -66,7 +69,7 @@ cd mysite
 # Installation de supervisor
 sudo apt-get install supervisor
 sudo rm /etc/supervisor/conf.d/django_upload_application.conf
-sudo cp install_dir/django_upload_application.conf /etc/supervisor/conf.d/ 
+sudo cp $install_dir/django_upload_application.conf /etc/supervisor/conf.d/ 
 
 # test 
 cat /tmp/django_upload_application.conf

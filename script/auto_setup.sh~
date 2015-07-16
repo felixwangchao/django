@@ -65,13 +65,12 @@ cd mysite
 
 # Installation de supervisor
 sudo apt-get install supervisor
-sudo cp install_dir/django_upload_application.conf /etc/supervisor/conf.d/ 
+sudo rm /etc/supervisor/conf.d/django_upload_application.conf
+sudo cp $install_dir/django_upload_application.conf /etc/supervisor/conf.d/ 
 
 # test 
-cat /tmp/upload_application.conf
+cat /tmp/django_upload_application.conf
 
-sudo cp /tmp/upload_application.conf /etc/supervisor/conf.d/
-sudo rm /tmp/upload_application.conf
 sudo supervisorctl update
 sudo supervisorctl status
 sudo /etc/init.d/nginx restart

@@ -1,6 +1,6 @@
 [program:Django_upload_application]
 directory=/home/chao/ENV/tutorial/mysite
-command=/home/chao/ENV/tutorial/bin/gunicorn --bind=127.0.0.1:8004 mysite.wsgi:application
+command=/home/chao/ENV/tutorial/bin/gunicorn --bind=127.0.0.1:8000 mysite.wsgi:application
 user=chao
 autostart=true
 autorestart=true
