@@ -27,7 +27,9 @@ def handler_rs_GET(_GET):
     print "*****************************************"
     print "just avant un accent!!!!!"
     print "*****************************************"
-    chunk_file = "{}/{}.part{}".format(temp_dir, _GET['resumableFilename'],  _GET['resumableChunkNumber'])
+
+    resumableFilename = (_GET['resumableFilename']).encode('utf-8')
+    chunk_file = "{}/{}.part{}".format(temp_dir, resumableFilename,  _GET['resumableChunkNumber'])
     # if this directory has already been created, it means that this chunk has already been sended
     print "*****************************************"
     print "accent finished!!!!!"
@@ -48,7 +50,9 @@ def handler_rs_POST(_POST,Resumablefile):
 
     temp_dir = "{}{}".format(temp_base, _POST['resumableChunkNumber'])
 
-    chunk_file = "{}/{}.part{}".format(temp_dir, _POST['resumableFilename'], _POST['resumableChunkNumber'])
+    resumableFilename = (_POST['resumableFilename']).encode('utf-8')
+
+    chunk_file = "{}/{}.part{}".format(temp_dir, resumableFilename, _POST['resumableChunkNumber'])
 
     file_path = chunk_file
 
@@ -93,11 +97,12 @@ def collect(_POST):
     # if all the chunks were been received, collect all the chunk and delete all the tempory directory
     if currentSize + int(_POST['resumableCurrentChunkSize'])>= filesize:
         print "upload is finished"
-        target_file_name = "{}/{}".format(temp_base,(_POST['resumableFilename']))
+        resumableFilename = (_POST['resumableFilename']).encode('utf-8')
+        target_file_name = "{}/{}".format(temp_base,resumableFilename)
         print "11"
         with open(target_file_name, "ab") as target_file:
             for i in range(1,int(_POST['resumableChunkNumber'])+1):
-                stored_chunk_file_name = "{}{}/{}.part{}".format(temp_base,str(i), (_POST['resumableFilename']),str(i))
+                stored_chunk_file_name = "{}{}/{}.part{}".format(temp_base,str(i), resumableFilename,str(i))
                 stored_chunk_file = open(stored_chunk_file_name, 'rb')
                 target_file.write( stored_chunk_file.read() )
                 stored_chunk_file.close()
@@ -135,6 +140,7 @@ def handler_no_POST(_POST):
         C_file = CurrentFile.pop()
         logging.warning('WARNING! '+C_file)
         file_real = C_file.replace("\n","")
+
         if not os.path.isfile(file_real):               
             continue			
         else:
@@ -175,12 +181,12 @@ def rename_file(file_real, Date_p,Date_f_p,Pub_number):
     logging.warning('WARNING! extention probleme '+List[len(List)-1])
     if len(List) > 1 and (List[len(List)-1] == 'pdf'):
         filename_tmp = ".".join(List[0:len(List)-1])
-        file_name_final = filename_tmp +'_'+ Date_p_tmp + '_'+Date_f_p_tmp+'_'+Pub_number+ '.' + List[len(List)-1]
+        file_name_final = filename_tmp.decode('utf-8') +'_'+ Date_p_tmp + '_'+Date_f_p_tmp+'_'+Pub_number+ '.' + List[len(List)-1]
         path_old = os.path.join(temp_base,file_name_old)
         path_final = os.path.join(temp_base,file_name_final)
         os.rename(path_old,path_final) 			
-    else: 
-        file_name_final = file_name_old + '_'+Date_p_tmp+'_'+Date_p_tmp+'_'+Pub_number
+    else:
+        file_name_final = file_name_old.decode('utf-8') + '_'+Date_p_tmp+'_'+Date_p_tmp+'_'+Pub_number
         path_old = os.path.join(temp_base,file_name_old)
         path_final = os.path.join(temp_base,file_name_final)
         os.rename(path_old,path_final)     
