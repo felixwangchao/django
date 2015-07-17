@@ -301,10 +301,21 @@
                         event.preventDefault();
                         }
 
+                    if(date1.value === "<<Publication Start Date>>"){
+                        console.log("in the event and ");
+                        alert("Please input the date publication")
+                        event.preventDefault();
+                        }
+
                     if(!p_number.value){
                         alert("Please input the publication number")
                         event.preventDefault();
                     }
+                    if(date2.value === "<<Publication End Date>>"){
+                        console.log("in the event and ");
+                        alert("Please input the date end publication")
+                        event.preventDefault();
+                        }
 
                     if(!date2.value){
                         alert("Please input the date fin publication")
@@ -370,7 +381,7 @@
                   // Add the file to the list
                   name_tmp = file.fileName;
                   file_resumable = file;
-                  $('.resumable-list').append('<li class="resumable-file-'+file.uniqueIdentifier+'">Uploading <span class="resumable-file-name"></span> <progress id = "progress" value="100" max="100">100%</progress>');
+                  $('.resumable-list').append('<li class="resumable-file-'+file.uniqueIdentifier+'">Uploading <span class="resumable-file-name"></span> <progress id = "'+file.uniqueIdentifier+'" value="100" max="100">100%</progress>');
                   $('.resumable-file-'+file.uniqueIdentifier+' .resumable-file-name').html(file.fileName);
                   // Actually start the upload
 
@@ -402,8 +413,9 @@
                 });
               r.on('fileProgress', function(file){
                   // Handle progress for both the file and the overall upload
+                  name_tmp = file.fileName;
                   $('.resumable-file-'+file.uniqueIdentifier+' .resumable-file-progress').html(Math.floor(file.progress()*100) + '%');
-                  document.getElementById("progress").value = file.progress()*100;
+                  document.getElementById(file.uniqueIdentifier).value = file.progress()*100;
                 });
 
 
