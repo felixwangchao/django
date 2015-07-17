@@ -273,6 +273,7 @@
 
                 // initialisation
                 window.onload = function(){
+                    console.log("initialisation");
                     var currentDate = new Date();
                     year = currentDate.getYear();
                     month = currentDate.getMonth();
@@ -291,6 +292,7 @@
                 var p_number = document.getElementById('pub_number')
 
                 var file_resumable;
+                var file_dictionary = {};
 
 
                 form.addEventListener("submit",function(event){
@@ -324,20 +326,42 @@
                     },false
                 );
 
-                 function deleteFile(filename_delete)
+               window.onbeforeunload = confirmExit;
+                 function confirmExit()
                 {
+
+                        if(r.isUploading())
+                        {
+                            console.log("is not ok");
+                            return "You have attempted to leave this page. Are you sure?";
+                        }
+                        else
+                        {
+                            console.log("is ok");
+                        }
+
+                }
+
+
+                 function delete_File(filename_delete,element_delete)
+                {
+                    console.log("click delete");
+                    file_delete = file_dictionary[filename_delete];
+                    r.removeFile(file_delete);
+                    console.log("after the remove file");
                     var url = document.URL.replace("#","");
                     var params ='filename_delete='+filename_delete;
                     var http = new XMLHttpRequest();
-                    console.log("click delete");
+                    var deleteElement = element_delete.replace("delete-","")
+                    $('.resumable-file-'+deleteElement+'').remove()
+
                     http.open("GET",url+"?"+params,true);
                     http.onreadystatechange = function()
                     {
-                         if(http.readyState == 4 && http.status == 200) {
-                         alert(http.responseText);
-                        }
+                       console.log("delete a file");
                     }
                     http.send(null);
+
                   }
                   function displaysize()
                 {
@@ -381,10 +405,10 @@
                   // Add the file to the list
                   name_tmp = file.fileName;
                   file_resumable = file;
-                  $('.resumable-list').append('<li class="resumable-file-'+file.uniqueIdentifier+'">Uploading <span class="resumable-file-name"></span> <progress id = "'+file.uniqueIdentifier+'" value="100" max="100">100%</progress>');
+                  $('.resumable-list').append('<li class="resumable-file-'+file.uniqueIdentifier+'">Uploading <span class="resumable-file-name"></span> <span><progress id = "'+file.uniqueIdentifier+'" value="100" max="100">100%</progress><img id = "delete-'+file.uniqueIdentifier+'" name="'+name_tmp+'" src = "http://1.bp.blogspot.com/-Ndt5AZj06HU/VZk7jKnJdFI/AAAAAAAABcs/lkxvqMvhOWo/s1600/delete.png" style="height:20px;width:20px;visibility:hidden;" onclick ="delete_File(this.name,this.id)"/>');
                   $('.resumable-file-'+file.uniqueIdentifier+' .resumable-file-name').html(file.fileName);
                   // Actually start the upload
-
+                  file_dictionary[name_tmp] = file_resumable;
                   r.upload();
                 });
               r.on('pause', function(){
@@ -401,7 +425,9 @@
                   // Hide pause/resume when the upload has completed
                   $('.resumable-progress').hide();
                   $('.resumable-progress .progress-resume-link, .resumable-progress .progress-pause-link').hide();
-                  $('.deleteFileCSS').show();
+                  deleteFile = "delete-"+file_resumable.uniqueIdentifier;
+                  console.log(deleteFile);
+                  document.getElementById(deleteFile).style.visibility = 'visible';
                 });
               r.on('fileSuccess', function(file,message){
                   // Reflect that the file upload has completed
@@ -417,7 +443,9 @@
                   $('.resumable-file-'+file.uniqueIdentifier+' .resumable-file-progress').html(Math.floor(file.progress()*100) + '%');
                   document.getElementById(file.uniqueIdentifier).value = file.progress()*100;
                 });
-
+              $( window ).unload(function() {
+                  console.log("when the window closed");
+                });
 
             </script>
         </body>

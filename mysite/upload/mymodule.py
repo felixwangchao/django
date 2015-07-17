@@ -41,6 +41,13 @@ def handler_rs_GET(_GET):
         print "Found"
         return True
 
+# handler: for delete a file
+def handler_delete_GET(_GET):
+    deleteFileName =  (_GET['filename_delete']).encode('utf-8')
+    delete_path = os.path.join(temp_base,deleteFileName)
+    print "remove the fichier from path: ",delete_path
+    os.remove(delete_path)
+
 
 # handler: for trait the POST from resumable.js
 def handler_rs_POST(_POST,Resumablefile):

@@ -48,6 +48,9 @@ def toUpload(request):
             else:
                 print "HTTP/1.0 404 Not Found"
                 return HttpResponse('chunk not found', status=404)
+        elif 'filename_delete' in _GET:
+            mymodule.handler_delete_GET(_GET)
+            return HttpResponse('delete finish',status=200)
 
 
     Editor_input = Editor.objects.get( Editor = Editor_current)
