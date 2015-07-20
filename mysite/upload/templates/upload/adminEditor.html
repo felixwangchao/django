@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>information of Editor</title>
+    <style>
+                body {
+                    font-family: arial;
+                    background-image: url("http://egbinc.com/images/layout/background.png");
+                    padding: 50px 10% 50px 10%;
+                }
+
+                h1 {
+                    padding-left: 50px;
+                    margin-bottom: 100px;
+                }
+
+                div.editor_technical_contact_container {
+                    position: relative;
+                    z-index: 1;
+                    top: 0;
+                    width: 100%;
+                }
+
+                div.editor_technical_contact {
+                    position: absolute;
+
+                    right: 0;
+
+                    text-align: left;
+
+                    border: 1px solid grey;
+                    border-radius: 5px;
+                    padding: 10px;
+                }
+
+                div.main {
+                    z-index: 0;
+                }
+
+                fieldset {
+                    margin-top: 15px;
+                    border-radius: 10px;
+                }
+
+                input.file_size {
+                    background-color: green;
+                    border-radius: 10px;
+                }
+
+                input.file_type {
+                    background-color: red;
+                    border-radius: 10px;
+                }
+
+                div.submit {
+                    text-align: center;
+
+                    margin-top: 50px;
+                    margin-left: 100px;
+                    margin-right: 100px;
+                }
+
+                div.submit input[type=submit] {
+                    margin-left: 200px;
+                }
+
+                span.ref {
+                    font-size: smaller;
+                    color: blue;
+                }
+
+    </style>
+</head>
+<body>
+     <div class="main">
+                <h2>{{ Editor.Editor }}</h2>
+                <form  id= "infoEditor" name="infoEditor" method="post" action="">
+                    {% csrf_token %}
+                    <fieldset>
+                    <label>Title:</label><br>
+                    <input type="radio" name="Title" value="Mr">Mr
+                    <input type="radio" name="Title" value="Miss">Miss
+                    <input type="radio" name="Title" value="Doctor">Doctor<br><br>
+
+                    <label>Name:</label><br>
+                    <input type="text" id = "Name" name = "Name" size="25"/><br>
+
+                    <label>Surname:</label><br>
+                    <input type="text" id="Surname" name="Surname" size="25"/><br/><br>
+                    </fieldset>
+                    <fieldset>
+                    <label>Email:</label><br>
+                    <input type="text" id="Email" name="Email" size="25"/><br/><br>
+
+                    <label>International phone number:</label><br>
+                    <input type="text" id="InternationalPhoneNumber" name="InternationalPhoneNumber" size="25"/><br/><br>
+                    </fieldset>
+
+                    <div class="submit">
+	                    <input type="button" value="Cancel" />
+	                    <input type="submit" />
+	                </div>
+                </form>
+     </div>
+</body>
+</html>

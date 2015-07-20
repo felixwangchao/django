@@ -20,10 +20,30 @@ def toUpload(request):
     current_path = request.path
     current_message_list = current_path.split('/')
     current_message = current_message_list[len(current_message_list)-2]
+    current_state = current_message_list[len(current_message_list)-3]
+
     get_message = base64.decodestring(current_message)
     message = get_message.split('!')
     Editor_current = message[0]
     Publication_current = message[1]
+
+    if (current_state == u"modification"):
+        print "in the modification"
+        Editor_modification = Editor.objects.get(Editor = Editor_current)
+        context = {'Editor':Editor_modification,}
+        if request.method == 'POST':
+            _POST = request.POST
+            if "Email" in _POST:
+                Editor_modification.Email = _POST['Email']
+                Editor_modification.Title = _POST['Title']
+                Editor_modification.Name = _POST['Name']
+                Editor_modification.Surname = _POST['Surname']
+                Editor_modification.InternationalPhoneNumber = _POST['InternationalPhoneNumber']
+                Editor_modification.save()
+                return HttpResponse("modification fin")
+
+
+        return render(request,'upload/adminEditor.html',context)
 
     if request.method == 'POST':
         _POST = request.POST
@@ -51,6 +71,10 @@ def toUpload(request):
         elif 'filename_delete' in _GET:
             mymodule.handler_delete_GET(_GET)
             return HttpResponse('delete finish',status=200)
+        elif 'Editor' in _GET:
+            print "Editor in the GET"
+            #Editor_modif = _GET['Editor']
+            return HttpResponseRedirect(reverse('upload:modification'))
 
 
     Editor_input = Editor.objects.get( Editor = Editor_current)

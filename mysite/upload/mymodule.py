@@ -24,16 +24,9 @@ def handler_rs_GET(_GET):
     # create a tempory directory
     temp_dir = "{}{}".format(temp_base, _GET['resumableIdentifier'])
     # create a path for the chunk
-    print "*****************************************"
-    print "just avant un accent!!!!!"
-    print "*****************************************"
-
     resumableFilename = (_GET['resumableFilename']).encode('utf-8')
     chunk_file = "{}/{}.part{}".format(temp_dir, resumableFilename,  _GET['resumableChunkNumber'])
     # if this directory has already been created, it means that this chunk has already been sended
-    print "*****************************************"
-    print "accent finished!!!!!"
-    print "*****************************************"
     if not os.path.isfile(chunk_file):
         print "Not Found"
         return False
@@ -95,18 +88,12 @@ def collect(_POST):
 
         the _POST = _POST = cgi.FieldStorage(...) '''
     # Because the last chunk is bigger than a normal chunk
-    print "9"
     currentSize =  int(_POST['resumableChunkNumber']) * (int(_POST['resumableChunkSize'])-1)
-    print "current size:",currentSize
     filesize = int(_POST['resumableTotalSize'])
-    print "filesize:",filesize
-    print "chunk size", int(_POST['resumableCurrentChunkSize'])
     # if all the chunks were been received, collect all the chunk and delete all the tempory directory
     if currentSize + int(_POST['resumableCurrentChunkSize'])>= filesize:
-        print "upload is finished"
         resumableFilename = (_POST['resumableFilename']).encode('utf-8')
         target_file_name = "{}/{}".format(temp_base,resumableFilename)
-        print "11"
         with open(target_file_name, "ab") as target_file:
             for i in range(1,int(_POST['resumableChunkNumber'])+1):
                 stored_chunk_file_name = "{}{}/{}.part{}".format(temp_base,str(i), resumableFilename,str(i))
@@ -116,10 +103,7 @@ def collect(_POST):
                 os.unlink(stored_chunk_file_name)
                 temp_dir = os.path.join(temp_base,str(i))
                 os.rmdir(temp_dir)
-        print "12"
         target_file.close()
-
-        print "13"
         # write the final path in a file txt
         f = open('/tmp/CurrentFile.txt','a+')
         filename_target_tmp = temp_base + os.path.basename(target_file_name)

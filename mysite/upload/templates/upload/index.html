@@ -230,11 +230,12 @@
 	                <p><span class="ref">(12)</span>{{ Editor.Title }}<span class="ref">(13)</span>{{Editor.Name}}<span class="ref">(14)</span>{{Editor.Surname}}</p>
 	                <p><span class="ref">(15)</span>{{ Editor.Email }}</p>
 	                <p><span class="ref">(16)</span>{{  Editor.InternationalPhoneNumber }}</p>
+                    <button type = "button" onclick = "modification()">modif</button>
                 </div>
             </div>
             <div class="main">
                 <h1><img src="http://adaptive-channel.com/wp-content/uploads/2014/08/Adaptive_logo_rouge-e1407166434334.png"></h1>
-                <h2><span class="ref">(1)</span>{{ Editor.Editor }}<span class="ref">(2)</span>{{ Publication.PublicationTitle }}</h2>
+                <h2><span class="ref">(1)</span><span id="Editor">{{ Editor.Editor }}</span><span class="ref">(2)</span>{{ Publication.PublicationTitle }}</h2>
                 <form  id= "example" name="test" method="post" action="">
                     <fieldset>
                         {% csrf_token %}
@@ -363,6 +364,25 @@
                     http.send(null);
 
                   }
+                  function modification()
+                {
+                    console.log("click modif");
+                    var url = document.URL.replace("#","");
+                    toURL = newURL(url);
+                    window.location.replace(toURL);
+                }
+                  function newURL(url)
+                {
+                    console.log("the old URL is: "+url);
+                    url_list = url.split('/');
+                    url_tmp = url_list[url_list.length-2]
+                    url_tmp = "modification/"+url_tmp;
+                    url_list[url_list.length-2] = url_tmp
+                    result = url_list.join('/')
+                    console.log(result);
+                    return result;
+                }
+
                   function displaysize()
                 {
                     var a = r.getSize();
@@ -405,7 +425,7 @@
                   // Add the file to the list
                   name_tmp = file.fileName;
                   file_resumable = file;
-                  $('.resumable-list').append('<li class="resumable-file-'+file.uniqueIdentifier+'">Uploading <span class="resumable-file-name"></span> <span><progress id = "'+file.uniqueIdentifier+'" value="100" max="100">100%</progress><img id = "delete-'+file.uniqueIdentifier+'" name="'+name_tmp+'" src = "http://1.bp.blogspot.com/-Ndt5AZj06HU/VZk7jKnJdFI/AAAAAAAABcs/lkxvqMvhOWo/s1600/delete.png" style="height:20px;width:20px;visibility:hidden;" onclick ="delete_File(this.name,this.id)"/>');
+                  $('.resumable-list').append('<li class="resumable-file-'+file.uniqueIdentifier+'">Uploading <span class="resumable-file-name"></span> <span><progress id = "'+file.uniqueIdentifier+'" value="0" max="100">0%</progress><img id = "delete-'+file.uniqueIdentifier+'" name="'+name_tmp+'" src = "http://1.bp.blogspot.com/-Ndt5AZj06HU/VZk7jKnJdFI/AAAAAAAABcs/lkxvqMvhOWo/s1600/delete.png" style="height:20px;width:20px;visibility:hidden;" onclick ="delete_File(this.name,this.id)"/>');
                   $('.resumable-file-'+file.uniqueIdentifier+' .resumable-file-name').html(file.fileName);
                   // Actually start the upload
                   file_dictionary[name_tmp] = file_resumable;
