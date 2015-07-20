@@ -40,7 +40,7 @@ def toUpload(request):
                 Editor_modification.Surname = _POST['Surname']
                 Editor_modification.InternationalPhoneNumber = _POST['InternationalPhoneNumber']
                 Editor_modification.save()
-                return HttpResponse("modification fin")
+                return HttpResponseRedirect(current_path.replace("/modification",""))
 
 
         return render(request,'upload/adminEditor.html',context)

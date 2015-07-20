@@ -75,11 +75,11 @@
 <body>
      <div class="main">
                 <h2>{{ Editor.Editor }}</h2>
-                <form  id= "infoEditor" name="infoEditor" method="post" action="">
+                <form  id= "infoEditor" name="infoEditor" method="post" action="" onsubmit="return myValidation()">
                     {% csrf_token %}
                     <fieldset>
                     <label>Title:</label><br>
-                    <input type="radio" name="Title" value="Mr">Mr
+                    <input type="radio" name="Title" value="Mr" checked>Mr
                     <input type="radio" name="Title" value="Miss">Miss
                     <input type="radio" name="Title" value="Doctor">Doctor<br><br>
 
@@ -98,10 +98,61 @@
                     </fieldset>
 
                     <div class="submit">
-	                    <input type="button" value="Cancel" />
+	                    <input type="button" value="Cancel" onclick = "redirect()"/>
 	                    <input type="submit" />
 	                </div>
                 </form>
      </div>
+<script>
+
+    var title = document.getElementsByName("Title");
+    var name = document.getElementById("Editor_Name");
+    var surname = document.getElementById("Surname");
+    var email = document.getElementById("Email");
+    var phone = document.getElementById("InternationalPhoneNumber");
+    var form = document.getElementById('infoEditor');
+
+    function redirect()
+    {
+        console.log("redirect");
+        var url = document.URL.replace("/modification","");
+        window.location.replace(url.replace("#",""));
+    }
+    function myValidation()
+    {
+    var name = document.getElementById("Name");
+    var surname = document.getElementById("Surname");
+    var email = document.getElementById("Email");
+    var phone = document.getElementById("InternationalPhoneNumber");
+
+
+        if(name.value.length == 0)
+        {
+            alert("your name is vide"+name.value,title);
+            return false;
+        }
+        else if(surname.value.length == 0)
+        {
+            alert("your surname is vide"+surname.value);
+            return false;
+        }
+        else if(email.value.length == 0)
+        {
+            alert("your email is vide"+email.value);
+            return false;
+        }
+        else if(phone.value.length == 0)
+        {
+            alert("your phone number is vide"+phone.value);
+            return false;
+        }
+        else{
+            return true;
+        }
+
+    }
+
+
+</script>
 </body>
 </html>

@@ -218,6 +218,8 @@
                     color: blue;
                 }
 
+</style>
+
             </style>
 
         </head>
@@ -230,7 +232,7 @@
 	                <p><span class="ref">(12)</span>{{ Editor.Title }}<span class="ref">(13)</span>{{Editor.Name}}<span class="ref">(14)</span>{{Editor.Surname}}</p>
 	                <p><span class="ref">(15)</span>{{ Editor.Email }}</p>
 	                <p><span class="ref">(16)</span>{{  Editor.InternationalPhoneNumber }}</p>
-                    <button type = "button" onclick = "modification()">modif</button>
+                    <button type = "button" onclick = "modification()">modification</button>
                 </div>
             </div>
             <div class="main">
@@ -240,7 +242,7 @@
                     <fieldset>
                         {% csrf_token %}
 	                    <legend>File selection:</legend>
-                        <a href="#" id="browseButton">Select files</a><ul class="resumable-list"></ul><br>
+                        <a href="#" id="browseButton" disabled = "">Select files</a><ul class="resumable-list"></ul><br>
                     </fieldset>
                     <fieldset>
                     <legend>Publication:</legend>
@@ -265,7 +267,7 @@
 
                     <div class="submit">
 	                    <input type="button" value="Cancel" />
-	                    <input type="submit" />
+	                    <input type="submit" onsubmit="validate()"/>
 	                </div>
                 </form>
             </div>
@@ -281,6 +283,7 @@
                     day = currentDate.getDay();
                     time = "9:00:00"
                     document.getElementById('pub_start_time').value = time;
+                    document.getElementById(browseButton).disabled = "disabled";
                 }
 
                 var r = new Resumable({
@@ -299,13 +302,11 @@
                 form.addEventListener("submit",function(event){
                     console.log("submit event");
                     if(!date1.value){
-                        console.log("in the event and ");
                         alert("Please input the date publication")
                         event.preventDefault();
                         }
 
                     if(date1.value === "<<Publication Start Date>>"){
-                        console.log("in the event and ");
                         alert("Please input the date publication")
                         event.preventDefault();
                         }
@@ -430,6 +431,7 @@
                   // Actually start the upload
                   file_dictionary[name_tmp] = file_resumable;
                   r.upload();
+                  document.getElementById(browseButton).disabled = "none"
                 });
               r.on('pause', function(){
                   // Show resume, hide pause
@@ -443,15 +445,13 @@
                 });
               r.on('complete', function(){
                   // Hide pause/resume when the upload has completed
-                  $('.resumable-progress').hide();
-                  $('.resumable-progress .progress-resume-link, .resumable-progress .progress-pause-link').hide();
-                  deleteFile = "delete-"+file_resumable.uniqueIdentifier;
-                  console.log(deleteFile);
-                  document.getElementById(deleteFile).style.visibility = 'visible';
+
                 });
               r.on('fileSuccess', function(file,message){
                   // Reflect that the file upload has completed
-                  $('.resumable-file-'+file.uniqueIdentifier+' .resumable-file-progress').html('(completed)');
+                  deleteFile = "delete-"+file_resumable.uniqueIdentifier;
+                  document.getElementById(deleteFile).style.visibility = 'visible';
+                  document.getElementById(browseButton).pointerEvents = ""
                 });
               r.on('fileError', function(file, message){
                   // Reflect that the file upload has resulted in error

@@ -24,6 +24,7 @@ def handler_rs_GET(_GET):
     # create a tempory directory
     temp_dir = "{}{}".format(temp_base, _GET['resumableIdentifier'])
     # create a path for the chunk
+    print "_GET['resumableIdentifier']"
     resumableFilename = (_GET['resumableFilename']).encode('utf-8')
     chunk_file = "{}/{}.part{}".format(temp_dir, resumableFilename,  _GET['resumableChunkNumber'])
     # if this directory has already been created, it means that this chunk has already been sended
@@ -49,6 +50,7 @@ def handler_rs_POST(_POST,Resumablefile):
         the _POST = _POST = cgi.FieldStorage(...) '''
 
     temp_dir = "{}{}".format(temp_base, _POST['resumableChunkNumber'])
+    print "temp_dir",temp_dir
 
     resumableFilename = (_POST['resumableFilename']).encode('utf-8')
 
