@@ -197,7 +197,7 @@
                 }
 
                 input.file_type {
-                    background-color: red;
+                    background-color: green;
                     border-radius: 10px;
                 }
 
@@ -211,6 +211,10 @@
 
                 div.submit input[type=submit] {
                     margin-left: 200px;
+                }
+
+                div.transmettre {
+                    display:none
                 }
 
                 span.ref {
@@ -261,6 +265,7 @@
                     </fieldset>
                     <fieldset>
                         <legend>Status:</legend>
+                        <div class= "transmettre" display = "none"><p>size max: <span id = "sizeMax">{{sizeMax}}</span> needed type: <span id="typeAsk">{{typeAsk}}</span></p></div>
 	                    <input type="button" class="file_size" value="File size" onclick = displaysize() /><span id = "filesize"></span><br/>
 	                    <input type="button" class="file_type" value="File type" onclick = displayFiletype() /> <span id = "filetype"></span>
 	                </fieldset>
@@ -334,66 +339,66 @@
 
                 function dateCheck()
                 {
-                var date_p = document.getElementById('champ_date1');
-                var date_f = document.getElementById('champ_date2');
+                    var date_p = document.getElementById('champ_date1');
+                    var date_f = document.getElementById('champ_date2');
 
-                if(date_p.value.length == 0 && date_f.value.length ==0)
-                {
-                    console.log("not all finished");
-                    return true;
-                }
-                else
-                {
-                    date_p_list = (date_p.value).split('/');
-                    date_f_list = (date_f.value).split('/');
-
-                    year_p = parseInt(date_p_list[2]);
-                    year_f = parseInt(date_f_list[2]);
-
-                    month_p = parseInt(date_p_list[1]);
-                    month_f = parseInt(date_f_list[1]);
-
-                    day_p = parseInt(date_p_list[0]);
-                    day_f = parseInt(date_f_list[0]);
-
-                    if(year_p < year_f)
-                        {
-                            console.log("year is ok");
-                            return true;
-                        }
-                    else if(year_p > year_f ){
-                        return false;
+                    if(date_p.value.length == 0 && date_f.value.length ==0)
+                    {
+                        console.log("not all finished");
+                        return true;
                     }
-                    else{
-                        if(month_p < month_f)
-                        {
-                            console.log("month is ok");
-                            return true;
-                        }
-                        else if(month_p > month_f)
-                        {
+                    else
+                    {
+                        date_p_list = (date_p.value).split('/');
+                        date_f_list = (date_f.value).split('/');
+
+                        year_p = parseInt(date_p_list[2]);
+                        year_f = parseInt(date_f_list[2]);
+
+                        month_p = parseInt(date_p_list[1]);
+                        month_f = parseInt(date_f_list[1]);
+
+                        day_p = parseInt(date_p_list[0]);
+                        day_f = parseInt(date_f_list[0]);
+
+                        if(year_p < year_f)
+                            {
+                                console.log("year is ok");
+                                return true;
+                            }
+                        else if(year_p > year_f ){
                             return false;
                         }
-                        else
-                        {
-                            if(day_p < day_f)
+                        else{
+                            if(month_p < month_f)
                             {
-                                console.log("day is ok");
+                                console.log("month is ok");
                                 return true;
+                            }
+                            else if(month_p > month_f)
+                            {
+                                return false;
                             }
                             else
                             {
-                                console.log(day_p);
-                                console.log(day_f);
-                                return false;
+                                if(day_p < day_f)
+                                {
+                                    console.log("day is ok");
+                                    return true;
+                                }
+                                else
+                                {
+                                    console.log(day_p);
+                                    console.log(day_f);
+                                    return false;
+                                }
+
                             }
 
                         }
 
+
                     }
-
-
-                }
                 }
 
 
@@ -479,29 +484,69 @@
                     a = Math.round(a);
                     a = a/10
                     size = a.toString() + b;
-                    document.getElementById('filesize').innerHTML = size;
+                    return size;
                 }
+
+
                   function displayFiletype()
                 {
                     extension = file_resumable.fileName.split('.').pop();
-                    document.getElementById('filetype').innerHTML = extension;
+                    return extension;
                 }
 
                 r.assignBrowse(document.getElementById('browseButton'));
 
                 r.on('fileAdded', function(file){
-                  // Show progress pabr
-                  $('.resumable-list').show();
-                  // Show pause, hide resume
 
                   // Add the file to the list
                   name_tmp = file.fileName;
                   file_resumable = file;
+                  sizeMax = parseInt(document.getElementById("sizeMax").innerHTML)
+                  typeAsk = document.getElementById("typeAsk").innerHTML
+
+                  if(displayFiletype()!=typeAsk||r.getSize()>sizeMax){
+                      if(displayFiletype()!=typeAsk)
+                      {
+                        $('.file_type').css('background-color','red')
+                        document.getElementById('filetype').innerHTML = "need a file of type:"+typeAsk;
+
+                      }
+                      else{
+                        $('.file_type').css('background-color','green')
+                        document.getElementById('filetype').innerHTML = "file type is ok";
+                      }
+                      if(r.getSize()>sizeMax)
+                      {
+                        $('.file_size').css('background-color','red')
+                        document.getElementById('filesize').innerHTML = "the size max is 20MB";
+                      }
+                      else{
+                        $('.file_size').css('background-color','green')
+                        document.getElementById('filesize').innerHTML = "file size is ok";
+                      }
+                      r.removeFile(file);
+                      return false;
+                  }
+                  else{
+                        $('.file_size').css('background-color','green')
+                        $('.file_type').css('background-color','green')
+                        document.getElementById('filesize').innerHTML = "file size is ok";
+                        document.getElementById('filetype').innerHTML = "file type is ok";
+                  }
+
+
+                  // Show progress pabr
+                  $('.resumable-list').show();
+                  // Show pause, hide resume
+
                   $('.resumable-list').append('<li class="resumable-file-'+file.uniqueIdentifier+'">Uploading <span class="resumable-file-name"></span> <span><progress id = "'+file.uniqueIdentifier+'" value="0" max="100">0%</progress><img id = "delete-'+file.uniqueIdentifier+'" name="'+name_tmp+'" src = "http://1.bp.blogspot.com/-Ndt5AZj06HU/VZk7jKnJdFI/AAAAAAAABcs/lkxvqMvhOWo/s1600/delete.png" style="height:20px;width:20px;visibility:hidden;" onclick ="delete_File(this.name,this.id)"/>');
                   $('.resumable-file-'+file.uniqueIdentifier+' .resumable-file-name').html(file.fileName);
                   // Actually start the upload
                   file_dictionary[name_tmp] = file_resumable;
                   document.getElementById("browseButton").disabled = true;
+
+
+
                   r.upload();
                 });
               r.on('pause', function(){

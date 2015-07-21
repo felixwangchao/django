@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from .models import Editor,Publication
 import base64
 import mymodule
+import os
 
 
 # Create your views here.
@@ -80,11 +81,30 @@ def toUpload(request):
             return HttpResponseRedirect(reverse('upload:modification'))
 
 
+
+    dictionary = {}
+    if os.path.isfile("/tmp/resumable_images/configuration.txt"):
+        f = file("/tmp/resumable_images/configuration.txt")
+        while True:
+            line = f.readline()
+            if len(line) == 0:
+                break
+            print line,
+            a = line.split('::')
+            contrainte = a[1].replace('\n','').split('/')
+            dictionary[a[0]]  = contrainte
+            print dictionary
+        f.close()
+
     Editor_input = Editor.objects.get( Editor = Editor_current)
     Publication_input = Publication.objects.get(PublicationTitle = Publication_current)
-    print Editor_input
-    print Publication_input
 
-    context = {'Editor':Editor_input,'Publication':Publication_input}
+    configuration = dictionary[Publication_current]
+    print configuration
+
+    typeAsk = configuration[0]
+    sizeMax = configuration[1]
+
+    context = {'Editor':Editor_input,'Publication':Publication_input,'typeAsk':typeAsk,'sizeMax':sizeMax}
     return render(request,'upload/index.html',context)
 

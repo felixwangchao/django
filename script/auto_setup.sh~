@@ -6,6 +6,9 @@ mkdir -p ~/ENV/tutorial/
 cp -avr ../mysite ~/ENV/tutorial/
 install_dir=$(pwd)
 
+mkdir -p /tmp/resumable_images/
+cp configuration.txt /tmp/resumable_images/
+
 
 # installation pip, pour faciliter l'installation suivant
 echo "*************"
@@ -58,6 +61,9 @@ echo "********************"
 echo activate fini
 echo "********************"
 
+echo "installation de Django"
+pip install Django==1.8.3
+echo "installation de gunicorn"
 pip install gunicorn
 echo First /test
 cd mysite 
