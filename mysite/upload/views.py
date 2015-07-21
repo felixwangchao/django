@@ -44,6 +44,8 @@ def toUpload(request):
 
 
         return render(request,'upload/adminEditor.html',context)
+    if (current_state != u"upload"):
+        return HttpResponse("Page not found")
 
     if request.method == 'POST':
         _POST = request.POST
@@ -53,7 +55,8 @@ def toUpload(request):
             mymodule.handler_rs_POST(_POST, Resumablefile)
         # CASE 2
         else:
-            mymodule.handler_no_POST(_POST)
+
+            mymodule.handler_no_POST(_POST,Publication_current.decode('utf-8'))
             return HttpResponseRedirect(reverse('upload:success'))
 
         return HttpResponse()

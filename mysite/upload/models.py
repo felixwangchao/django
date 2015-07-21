@@ -8,14 +8,14 @@ class Editor(models.Model):
     Email = models.CharField(max_length = 40)
     InternationalPhoneNumber = models.CharField(max_length = 20)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.Editor
 
 class Publication(models.Model):
     editor = models.ForeignKey(Editor)
     PublicationTitle = models.CharField(max_length = 40)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.PublicationTitle
 
 

@@ -116,7 +116,7 @@ def collect(_POST):
 
 
 # handler for trait the POST from form
-def handler_no_POST(_POST):
+def handler_no_POST(_POST,Publication_current):
     ''' This function is used to deal with a normal request POST submit from "form"
 
         the _POST = _POST = cgi.FieldStorage(...) ''' 
@@ -137,7 +137,7 @@ def handler_no_POST(_POST):
         if not os.path.isfile(file_real):               
             continue			
         else:
-            rename_file(file_real, Date_p,Date_f_p,Pub_number)
+            rename_file(file_real, Date_p,Date_f_p,Pub_number,Publication_current)
             
 
 def update_CurrentFile():
@@ -157,7 +157,7 @@ def update_CurrentFile():
     os.remove('/tmp/CurrentFile.txt')
 
 
-def rename_file(file_real, Date_p,Date_f_p,Pub_number):
+def rename_file(file_real, Date_p,Date_f_p,Pub_number,Publication_current):
     '''This function is used to rename a file with his path and the publication date
 
        file_real is his path, Date publication is the date'''
@@ -177,12 +177,12 @@ def rename_file(file_real, Date_p,Date_f_p,Pub_number):
     logging.warning('WARNING! extention probleme '+List[len(List)-1])
     if len(List) > 1 and (List[len(List)-1] == 'pdf'):
         filename_tmp = ".".join(List[0:len(List)-1])
-        file_name_final = filename_tmp.decode('utf-8') +'_'+ Date_p_tmp + '_'+Date_f_p_tmp+'_'+Pub_number+ '.' + List[len(List)-1]
+        file_name_final = Publication_current +'_'+ Date_p_tmp + '_'+Date_f_p_tmp+'_'+Pub_number+ '.' + List[len(List)-1]
         path_old = os.path.join(temp_base,file_name_old.decode('utf-8'))
         path_final = os.path.join(temp_base,file_name_final)
         os.rename(path_old.encode('utf-8'),path_final.encode('utf-8'))
     else:
-        file_name_final = file_name_old.decode('utf-8') + '_'+Date_p_tmp+'_'+Date_f_p_tmp+'_'+Pub_number
+        file_name_final = Publication_current + '_'+Date_p_tmp+'_'+Date_f_p_tmp+'_'+Pub_number
         path_old = os.path.join(temp_base,file_name_old.decode('utf-8'))
         path_final = os.path.join(temp_base,file_name_final)
         os.rename(path_old.encode('utf-8'),path_final.encode('utf-8'))

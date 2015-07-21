@@ -246,13 +246,13 @@
                     </fieldset>
                     <fieldset>
                     <legend>Publication:</legend>
-                    <input type="text" id="champ_date1" name="date_p" size="25"  placeholder="<<Publication Start Date>>"><input type="text" id = "pub_start_time" placeholder="<<Publication start time>>"/>
+                    <input type="text" id="champ_date1" name="date_p" size="25" pattern="^[0-9]{2}/[0-9]{2}/[0-9]{4}" placeholder="<<Publication Start Date>>"><input type="text" id = "pub_start_time"  placeholder="<<Publication start time>>"/>
                     <div id="calendarMain1"></div>
                         <script type="text/javascript">
                             calInit("calendarMain1", "", "champ_date1", "jsCalendar", "day", "selectedDay");
                         </script>
 
-                    <input type="text" id="champ_date2" name="date_f_p" size="25"  placeholder="<<Publication End Date>>" ><br/>
+                    <input type="text" id="champ_date2" name="date_f_p" size="25" pattern="^[0-9]{2}/[0-9]{2}/[0-9]{4}" placeholder="<<Publication End Date>>" ><br/>
                     <div id="calendarMain2"></div>
                         <script type="text/javascript">
                             calInit("calendarMain2", "", "champ_date2", "jsCalendar", "day", "selectedDay");
