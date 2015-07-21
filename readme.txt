@@ -15,6 +15,5 @@ reste à faire
 1. Problème de upload en même temps
 2. Si un user a fait upload mais ne fait pas submit:
 3. Si un user arrête uploading 
-4. Un page de modifier les informations
-5. Essayer d'ajouter les tests fichiers
+4. Essayer d'ajouter les tests fichiers
 ****************************************************
