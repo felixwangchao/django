@@ -299,7 +299,7 @@
                 var file_resumable;
                 var file_dictionary = {};
 
-
+                // this is a form validation
                 function myValidation()
                 {
                     var date1 = document.getElementById('champ_date1');
@@ -337,6 +337,7 @@
                     }
                 }
 
+                // this is a funciton used to check that the publication start date must early than the publicaiton end date
                 function dateCheck()
                 {
                     var date_p = document.getElementById('champ_date1');
@@ -392,22 +393,17 @@
                                     console.log(day_f);
                                     return false;
                                 }
-
                             }
-
                         }
-
-
                     }
                 }
 
 
 
-
+               //this is a event listener to prevent the user to leave the page before finish the upload
                window.onbeforeunload = confirmExit;
                  function confirmExit()
                 {
-
                         if(r.isUploading())
                         {
                             console.log("is not ok");
@@ -417,10 +413,9 @@
                         {
                             console.log("is ok");
                         }
-
                 }
 
-
+                // this is a funciton to when a user want to delete a file
                  function delete_File(filename_delete,element_delete)
                 {
                     console.log("click delete");
@@ -441,6 +436,8 @@
                     http.send(null);
 
                   }
+
+                  // this is a funciton to redirect to the modificaiton page
                   function modification()
                 {
                     console.log("click modif");
@@ -448,6 +445,8 @@
                     toURL = newURL(url);
                     window.location.replace(toURL);
                 }
+
+                // this is funciton to create a url for the page of modifcation
                   function newURL(url)
                 {
                     console.log("the old URL is: "+url);
@@ -460,6 +459,8 @@
                     return result;
                 }
 
+
+                // this is a funciton to dispaly the size of file
                   function displaysize()
                 {
                     var a = r.getSize();
@@ -487,7 +488,7 @@
                     return size;
                 }
 
-
+                  // this is a function to return the type of file
                   function displayFiletype()
                 {
                     extension = file_resumable.fileName.split('.').pop();
@@ -544,9 +545,6 @@
                   // Actually start the upload
                   file_dictionary[name_tmp] = file_resumable;
                   document.getElementById("browseButton").disabled = true;
-
-
-
                   r.upload();
                 });
               r.on('pause', function(){
