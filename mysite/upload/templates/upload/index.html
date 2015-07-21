@@ -297,46 +297,40 @@
 
                 function myValidation()
                 {
-                var date1 = document.getElementById('champ_date1');
-                var date2 = document.getElementById('champ_date2');
-                var p_number = document.getElementById('pub_number');
-                var size = r.getSize()
+                    var date1 = document.getElementById('champ_date1');
+                    var date2 = document.getElementById('champ_date2');
+                    var p_number = document.getElementById('pub_number');
+                    var size = r.getSize()
 
-                if(size == 0)
-                {
-                    alert("please select a file");
+                    if(size == 0)
+                    {
+                        alert("please select a file");
+                        return false;
+                    }
+                    if(date1.value.length == 0 || date1.value == "<<Publication Start Date>>")
+                    {
+                        alert("please input the publication date"+date1.value);
+                        return false;
+                    }
+                    if(date2.value.length == 0||date2.value == "<<Publication End Date>>")
+                    {
+                        alert("please input the fin publication date"+date2.value);
+                        return false;
+                    }
+                    if(p_number.value.length == 0)
+                    {
+                        alert("please input the publication number"+p_number.value);
+                        return false;
+                    }
+
+                    if(dateCheck())
+                    {return true;}
+                    else
+                    {
+                    alert("Error: Date end publication must later than Date start publication")
                     return false;
+                    }
                 }
-                if(date1.value.length == 0 || date1.value == "<<Publication Start Date>>")
-                {
-                    alert("please input the publication date"+date1.value);
-                    return false;
-                }
-                if(date2.value.length == 0||date2.value == "<<Publication End Date>>")
-                {
-                    alert("please input the fin publication date"+date2.value);
-                    return false;
-                }
-                if(p_number.value.length == 0)
-                {
-                    alert("please input the publication number"+p_number.value);
-                    return false;
-                }
-
-                if(dateCheck())
-                {return true;}
-                else
-                {
-                alert("Error: Date end publication must later than Date start publication")
-                return false;
-                }
-
-
-
-
-                }
-
-
 
                 function dateCheck()
                 {
@@ -368,7 +362,7 @@
                             return true;
                         }
                     else if(year_p > year_f ){
-                        date_f.setCustomValidity("date fin publication must later than date of publication");
+                        return false;
                     }
                     else{
                         if(month_p < month_f)
@@ -378,18 +372,20 @@
                         }
                         else if(month_p > month_f)
                         {
-                            date_f.setCustomValidity("date fin publication must later than date of publication");
+                            return false;
                         }
                         else
                         {
-                            if(day_p <= day_f)
+                            if(day_p < day_f)
                             {
                                 console.log("day is ok");
                                 return true;
                             }
-                            else if(date_p > date_f)
+                            else
                             {
-                                date_f.setCustomValidity("date fin publication must later than date of publication");
+                                console.log(day_p);
+                                console.log(day_f);
+                                return false;
                             }
 
                         }

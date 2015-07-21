@@ -164,12 +164,15 @@ def rename_file(file_real, Date_p,Date_f_p,Pub_number):
 
     file_name_old = os.path.basename(file_real)
     List = file_name_old.split('.')
+
     Date_p_tmp_1 = Date_p.split('/')
     Date_p_tmp_1.reverse()
     Date_p_tmp = "".join(Date_p_tmp_1)
+
     Date_f_p_tmp_1 = Date_f_p.split('/')
     Date_f_p_tmp_1.reverse()
     Date_f_p_tmp = "".join(Date_f_p_tmp_1)
+
     #Date_f_p_tmp = "_".join((Date_f_p.split('/')).reverse())
     logging.warning('WARNING! extention probleme '+List[len(List)-1])
     if len(List) > 1 and (List[len(List)-1] == 'pdf'):
@@ -179,7 +182,7 @@ def rename_file(file_real, Date_p,Date_f_p,Pub_number):
         path_final = os.path.join(temp_base,file_name_final)
         os.rename(path_old.encode('utf-8'),path_final.encode('utf-8'))
     else:
-        file_name_final = file_name_old.decode('utf-8') + '_'+Date_p_tmp+'_'+Date_p_tmp+'_'+Pub_number
+        file_name_final = file_name_old.decode('utf-8') + '_'+Date_p_tmp+'_'+Date_f_p_tmp+'_'+Pub_number
         path_old = os.path.join(temp_base,file_name_old.decode('utf-8'))
         path_final = os.path.join(temp_base,file_name_final)
         os.rename(path_old.encode('utf-8'),path_final.encode('utf-8'))
