@@ -14,6 +14,8 @@ class Editor(models.Model):
 class Publication(models.Model):
     editor = models.ForeignKey(Editor)
     PublicationTitle = models.CharField(max_length = 40)
+    sizeMax = models.CharField(max_length=40)
+    typeAsk = models.CharField(max_length=40)
 
     def __unicode__(self):
         return self.PublicationTitle

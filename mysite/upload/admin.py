@@ -3,7 +3,7 @@ from django.contrib import admin
 
 from .models import Editor, Publication
 
-class PublicationInline(admin.StackedInline):
+class PublicationInline(admin.TabularInline):
     model = Publication
     extra = 3
 

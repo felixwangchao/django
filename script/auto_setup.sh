@@ -6,10 +6,6 @@ mkdir -p ~/ENV/tutorial/
 cp -avr ../mysite ~/ENV/tutorial/
 install_dir=$(pwd)
 
-mkdir -p /tmp/resumable_images/
-cp configuration.txt /tmp/resumable_images/
-
-
 # installation pip, pour faciliter l'installation suivant
 echo "*************"
 echo installer pip

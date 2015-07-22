@@ -1,2 +1,0 @@
-Le Monde::pdf/20000000
-Le Parisien::pdf/20000000

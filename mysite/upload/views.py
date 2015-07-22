@@ -103,30 +103,13 @@ def toUpload(request):
             #Editor_modif = _GET['Editor']
             return HttpResponseRedirect(reverse('upload:modification'))
 
-    # read the file from /tmp/resumable_images/
-    dictionary = {}
-    if os.path.isfile("/tmp/resumable_images/configuration.txt"):
-        f = file("/tmp/resumable_images/configuration.txt")
-        while True:
-            line = f.readline()
-            if len(line) == 0:
-                break
-            print line,
-            a = line.split('::')
-            contrainte = a[1].replace('\n','').split('/')
-            dictionary[a[0]]  = contrainte
-            print dictionary
-        f.close()
+
     # get the Editor et Publication object
     Editor_input = Editor.objects.get( Editor = Editor_current)
     Publication_input = Publication.objects.get(PublicationTitle = Publication_current)
 
-    # get the configuration detail
-    configuration = dictionary[Publication_current]
-    typeAsk = configuration[0]
-    sizeMax = configuration[1]
 
     # set the site
-    context = {'Editor':Editor_input,'Publication':Publication_input,'typeAsk':typeAsk,'sizeMax':sizeMax}
+    context = {'Editor':Editor_input,'Publication':Publication_input}
     return render(request,'upload/index.html',context)
 
