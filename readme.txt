@@ -9,11 +9,9 @@ Ce projet est faire l'intégration du projet de upload python avec framework dja
 
 17/07/2015: problème des accents dans la base de données marche moitié, debugger le problème sur le progress bar
 
+22/07/2015: problème presque tous résoudre.
 
 reste à faire
 ****************************************************
-1. Problème de upload en même temps
-2. Si un user a fait upload mais ne fait pas submit:
-3. Si un user arrête uploading 
-4. Essayer d'ajouter les tests fichiers
+1. Essayer d'ajouter les tests fichiers
 ****************************************************
