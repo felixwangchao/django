@@ -2,9 +2,10 @@
 # Auteur: Chao
 # Filename: mymodule.py
 
-import os
+import os,os.path
 import sys
 import logging
+import time
 
 # extention: only the file who's extension is in this set "extention" can be identified
 # eg:        LeMonde.pdf ----> LeMonde_07_07_2015.pdf       LeMonde.txt ----> LeMonde.txt_07_07_2015
@@ -24,10 +25,10 @@ def handler_rs_GET(_GET):
     # create a tempory directory
     temp_dir = "{}{}".format(temp_base, _GET['resumableIdentifier'])
     # create a path for the chunk
-    print "_GET['resumableIdentifier']"
     resumableFilename = (_GET['resumableFilename']).encode('utf-8')
     chunk_file = "{}/{}.part{}".format(temp_dir, resumableFilename,  _GET['resumableChunkNumber'])
     # if this directory has already been created, it means that this chunk has already been sended
+
     if not os.path.isfile(chunk_file):
         print "Not Found"
         return False
@@ -39,7 +40,6 @@ def handler_rs_GET(_GET):
 def handler_delete_GET(_GET):
     deleteFileName =  (_GET['filename_delete']).encode('utf-8')
     delete_path = os.path.join(temp_base,deleteFileName)
-    print "remove the fichier from path: ",delete_path
     os.remove(delete_path)
 
 
@@ -49,29 +49,28 @@ def handler_rs_POST(_POST,Resumablefile):
 
         the _POST = _POST = cgi.FieldStorage(...) '''
 
-    temp_dir = "{}{}".format(temp_base, _POST['resumableChunkNumber'])
-    print "temp_dir",temp_dir
-
+    print "method post"
+    temp_dir = "{}{}".format(temp_base, _POST['resumableIdentifier'])
     resumableFilename = (_POST['resumableFilename']).encode('utf-8')
-
     chunk_file = "{}/{}.part{}".format(temp_dir, resumableFilename, _POST['resumableChunkNumber'])
-
     file_path = chunk_file
-
     fileitem = Resumablefile
 
 
-
     # If the path not exist, create a new one
-    if not os.path.exists(file_path):
-
+    if not os.path.exists(temp_dir):
         os.makedirs(temp_dir)
+
+    if int(_POST['resumableCurrentChunkSize']) > (int(_POST['resumableChunkSize'])):
+        print "last chunk wait 2 second"
+        time.sleep(2)
+
 
     # Save the file in the tempory directory
     counter = 0
     # Write on binary
-
     with open(file_path, 'wb') as output_file:
+        print "open the fichier", file_path
         while 1:
             data = fileitem.file.read(1024)
             if not data:
@@ -84,27 +83,31 @@ def handler_rs_POST(_POST,Resumablefile):
     collect(_POST)
 
 
-
+#$  total_files * $chunkSize >=  ($totalSize - $chunkSize + 1)
 def collect(_POST):
     ''' This function is used to collect all the small chunk and write them in a new file
 
         the _POST = _POST = cgi.FieldStorage(...) '''
     # Because the last chunk is bigger than a normal chunk
-    currentSize =  int(_POST['resumableChunkNumber']) * (int(_POST['resumableChunkSize'])-1)
+    temp_dir = "{}{}".format(temp_base, _POST['resumableIdentifier'])
+    resumableFilename = (_POST['resumableFilename']).encode('utf-8')
+
+    total_file = len([name for name in os.listdir(temp_dir) if os.path.isfile(os.path.join(temp_dir, name))])
+
+    currentSize =  total_file * (int(_POST['resumableChunkSize']))
     filesize = int(_POST['resumableTotalSize'])
+    # $total_files * $chunkSize >=  ($totalSize - $chunkSize + 1)
     # if all the chunks were been received, collect all the chunk and delete all the tempory directory
-    if currentSize + int(_POST['resumableCurrentChunkSize'])>= filesize:
-        resumableFilename = (_POST['resumableFilename']).encode('utf-8')
-        target_file_name = "{}/{}".format(temp_base,resumableFilename)
+    if currentSize >= (filesize-int(_POST['resumableChunkSize'])+1):
+        target_file_name = "{}{}".format(temp_base,resumableFilename)
         with open(target_file_name, "ab") as target_file:
-            for i in range(1,int(_POST['resumableChunkNumber'])+1):
-                stored_chunk_file_name = "{}{}/{}.part{}".format(temp_base,str(i), resumableFilename,str(i))
+            for i in range(1,total_file+1):
+                stored_chunk_file_name = "{}{}/{}.part{}".format(temp_base,_POST['resumableIdentifier'], resumableFilename,str(i))
                 stored_chunk_file = open(stored_chunk_file_name, 'rb')
                 target_file.write( stored_chunk_file.read() )
                 stored_chunk_file.close()
                 os.unlink(stored_chunk_file_name)
-                temp_dir = os.path.join(temp_base,str(i))
-                os.rmdir(temp_dir)
+        os.rmdir(temp_dir)
         target_file.close()
         # write the final path in a file txt
         f = open('/tmp/CurrentFile.txt','a+')
@@ -112,7 +115,6 @@ def collect(_POST):
         f.write(filename_target_tmp+"\n")
         logging.warning(filename_target_tmp)
         f.close()
-            
 
 
 # handler for trait the POST from form

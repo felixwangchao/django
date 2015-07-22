@@ -292,7 +292,8 @@
 
                 var r = new Resumable({
                   target:'',
-                 chunkSize:1*256*1024,
+                  chunkSize:1*256*1024,
+                  simultaneousUploads:5,
                 });
 
 
@@ -421,6 +422,7 @@
                     console.log("click delete");
                     file_delete = file_dictionary[filename_delete];
                     r.removeFile(file_delete);
+                    document.getElementById("browseButton").disabled = null;
                     console.log("after the remove file");
                     var url = document.URL.replace("#","");
                     var params ='filename_delete='+filename_delete;
@@ -565,7 +567,7 @@
                   // Reflect that the file upload has completed
                   deleteFile = "delete-"+file_resumable.uniqueIdentifier;
                   document.getElementById(deleteFile).style.visibility = 'visible';
-                  document.getElementById("browseButton").disabled = null;
+
                 });
               r.on('fileError', function(file, message){
                   // Reflect that the file upload has resulted in error
