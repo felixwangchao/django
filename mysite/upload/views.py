@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from .models import Editor,Publication
 import base64
 import mymodule
-import os
+
 
 
 # Create your views here.
@@ -75,6 +75,8 @@ def toUpload(request):
         if "resumableChunkNumber" in _POST:
             Resumablefile= request.FILES.get('file')
             mymodule.handler_rs_POST(_POST, Resumablefile)
+                    #shutil.rmtree(temp_dir)
+
         # CASE 2: this is a POST sended by form
         else:
             # Becasue we need to rename the file by also the name of the publication, so add the publication number

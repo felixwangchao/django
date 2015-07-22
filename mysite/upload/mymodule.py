@@ -6,6 +6,7 @@ import os,os.path
 import sys
 import logging
 import time
+import shutil
 
 # extention: only the file who's extension is in this set "extention" can be identified
 # eg:        LeMonde.pdf ----> LeMonde_07_07_2015.pdf       LeMonde.txt ----> LeMonde.txt_07_07_2015
@@ -48,39 +49,49 @@ def handler_rs_POST(_POST,Resumablefile):
     ''' This function is used to deal with the POST sended by resumable.js
 
         the _POST = _POST = cgi.FieldStorage(...) '''
+    try:
+        print "method post"
+        temp_dir = "{}{}".format(temp_base, _POST['resumableIdentifier'])
+        resumableFilename = (_POST['resumableFilename']).encode('utf-8')
+        chunk_file = "{}/{}.part{}".format(temp_dir, resumableFilename, _POST['resumableChunkNumber'])
+        file_path = chunk_file
+        fileitem = Resumablefile
 
-    print "method post"
-    temp_dir = "{}{}".format(temp_base, _POST['resumableIdentifier'])
-    resumableFilename = (_POST['resumableFilename']).encode('utf-8')
-    chunk_file = "{}/{}.part{}".format(temp_dir, resumableFilename, _POST['resumableChunkNumber'])
-    file_path = chunk_file
-    fileitem = Resumablefile
+
+        # If the path not exist, create a new one
+        if not os.path.exists(temp_dir):
+            os.makedirs(temp_dir)
+
+        if int(_POST['resumableCurrentChunkSize']) > (int(_POST['resumableChunkSize'])):
+            print "last chunk wait 2 second"
+            time.sleep(2)
 
 
-    # If the path not exist, create a new one
-    if not os.path.exists(temp_dir):
-        os.makedirs(temp_dir)
+        # Save the file in the tempory directory
+        counter = 0
+        # Write on binary
 
-    if int(_POST['resumableCurrentChunkSize']) > (int(_POST['resumableChunkSize'])):
-        print "last chunk wait 2 second"
+
+
+        with open(file_path, 'wb') as output_file:
+            print "open the fichier", file_path
+            while 1:
+                data = fileitem.file.read(1024)
+                if not data:
+                    break
+                output_file.write(data)
+                counter += 1
+                if counter == 100:
+                    counter = 0
+
+        collect(_POST)
+        print "after the open fichier"
+
+    except:
+        print "there is a problem"
         time.sleep(2)
+        shutil.rmtree(temp_dir)
 
-
-    # Save the file in the tempory directory
-    counter = 0
-    # Write on binary
-    with open(file_path, 'wb') as output_file:
-        print "open the fichier", file_path
-        while 1:
-            data = fileitem.file.read(1024)
-            if not data:
-                break
-            output_file.write(data)
-            counter += 1
-            if counter == 100:
-                counter = 0
-
-    collect(_POST)
 
 
 #$  total_files * $chunkSize >=  ($totalSize - $chunkSize + 1)
