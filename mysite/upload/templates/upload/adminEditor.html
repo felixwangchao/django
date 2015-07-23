@@ -65,9 +65,19 @@
                     margin-left: 200px;
                 }
 
+                div.Name_bar{
+                    background-image: url("http://highresolutionimages.org/images/img7/yellow-abstract-art-hd-pictures-4.jpg");
+                }
+
                 span.ref {
                     font-size: smaller;
                     color: blue;
+                }
+
+                fieldset.Name_bar{
+                }
+
+                fieldset.Contact_bar{
                 }
 
     </style>
@@ -77,19 +87,21 @@
                 <h2>{{ Editor.Editor }}</h2>
                 <form  id= "infoEditor" name="infoEditor" method="post" action="" onsubmit="return myValidation()">
                     {% csrf_token %}
-                    <fieldset>
-                    <label>Title:</label><br>
-                    <input type="radio" name="Title" value="Mr" checked>Mr
-                    <input type="radio" name="Title" value="Miss">Miss
-                    <input type="radio" name="Title" value="Doctor">Doctor<br><br>
 
-                    <label>Name:</label><br>
-                    <input type="text" id = "Name" name = "Name" size="25"/><br>
+                    <fieldset class = "Name_bar">
+                        <label>Title:</label><br>
+                        <input type="radio" name="Title" value="Mr" checked>Mr
+                        <input type="radio" name="Title" value="Miss">Miss
+                        <input type="radio" name="Title" value="Doctor">Doctor<br><br>
 
-                    <label>Surname:</label><br>
-                    <input type="text" id="Surname" name="Surname" size="25"/><br/><br>
+                        <label>Name:</label><br>
+                        <input type="text" id = "Name" name = "Name" size="25"/><br>
+
+                        <label>Surname:</label><br>
+                        <input type="text" id="Surname" name="Surname" size="25"/><br/><br>
                     </fieldset>
-                    <fieldset>
+
+                    <fieldset class  ="Contact_bar">
                     <label>Email:</label><br>
                     <input type="email" id="Email" name="Email" size="25"/><br/><br>
 

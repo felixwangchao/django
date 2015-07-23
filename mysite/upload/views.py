@@ -41,7 +41,6 @@ def toUpload(request):
     #*********************************************************
 
     if (current_state == u"modification"):
-        print "in the modification"
         # Find the object editor in the database
         Editor_modification = Editor.objects.get(Editor = Editor_current)
         context = {'Editor':Editor_modification,}
@@ -93,7 +92,6 @@ def toUpload(request):
             if mymodule.handler_rs_GET(_GET) == True:
                 return 'ok'
             else:
-                print "HTTP/1.0 404 Not Found"
                 return HttpResponse('chunk not found', status=404)
         # if this is a GET normal
         elif 'filename_delete' in _GET:
@@ -101,7 +99,6 @@ def toUpload(request):
             return HttpResponse('delete finish',status=200)
         # if this is a GET ask to redirect to the page modification
         elif 'Editor' in _GET:
-            print "Editor in the GET"
             #Editor_modif = _GET['Editor']
             return HttpResponseRedirect(reverse('upload:modification'))
 

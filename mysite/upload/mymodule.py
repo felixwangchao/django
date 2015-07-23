@@ -31,10 +31,8 @@ def handler_rs_GET(_GET):
     # if this directory has already been created, it means that this chunk has already been sended
 
     if not os.path.isfile(chunk_file):
-        print "Not Found"
         return False
     else:
-        print "Found"
         return True
 
 # handler: for delete a file
@@ -49,48 +47,40 @@ def handler_rs_POST(_POST,Resumablefile):
     ''' This function is used to deal with the POST sended by resumable.js
 
         the _POST = _POST = cgi.FieldStorage(...) '''
-    try:
-        print "method post"
-        temp_dir = "{}{}".format(temp_base, _POST['resumableIdentifier'])
-        resumableFilename = (_POST['resumableFilename']).encode('utf-8')
-        chunk_file = "{}/{}.part{}".format(temp_dir, resumableFilename, _POST['resumableChunkNumber'])
-        file_path = chunk_file
-        fileitem = Resumablefile
+
+    temp_dir = "{}{}".format(temp_base, _POST['resumableIdentifier'])
+    resumableFilename = (_POST['resumableFilename']).encode('utf-8')
+    chunk_file = "{}/{}.part{}".format(temp_dir, resumableFilename, _POST['resumableChunkNumber'])
+    file_path = chunk_file
+    fileitem = Resumablefile
 
 
-        # If the path not exist, create a new one
-        if not os.path.exists(temp_dir):
-            os.makedirs(temp_dir)
+    # If the path not exist, create a new one
+    if not os.path.exists(temp_dir):
+        os.makedirs(temp_dir)
 
-        if int(_POST['resumableCurrentChunkSize']) > (int(_POST['resumableChunkSize'])):
-            print "last chunk wait 2 second"
-            time.sleep(2)
-
-
-        # Save the file in the tempory directory
-        counter = 0
-        # Write on binary
-
-
-
-        with open(file_path, 'wb') as output_file:
-            print "open the fichier", file_path
-            while 1:
-                data = fileitem.file.read(1024)
-                if not data:
-                    break
-                output_file.write(data)
-                counter += 1
-                if counter == 100:
-                    counter = 0
-
-        collect(_POST)
-        print "after the open fichier"
-
-    except:
-        print "there is a problem"
+    if int(_POST['resumableCurrentChunkSize']) > (int(_POST['resumableChunkSize'])):
         time.sleep(2)
-        shutil.rmtree(temp_dir)
+
+
+    # Save the file in the tempory directory
+    counter = 0
+    # Write on binary
+
+
+
+    with open(file_path, 'wb') as output_file:
+        while 1:
+            data = fileitem.file.read(1024)
+            if not data:
+                break
+            output_file.write(data)
+            counter += 1
+            if counter == 100:
+                counter = 0
+
+    collect(_POST)
+
 
 
 
