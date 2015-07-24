@@ -577,11 +577,14 @@
                   $('.progress-pause-link').hide();
                   deleteFile = "delete-"+file_resumable.uniqueIdentifier;
                   document.getElementById(deleteFile).style.visibility = 'visible';
+                  $('.error_message'+file.uniqueIdentifier+'').html("<span>(upload finish)</span>");
+                  $('.error_message'+file.uniqueIdentifier+'').css("visibility","visible");
 
                 });
               r.on('fileError', function(file, message){
                   // Reflect that the file upload has resulted in error
                   $('#'+file.uniqueIdentifier+'').hide();
+                  $('.error_message'+file.uniqueIdentifier+'').html("<span>(upload failed)</span>");
                   $('.error_message'+file.uniqueIdentifier+'').css("visibility","visible");
                   $('.resumable-file-'+file.uniqueIdentifier+' .resumable-file-progress').html('(file could not be uploaded: '+message+')');
                 });
