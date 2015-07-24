@@ -87,14 +87,16 @@ def toUpload(request):
     # if we receive a method GET
     elif request.method == 'GET':
         _GET = request.GET
+        print "a get"
         # if this is a GET sended by resumable.js
         if 'resumableChunkNumber' in _GET:
             if mymodule.handler_rs_GET(_GET) == True:
-                return 'ok'
+                return HttpResponse('chunk found',status=200)
             else:
                 return HttpResponse('chunk not found', status=404)
         # if this is a GET normal
         elif 'filename_delete' in _GET:
+            print "in the delete"
             mymodule.handler_delete_GET(_GET)
             return HttpResponse('delete finish',status=200)
         # if this is a GET ask to redirect to the page modification

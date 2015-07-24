@@ -7,6 +7,8 @@ import sys
 import logging
 import time
 import shutil
+from async import schedule
+from async.api import deschedule
 
 # extention: only the file who's extension is in this set "extention" can be identified
 # eg:        LeMonde.pdf ----> LeMonde_07_07_2015.pdf       LeMonde.txt ----> LeMonde.txt_07_07_2015
@@ -38,8 +40,16 @@ def handler_rs_GET(_GET):
 # handler: for delete a file
 def handler_delete_GET(_GET):
     deleteFileName =  (_GET['filename_delete']).encode('utf-8')
-    delete_path = os.path.join(temp_base,deleteFileName)
-    os.remove(delete_path)
+    delete_file_path = os.path.join(temp_base,deleteFileName)
+    if os.path.isfile(delete_file_path):
+        print "file exist"
+        os.remove(delete_file_path)
+    else:
+        print "file doesn't exist"
+        delete_dir_path = os.path.join(temp_base,_GET['filename_delete_uniqueIdentifier'])
+        print "remove directory: ",delete_dir_path
+        shutil.rmtree(delete_dir_path)
+        print "after delete dir"
 
 
 # handler: for trait the POST from resumable.js
@@ -61,6 +71,7 @@ def handler_rs_POST(_POST,Resumablefile):
 
     if int(_POST['resumableCurrentChunkSize']) > (int(_POST['resumableChunkSize'])):
         time.sleep(2)
+        pass
 
 
     # Save the file in the tempory directory
@@ -79,6 +90,7 @@ def handler_rs_POST(_POST,Resumablefile):
             if counter == 100:
                 counter = 0
 
+
     collect(_POST)
 
 
@@ -89,7 +101,7 @@ def collect(_POST):
     ''' This function is used to collect all the small chunk and write them in a new file
 
         the _POST = _POST = cgi.FieldStorage(...) '''
-    # Because the last chunk is bigger than a normal chunk
+    # Because the last chunk is bigge   r than a normal chunk
     temp_dir = "{}{}".format(temp_base, _POST['resumableIdentifier'])
     resumableFilename = (_POST['resumableFilename']).encode('utf-8')
 
@@ -100,22 +112,31 @@ def collect(_POST):
     # $total_files * $chunkSize >=  ($totalSize - $chunkSize + 1)
     # if all the chunks were been received, collect all the chunk and delete all the tempory directory
     if currentSize >= (filesize-int(_POST['resumableChunkSize'])+1):
-        target_file_name = "{}{}".format(temp_base,resumableFilename)
-        with open(target_file_name, "ab") as target_file:
-            for i in range(1,total_file+1):
-                stored_chunk_file_name = "{}{}/{}.part{}".format(temp_base,_POST['resumableIdentifier'], resumableFilename,str(i))
-                stored_chunk_file = open(stored_chunk_file_name, 'rb')
-                target_file.write( stored_chunk_file.read() )
-                stored_chunk_file.close()
-                os.unlink(stored_chunk_file_name)
-        os.rmdir(temp_dir)
-        target_file.close()
-        # write the final path in a file txt
-        f = open('/tmp/CurrentFile.txt','a+')
-        filename_target_tmp = temp_base + os.path.basename(target_file_name)
-        f.write(filename_target_tmp+"\n")
-        logging.warning(filename_target_tmp)
-        f.close()
+        integration(_POST)
+
+
+def integration(_POST):
+    temp_dir = "{}{}".format(temp_base, _POST['resumableIdentifier'])
+    resumableFilename = (_POST['resumableFilename']).encode('utf-8')
+    target_file_name = "{}{}".format(temp_base,resumableFilename)
+    total_file = _POST['resumableTotalChunks']
+    with open(target_file_name, "ab") as target_file:
+        print "open the file"
+        for i in range(1,int(total_file)+1):
+            print "in the for",i
+            stored_chunk_file_name = "{}{}/{}.part{}".format(temp_base,_POST['resumableIdentifier'], resumableFilename,str(i))
+            stored_chunk_file = open(stored_chunk_file_name, 'rb')
+            target_file.write( stored_chunk_file.read() )
+            stored_chunk_file.close()
+            os.unlink(stored_chunk_file_name)
+    os.rmdir(temp_dir)
+    target_file.close()
+    # write the final path in a file txt
+    f = open('/tmp/CurrentFile.txt','a+')
+    filename_target_tmp = temp_base + os.path.basename(target_file_name)
+    f.write(filename_target_tmp+"\n")
+    logging.warning(filename_target_tmp)
+    f.close()
 
 
 # handler for trait the POST from form
