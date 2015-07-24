@@ -1,9 +1,14 @@
+# -*- coding: utf-8 -*-
 # Auteur: Chao
 # Filename: mymodule.py
 
-import os
+import os,os.path
 import sys
 import logging
+import time
+import shutil
+from async import schedule
+from async.api import deschedule
 
 # extention: only the file who's extension is in this set "extention" can be identified
 # eg:        LeMonde.pdf ----> LeMonde_07_07_2015.pdf       LeMonde.txt ----> LeMonde.txt_07_07_2015
@@ -21,17 +26,30 @@ def handler_rs_GET(_GET):
 
         _GET = cgi.parse_qs(environ['QUERY_STRING'])'''
     # create a tempory directory
-    temp_dir = "{}{}".format(temp_base, (_GET['resumableIdentifier'])[0])
+    temp_dir = "{}{}".format(temp_base, _GET['resumableIdentifier'])
     # create a path for the chunk
-    chunk_file = "{}/{}.part{}".format(temp_dir, (_GET['resumableFilename'])[0],  (_GET['resumableChunkNumber'])[0])
+    resumableFilename = (_GET['resumableFilename']).encode('utf-8')
+    chunk_file = "{}/{}.part{}".format(temp_dir, resumableFilename,  _GET['resumableChunkNumber'])
     # if this directory has already been created, it means that this chunk has already been sended
- 
+
     if not os.path.isfile(chunk_file):
-        print "Not Found"
         return False
     else:
-        print "Found"
         return True
+
+# handler: for delete a file
+def handler_delete_GET(_GET):
+    deleteFileName =  (_GET['filename_delete']).encode('utf-8')
+    delete_file_path = os.path.join(temp_base,deleteFileName)
+    if os.path.isfile(delete_file_path):
+        print "file exist"
+        os.remove(delete_file_path)
+    else:
+        print "file doesn't exist"
+        delete_dir_path = os.path.join(temp_base,_GET['filename_delete_uniqueIdentifier'])
+        print "remove directory: ",delete_dir_path
+        shutil.rmtree(delete_dir_path)
+        print "after delete dir"
 
 
 # handler: for trait the POST from resumable.js
@@ -39,26 +57,29 @@ def handler_rs_POST(_POST,Resumablefile):
     ''' This function is used to deal with the POST sended by resumable.js
 
         the _POST = _POST = cgi.FieldStorage(...) '''
-    print "1"
-    temp_dir = "{}{}".format(temp_base, (_POST['resumableChunkNumber'])[0])
-    print "2"
-    chunk_file = "{}/{}.part{}".format(temp_dir, (_POST['resumableFilename'])[0],( _POST['resumableChunkNumber'])[0])
-    print "3"
+
+    temp_dir = "{}{}".format(temp_base, _POST['resumableIdentifier'])
+    resumableFilename = (_POST['resumableFilename']).encode('utf-8')
+    chunk_file = "{}/{}.part{}".format(temp_dir, resumableFilename, _POST['resumableChunkNumber'])
     file_path = chunk_file
-    print "4"
     fileitem = Resumablefile
 
 
-    print "5"
     # If the path not exist, create a new one
-    if not os.path.exists(file_path):
-        print "6"
+    if not os.path.exists(temp_dir):
         os.makedirs(temp_dir)
+
+    if int(_POST['resumableCurrentChunkSize']) > (int(_POST['resumableChunkSize'])):
+        time.sleep(2)
+        pass
+
 
     # Save the file in the tempory directory
     counter = 0
     # Write on binary
-    print "7"
+
+
+
     with open(file_path, 'wb') as output_file:
         while 1:
             data = fileitem.file.read(1024)
@@ -68,50 +89,65 @@ def handler_rs_POST(_POST,Resumablefile):
             counter += 1
             if counter == 100:
                 counter = 0
-    print "8"
+
+
     collect(_POST)
 
 
 
+
+#$  total_files * $chunkSize >=  ($totalSize - $chunkSize + 1)
 def collect(_POST):
     ''' This function is used to collect all the small chunk and write them in a new file
 
         the _POST = _POST = cgi.FieldStorage(...) '''
-    # Because the last chunk is bigger than a normal chunk
-    currentSize =  int(_POST['resumableChunkNumber'].value) * (int(_POST['resumableChunkSize'].value)-1)
-    filesize = int(_POST['resumableTotalSize'].value)
+    # Because the last chunk is bigge   r than a normal chunk
+    temp_dir = "{}{}".format(temp_base, _POST['resumableIdentifier'])
+    resumableFilename = (_POST['resumableFilename']).encode('utf-8')
 
+    total_file = len([name for name in os.listdir(temp_dir) if os.path.isfile(os.path.join(temp_dir, name))])
+
+    currentSize =  total_file * (int(_POST['resumableChunkSize']))
+    filesize = int(_POST['resumableTotalSize'])
+    # $total_files * $chunkSize >=  ($totalSize - $chunkSize + 1)
     # if all the chunks were been received, collect all the chunk and delete all the tempory directory
-    if currentSize + int(_POST['resumableCurrentChunkSize'].value)>= filesize:
-        target_file_name = "{}/{}".format(temp_base,_POST['resumableFilename'].value)
-        with open(target_file_name, "ab") as target_file:
-            for i in range(1,int(_POST['resumableChunkNumber'].value)+1):
-                stored_chunk_file_name = "{}{}/{}.part{}".format(temp_base,str(i), _POST['resumableFilename'].value,str(i))
-                stored_chunk_file = open(stored_chunk_file_name, 'rb')
-                target_file.write( stored_chunk_file.read() )
-                stored_chunk_file.close()
-                os.unlink(stored_chunk_file_name)
-                temp_dir = os.path.join(temp_base,str(i))
-                os.rmdir(temp_dir)
-        target_file.close()
+    if currentSize >= (filesize-int(_POST['resumableChunkSize'])+1):
+        integration(_POST)
 
-        # write the final path in a file txt
-        f = open('/tmp/CurrentFile.txt','a+')
-        filename_target_tmp = temp_base + os.path.basename(target_file_name)
-        f.write(filename_target_tmp+"\n")
-        logging.warning(filename_target_tmp)
-        f.close()
-            
+
+def integration(_POST):
+    temp_dir = "{}{}".format(temp_base, _POST['resumableIdentifier'])
+    resumableFilename = (_POST['resumableFilename']).encode('utf-8')
+    target_file_name = "{}{}".format(temp_base,resumableFilename)
+    total_file = _POST['resumableTotalChunks']
+    with open(target_file_name, "ab") as target_file:
+        print "open the file"
+        for i in range(1,int(total_file)+1):
+            print "in the for",i
+            stored_chunk_file_name = "{}{}/{}.part{}".format(temp_base,_POST['resumableIdentifier'], resumableFilename,str(i))
+            stored_chunk_file = open(stored_chunk_file_name, 'rb')
+            target_file.write( stored_chunk_file.read() )
+            stored_chunk_file.close()
+            os.unlink(stored_chunk_file_name)
+    os.rmdir(temp_dir)
+    target_file.close()
+    # write the final path in a file txt
+    f = open('/tmp/CurrentFile.txt','a+')
+    filename_target_tmp = temp_base + os.path.basename(target_file_name)
+    f.write(filename_target_tmp+"\n")
+    logging.warning(filename_target_tmp)
+    f.close()
 
 
 # handler for trait the POST from form
-def handler_no_POST(_POST):
+def handler_no_POST(_POST,Publication_current):
     ''' This function is used to deal with a normal request POST submit from "form"
 
         the _POST = _POST = cgi.FieldStorage(...) ''' 
     # Get the date from the form
-    Date_p = _POST.getvalue("date_p")	
-    Date_f_p = _POST.getvalue("date_f_p")
+    Date_p = _POST["date_p"]
+    Date_f_p = _POST["date_f_p"]
+    Pub_number = _POST["pub_number"]
     
     # update all the path into the CurrentFile
     update_CurrentFile()
@@ -121,10 +157,11 @@ def handler_no_POST(_POST):
         C_file = CurrentFile.pop()
         logging.warning('WARNING! '+C_file)
         file_real = C_file.replace("\n","")
+
         if not os.path.isfile(file_real):               
             continue			
         else:
-            rename_file(file_real, Date_p) 
+            rename_file(file_real, Date_p,Date_f_p,Pub_number,Publication_current)
             
 
 def update_CurrentFile():
@@ -144,24 +181,33 @@ def update_CurrentFile():
     os.remove('/tmp/CurrentFile.txt')
 
 
-def rename_file(file_real, Date_p):
+def rename_file(file_real, Date_p,Date_f_p,Pub_number,Publication_current):
     '''This function is used to rename a file with his path and the publication date
 
        file_real is his path, Date publication is the date'''
 
     file_name_old = os.path.basename(file_real)
     List = file_name_old.split('.')
-    Date_p_tmp = "_"+Date_p.replace('/','_')
+
+    Date_p_tmp_1 = Date_p.split('/')
+    Date_p_tmp_1.reverse()
+    Date_p_tmp = "".join(Date_p_tmp_1)
+
+    Date_f_p_tmp_1 = Date_f_p.split('/')
+    Date_f_p_tmp_1.reverse()
+    Date_f_p_tmp = "".join(Date_f_p_tmp_1)
+
+    #Date_f_p_tmp = "_".join((Date_f_p.split('/')).reverse())
     logging.warning('WARNING! extention probleme '+List[len(List)-1])
     if len(List) > 1 and (List[len(List)-1] == 'pdf'):
         filename_tmp = ".".join(List[0:len(List)-1])
-        file_name_final = filename_tmp + Date_p_tmp + '.' + List[len(List)-1]
-        path_old = os.path.join(temp_base,file_name_old)
+        file_name_final = Publication_current +'_'+ Date_p_tmp + '_'+Date_f_p_tmp+'_'+Pub_number+ '.' + List[len(List)-1]
+        path_old = os.path.join(temp_base,file_name_old.decode('utf-8'))
         path_final = os.path.join(temp_base,file_name_final)
-        os.rename(path_old,path_final) 			
-    else: 
-        file_name_final = file_name_old + Date_p_tmp
-        path_old = os.path.join(temp_base,file_name_old)
+        os.rename(path_old.encode('utf-8'),path_final.encode('utf-8'))
+    else:
+        file_name_final = Publication_current + '_'+Date_p_tmp+'_'+Date_f_p_tmp+'_'+Pub_number
+        path_old = os.path.join(temp_base,file_name_old.decode('utf-8'))
         path_final = os.path.join(temp_base,file_name_final)
-        os.rename(path_old,path_final)     
+        os.rename(path_old.encode('utf-8'),path_final.encode('utf-8'))
 

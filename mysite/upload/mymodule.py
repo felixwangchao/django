@@ -7,8 +7,7 @@ import sys
 import logging
 import time
 import shutil
-from async import schedule
-from async.api import deschedule
+
 
 # extention: only the file who's extension is in this set "extention" can be identified
 # eg:        LeMonde.pdf ----> LeMonde_07_07_2015.pdf       LeMonde.txt ----> LeMonde.txt_07_07_2015
