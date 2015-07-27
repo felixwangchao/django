@@ -464,6 +464,8 @@
                         }
                         else
                         {
+                            $('.error_message'+file_resumable.uniqueIdentifier+'').html("<span>(intergraing-----please wait)</span>");
+                            $('.error_message'+file_resumable.uniqueIdentifier+'').css("visibility","visible");
                             var params ='start_place='+start_place+'&end_place='+end_place+'&resumableFilename='+file_resumable.fileName+'&resumableIdentifier='+file_resumable.uniqueIdentifier+'';
                             console.log(params);
                         }
