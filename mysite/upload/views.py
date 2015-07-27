@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from .models import Editor,Publication
 import base64
 import mymodule
+import os
 
 
 
@@ -14,7 +15,7 @@ def index(request):
 
 # if upload was succeed
 def success(request):
-    return HttpResponse("upload success!")
+    return render(request,'upload/uploadStatus.html')
 
 #*****************
 # to upload a file
@@ -79,8 +80,31 @@ def toUpload(request):
         # CASE 2: this is a POST sended by form
         else:
             # Becasue we need to rename the file by also the name of the publication, so add the publication number
-            mymodule.handler_no_POST(_POST,Publication_current.decode('utf-8'))
-            return HttpResponseRedirect(reverse('upload:success'))
+            path_final = mymodule.handler_no_POST(_POST,Publication_current.decode('utf-8'))
+            try:
+                file_test_size = float(os.path.getsize(path_final))
+                file_name_final = path_final.split('/').pop()
+                mesure = "octets"
+                if file_test_size/1000 > 1:
+                    file_test_size = file_test_size/1000
+                    print file_test_size
+                    mesure = "Ko"
+                    if file_test_size/1000>1:
+                        file_test_size = file_test_size/1000
+                        print file_test_size
+                        mesure = "Mo"
+                        if file_test_size/1000>1:
+                            file_test_size = file_test_size//1000
+                            print file_test_size
+                            mesure = "Go"
+                print file_test_size
+                file_size_final = str(round(file_test_size,1)) + mesure
+                print file_size_final
+                context = {'filename':file_name_final,'size':file_size_final}
+            except:
+                print "file not exist"
+                context = {}
+            return render(request,'upload/uploadStatus.html',context)
 
         return HttpResponse()
 

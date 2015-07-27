@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Status</title>
+     <style>
+                body {
+                    font-family: arial;
+                    background-image: url("http://egbinc.com/images/layout/background.png");
+                    padding: 50px 10% 50px 10%;
+                }
+
+                h1 {
+                    padding-left: 50px;
+                    margin-bottom: 100px;
+                }
+
+                div.editor_technical_contact_container {
+                    position: relative;
+                    z-index: 1;
+                    top: 0;
+                    width: 100%;
+                }
+
+                div.editor_technical_contact {
+                    position: absolute;
+
+                    right: 0;
+
+                    text-align: left;
+
+                    border: 1px solid grey;
+                    border-radius: 5px;
+                    padding: 10px;
+                }
+
+                div.main {
+                    z-index: 0;
+                }
+
+                fieldset {
+                    margin-top: 15px;
+                    border-radius: 10px;
+                }
+
+                input.file_size {
+                    background-color: green;
+                    border-radius: 10px;
+                }
+
+                input.file_type {
+                    background-color: red;
+                    border-radius: 10px;
+                }
+
+                div.submit {
+                    text-align: center;
+
+                    margin-top: 50px;
+                    margin-left: 100px;
+                    margin-right: 100px;
+                }
+
+                div.submit input[type=submit] {
+                    margin-left: 200px;
+                }
+
+                div.Name_bar{
+                    background-image: url("http://highresolutionimages.org/images/img7/yellow-abstract-art-hd-pictures-4.jpg");
+                }
+
+                span.ref {
+                    font-size: smaller;
+                    color: blue;
+                }
+
+                fieldset.Name_bar{
+                }
+
+                fieldset.Contact_bar{
+                }
+
+                div.transmettre {
+                    display:none
+                }
+
+    </style>
+</head>
+<body>
+
+       <fieldset class = "Name_bar">
+
+
+               <tabel style="width:100%" border="1">
+
+                    <tr>
+                        <td>File size check: {{size}}  </td>
+                        <td><span>File size check</span></td><br><br>
+                    </tr>
+                    <tr>
+                        <td>File name check: {{filename}}   </td>
+                        <td><span>File name check</span></td><br><br>
+                    </tr>
+                    <tr>
+                        <td>File collect check:   </td>
+                        <td><span>File collect check</span></td><br><br>
+                    </tr>
+               </tabel>
+        </fieldset>
+
+</body>
+</html>

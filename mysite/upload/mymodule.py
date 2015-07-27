@@ -7,6 +7,7 @@ import sys
 import logging
 import time
 import shutil
+from ctypes import *
 
 
 # extention: only the file who's extension is in this set "extention" can be identified
@@ -119,18 +120,24 @@ def integration(_POST):
     resumableFilename = (_POST['resumableFilename']).encode('utf-8')
     target_file_name = "{}{}".format(temp_base,resumableFilename)
     total_file = _POST['resumableTotalChunks']
-    with open(target_file_name, "ab") as target_file:
-        print "open the file"
-        for i in range(1,int(total_file)+1):
-            print "in the for",i
-            stored_chunk_file_name = "{}{}/{}.part{}".format(temp_base,_POST['resumableIdentifier'], resumableFilename,str(i))
-            stored_chunk_file = open(stored_chunk_file_name, 'rb')
-            target_file.write( stored_chunk_file.read() )
-            stored_chunk_file.close()
-            os.unlink(stored_chunk_file_name)
-    os.rmdir(temp_dir)
-    target_file.close()
+    stored_chunk_file_name = "{}{}/{}.part".format(temp_base,_POST['resumableIdentifier'], resumableFilename)
+    print "before c"
+    print os.getcwd() + '/upload/libtest.so'
+    libtest = cdll.LoadLibrary(os.getcwd() + '/upload/libtest.so')
+    print libtest.collectFile(stored_chunk_file_name,target_file_name,int(total_file))
+#    with open(target_file_name, "ab") as target_file:
+#        print "open the file"
+#        for i in range(1,int(total_file)+1):
+#            print "in the for",i
+#            stored_chunk_file_name = "{}{}/{}.part{}".format(temp_base,_POST['resumableIdentifier'], resumableFilename,str(i))
+#            stored_chunk_file = open(stored_chunk_file_name, 'rb')
+#            target_file.write( stored_chunk_file.read() )
+#            stored_chunk_file.close()
+#            os.unlink(stored_chunk_file_name)
+#    os.rmdir(temp_dir)
+#    target_file.close()
     # write the final path in a file txt
+    shutil.rmtree(temp_dir)
     f = open('/tmp/CurrentFile.txt','a+')
     filename_target_tmp = temp_base + os.path.basename(target_file_name)
     f.write(filename_target_tmp+"\n")
@@ -160,7 +167,8 @@ def handler_no_POST(_POST,Publication_current):
         if not os.path.isfile(file_real):               
             continue			
         else:
-            rename_file(file_real, Date_p,Date_f_p,Pub_number,Publication_current)
+            path_final = rename_file(file_real, Date_p,Date_f_p,Pub_number,Publication_current)
+            return path_final
             
 
 def update_CurrentFile():
@@ -204,9 +212,10 @@ def rename_file(file_real, Date_p,Date_f_p,Pub_number,Publication_current):
         path_old = os.path.join(temp_base,file_name_old.decode('utf-8'))
         path_final = os.path.join(temp_base,file_name_final)
         os.rename(path_old.encode('utf-8'),path_final.encode('utf-8'))
+        return path_final
     else:
         file_name_final = Publication_current + '_'+Date_p_tmp+'_'+Date_f_p_tmp+'_'+Pub_number
         path_old = os.path.join(temp_base,file_name_old.decode('utf-8'))
         path_final = os.path.join(temp_base,file_name_final)
         os.rename(path_old.encode('utf-8'),path_final.encode('utf-8'))
-
+        return path_final
