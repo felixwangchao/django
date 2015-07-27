@@ -127,6 +127,11 @@ def toUpload(request):
         elif 'Editor' in _GET:
             #Editor_modif = _GET['Editor']
             return HttpResponseRedirect(reverse('upload:modification'))
+        elif 'start_place' in _GET:
+            if mymodule.handler_integration_GET(_GET):
+                return HttpResponse('integration',status=200)
+            else:
+                return HttpResponse('integration fail',status=500)
 
 
     # get the Editor et Publication object

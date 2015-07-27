@@ -444,6 +444,42 @@
 
                   }
 
+
+                  function integration(start_place,end_place,totalChunk)
+                {
+                    if (start_place > totalChunk)
+                        return "ok"
+                    else
+                    {
+                        console.log(start_place)
+                        console.log(end_place)
+                        console.log(totalChunk)
+                        var url = document.URL.replace("#","");
+                        var http = new XMLHttpRequest();
+                        if(end_place >= totalChunk)
+                        {
+                            var params ='start_place='+start_place+'&end_place='+totalChunk+'&resumableFilename='+file_resumable.fileName+'&resumableIdentifier='+file_resumable.uniqueIdentifier+'';
+                            console.log(params);
+                        }
+                        else
+                        {
+                            var params ='start_place='+start_place+'&end_place='+end_place+'&resumableFilename='+file_resumable.fileName+'&resumableIdentifier='+file_resumable.uniqueIdentifier+'';
+                            console.log(params);
+                        }
+
+                        http.open("GET",url+"?"+params,true);
+                        http.onreadystatechange = function()
+                        {
+                            if (http.readyState==4&&http.status==200)
+                            {
+                                console.log("have a return positive");
+                                integration(start_place+50,end_place+50,totalChunk);
+                            }
+                        }
+                        http.send(null);
+                    }
+                }
+
                   // this is a funciton to redirect to the modificaiton page
                   function modification()
                 {
@@ -573,6 +609,10 @@
                 });
               r.on('fileSuccess', function(file,message){
                   // Reflect that the file upload has completed
+                  var totalChunk = parseInt((file_resumable.size)/262144)
+                  var start = 1;
+                  var end = 50;
+                  integration(start,end,totalChunk);
                   $('.progress-resume-link').hide();
                   $('.progress-pause-link').hide();
                   deleteFile = "delete-"+file_resumable.uniqueIdentifier;

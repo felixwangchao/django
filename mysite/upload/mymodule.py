@@ -41,15 +41,33 @@ def handler_rs_GET(_GET):
 def handler_delete_GET(_GET):
     deleteFileName =  (_GET['filename_delete']).encode('utf-8')
     delete_file_path = os.path.join(temp_base,deleteFileName)
-    if os.path.isfile(delete_file_path):
+    if not os.path.isfile(delete_file_path):
+        delete_dir_path = os.path.join(temp_base,_GET['filename_delete_uniqueIdentifier'])
+        shutil.rmtree(delete_dir_path)
+    else:
         print "file exist"
         os.remove(delete_file_path)
-    else:
-        print "file doesn't exist"
-        delete_dir_path = os.path.join(temp_base,_GET['filename_delete_uniqueIdentifier'])
-        print "remove directory: ",delete_dir_path
-        shutil.rmtree(delete_dir_path)
-        print "after delete dir"
+
+
+
+def handler_integration_GET(_GET):
+    try:
+        temp_dir = "{}{}".format(temp_base, _GET['resumableIdentifier'])
+        resumableFilename = (_GET['resumableFilename']).encode('utf-8')
+        target_file_name = "{}{}".format(temp_base,resumableFilename)
+        stored_chunk_file_name = "{}{}/{}.part".format(temp_base,_GET['resumableIdentifier'], resumableFilename)
+        start_place = int(_GET['start_place'])
+        print start_place
+        end_place = int(_GET['end_place'])
+        print end_place
+        print stored_chunk_file_name
+        print target_file_name
+        libtest = cdll.LoadLibrary(os.getcwd() + '/upload/libtest.so')
+        libtest.collectFile(stored_chunk_file_name,target_file_name,start_place,end_place)
+        return True
+    except:
+        return False
+
 
 
 # handler: for trait the POST from resumable.js
@@ -112,7 +130,8 @@ def collect(_POST):
     # $total_files * $chunkSize >=  ($totalSize - $chunkSize + 1)
     # if all the chunks were been received, collect all the chunk and delete all the tempory directory
     if currentSize >= (filesize-int(_POST['resumableChunkSize'])+1):
-        integration(_POST)
+        #integration(_POST)
+        pass
 
 
 def integration(_POST):
@@ -121,10 +140,8 @@ def integration(_POST):
     target_file_name = "{}{}".format(temp_base,resumableFilename)
     total_file = _POST['resumableTotalChunks']
     stored_chunk_file_name = "{}{}/{}.part".format(temp_base,_POST['resumableIdentifier'], resumableFilename)
-    print "before c"
-    print os.getcwd() + '/upload/libtest.so'
     libtest = cdll.LoadLibrary(os.getcwd() + '/upload/libtest.so')
-    print libtest.collectFile(stored_chunk_file_name,target_file_name,int(total_file))
+    libtest.collectFile(stored_chunk_file_name,target_file_name,int(total_file))
 #    with open(target_file_name, "ab") as target_file:
 #        print "open the file"
 #        for i in range(1,int(total_file)+1):
@@ -141,7 +158,6 @@ def integration(_POST):
     f = open('/tmp/CurrentFile.txt','a+')
     filename_target_tmp = temp_base + os.path.basename(target_file_name)
     f.write(filename_target_tmp+"\n")
-    logging.warning(filename_target_tmp)
     f.close()
 
 
@@ -164,8 +180,8 @@ def handler_no_POST(_POST,Publication_current):
         logging.warning('WARNING! '+C_file)
         file_real = C_file.replace("\n","")
 
-        if not os.path.isfile(file_real):               
-            continue			
+        if not os.path.isfile(file_real):
+            continue
         else:
             path_final = rename_file(file_real, Date_p,Date_f_p,Pub_number,Publication_current)
             return path_final
@@ -183,7 +199,7 @@ def update_CurrentFile():
         CurrentFile.append(line)
         line = f2.readline()
     f2.close()
-    
+
     logging.warning('WARNING! remove the txt')
     os.remove('/tmp/CurrentFile.txt')
 
