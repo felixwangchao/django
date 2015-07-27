@@ -446,7 +446,7 @@
 
 
                   function integration(start_place,end_place,totalChunk)
-                {
+                {   var flag = 0
                     if (start_place > totalChunk)
                         return "ok"
                     else
@@ -458,8 +458,9 @@
                         var http = new XMLHttpRequest();
                         if(end_place >= totalChunk)
                         {
-                            var params ='start_place='+start_place+'&end_place='+totalChunk+'&resumableFilename='+file_resumable.fileName+'&resumableIdentifier='+file_resumable.uniqueIdentifier+'';
+                            var params ='start_place='+start_place+'&end_place='+totalChunk+'&resumableFilename='+file_resumable.fileName+'&resumableIdentifier='+file_resumable.uniqueIdentifier+'&lastFile=yes';
                             console.log(params);
+                            flag = 1;
                         }
                         else
                         {
@@ -470,11 +471,19 @@
                         http.open("GET",url+"?"+params,true);
                         http.onreadystatechange = function()
                         {
-                            if (http.readyState==4&&http.status==200)
+                            if (http.readyState==4&&http.status==200&&flag == 0)
                             {
                                 console.log("have a return positive");
                                 integration(start_place+50,end_place+50,totalChunk);
                             }
+                            else if(http.readyState==4&&http.status==200&&flag == 1)
+                            {
+                                integration(start_place+50,end_place+50,totalChunk);
+                                document.getElementById(file_resumable.uniqueIdentifier).value = file_resumable.progress()*100;
+                                $('.error_message'+file_resumable.uniqueIdentifier+'').html("<span>(upload finish)</span>");
+                                $('.error_message'+file_resumable.uniqueIdentifier+'').css("visibility","visible");
+                            }
+
                         }
                         http.send(null);
                     }
@@ -615,10 +624,7 @@
                   integration(start,end,totalChunk);
                   $('.progress-resume-link').hide();
                   $('.progress-pause-link').hide();
-                  deleteFile = "delete-"+file_resumable.uniqueIdentifier;
-                  document.getElementById(deleteFile).style.visibility = 'visible';
-                  $('.error_message'+file.uniqueIdentifier+'').html("<span>(upload finish)</span>");
-                  $('.error_message'+file.uniqueIdentifier+'').css("visibility","visible");
+
 
                 });
               r.on('fileError', function(file, message){
@@ -632,7 +638,7 @@
                   // Handle progress for both the file and the overall upload
                   name_tmp = file.fileName;
                   $('.resumable-file-'+file.uniqueIdentifier+' .resumable-file-progress').html(Math.floor(file.progress()*100) + '%');
-                  document.getElementById(file.uniqueIdentifier).value = file.progress()*100;
+                  document.getElementById(file.uniqueIdentifier).value = file.progress()*90;
                 });
               $( window ).unload(function() {
                   console.log("when the window closed");

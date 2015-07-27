@@ -57,13 +57,11 @@ def handler_integration_GET(_GET):
         target_file_name = "{}{}".format(temp_base,resumableFilename)
         stored_chunk_file_name = "{}{}/{}.part".format(temp_base,_GET['resumableIdentifier'], resumableFilename)
         start_place = int(_GET['start_place'])
-        print start_place
         end_place = int(_GET['end_place'])
-        print end_place
-        print stored_chunk_file_name
-        print target_file_name
         libtest = cdll.LoadLibrary(os.getcwd() + '/upload/libtest.so')
         libtest.collectFile(stored_chunk_file_name,target_file_name,start_place,end_place)
+        if "lastFile" in _GET:
+            shutil.rmtree(temp_dir)
         return True
     except:
         return False
