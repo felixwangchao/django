@@ -272,7 +272,7 @@
 	                </fieldset>
 
                     <div class="submit">
-	                    <input type="button" value="Cancel" />
+	                    <input type="button" value="Cancel" id = "Cancel" onclick="cancel()" />
 	                    <input type="submit" onsubmit="validate()"/>
 	                </div>
                 </form>
@@ -300,6 +300,12 @@
 
                 var file_resumable;
                 var file_dictionary = {};
+
+                function cancel()
+                {
+                    var url = document.URL.replace("#","");
+                    window.location.replace(url);
+                }
 
                 // this is a form validation
                 function myValidation()
