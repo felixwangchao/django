@@ -112,6 +112,7 @@ def toUpload(request):
                     pdfCheck = "exit code:"+str(p.returncode)
                     error_list = serr
                     context = {'filename':file_name_final,'size':file_size_final,'pdfCheck':pdfCheck,'error_list':error_list}
+                    os.remove(path_final)
                 else:
                     pdfCheck = "ok"
                     context = {'filename':file_name_final,'size':file_size_final,'pdfCheck':pdfCheck}
