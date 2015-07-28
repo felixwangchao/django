@@ -106,7 +106,6 @@ def handler_rs_POST(_POST,Resumablefile):
             if counter == 100:
                 counter = 0
 
-
     collect(_POST)
 
 
@@ -125,10 +124,13 @@ def collect(_POST):
 
     currentSize =  total_file * (int(_POST['resumableChunkSize']))
     filesize = int(_POST['resumableTotalSize'])
+    target_file_name = "{}{}".format(temp_base,resumableFilename)
     # $total_files * $chunkSize >=  ($totalSize - $chunkSize + 1)
     # if all the chunks were been received, collect all the chunk and delete all the tempory directory
-    #if currentSize >= (filesize-int(_POST['resumableChunkSize'])+1):
-        #pass
+    if currentSize >= (filesize-int(_POST['resumableChunkSize'])+1):
+        if os.path.isfile(target_file_name):
+            os.remove(target_file_name)
+
 
 
 # handler for trait the POST from form
