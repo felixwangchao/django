@@ -62,6 +62,10 @@ def handler_integration_GET(_GET):
         libtest.collectFile(stored_chunk_file_name,target_file_name,start_place,end_place)
         if "lastFile" in _GET:
             shutil.rmtree(temp_dir)
+            f = open('/tmp/CurrentFile.txt','a+')
+            filename_target_tmp = temp_base + os.path.basename(target_file_name)
+            f.write(filename_target_tmp+"\n")
+            f.close()
         return True
     except:
         return False
