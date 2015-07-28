@@ -103,7 +103,14 @@
                     </tr>
                     <tr>
                         <td>File collect check:   </td>
-                        <td><span color="green">{{pdfCheck}}</span></td><br><br>
+                        <td><span color="green">{{pdfCheck}}</span></td><br>
+                        <ul>
+                        {% if error_list %}
+                            {% for mes in error_list  %}
+                                {{ mes }}<br>
+                            {%  endfor  %}
+                        {%  endif  %}
+                        </ul>
                     </tr>
                </tabel>
         </fieldset>

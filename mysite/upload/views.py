@@ -6,6 +6,7 @@ from .models import Editor,Publication
 import base64
 import mymodule
 import os
+import subprocess
 
 
 
@@ -96,26 +97,24 @@ def toUpload(request):
                             mesure = "Go"
                 file_size_tmp = round(file_test_size,1)
                 file_size_final = str(file_size_tmp) + mesure
-                context = {'filename':file_name_final,'size':file_size_final}
 
                 info={}
                 command = "pdfinfo "+ path_final.replace(' ','\\ ')
                 print command
-                string = os.popen(command).read()
-                a = string.split("\n")
-                for b in a:
-                    c = b.split(":")
-                    try:
-                        info[c[0]] = c[1]
-                    except:
-                        pass
-                if len(info.keys()) == 0 :
-                    pdfCheck = "No"
-                else:
-                    pdfCheck ="Yes"
+                p = subprocess.Popen(command,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+                sout = p.stdout.readlines()
+                serr = p.stderr.readlines()
+                streamdata = p.communicate()[0]
 
-                print pdfCheck
-                context = {'filename':file_name_final,'size':file_size_final,'pdfCheck':pdfCheck}
+                if p.returncode != 0:
+                    print "exit code:",p.returncode
+                    print serr
+                    pdfCheck = "exit code:"+str(p.returncode)
+                    error_list = serr
+                    context = {'filename':file_name_final,'size':file_size_final,'pdfCheck':pdfCheck,'error_list':error_list}
+                else:
+                    pdfCheck = "ok"
+                    context = {'filename':file_name_final,'size':file_size_final,'pdfCheck':pdfCheck}
 
                 return render(request,'upload/uploadStatus.html',context)
             except:

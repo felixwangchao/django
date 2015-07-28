@@ -111,17 +111,11 @@ def handler_rs_POST(_POST,Resumablefile):
 
 
 
-#$  total_files * $chunkSize >=  ($totalSize - $chunkSize + 1)
 def collect(_POST):
-    ''' This function is used to collect all the small chunk and write them in a new file
-
-        the _POST = _POST = cgi.FieldStorage(...) '''
     # Because the last chunk is bigge   r than a normal chunk
     temp_dir = "{}{}".format(temp_base, _POST['resumableIdentifier'])
     resumableFilename = (_POST['resumableFilename']).encode('utf-8')
-
     total_file = len([name for name in os.listdir(temp_dir) if os.path.isfile(os.path.join(temp_dir, name))])
-
     currentSize =  total_file * (int(_POST['resumableChunkSize']))
     filesize = int(_POST['resumableTotalSize'])
     target_file_name = "{}{}".format(temp_base,resumableFilename)
