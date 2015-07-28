@@ -62,10 +62,7 @@ def handler_integration_GET(_GET):
         libtest.collectFile(stored_chunk_file_name,target_file_name,start_place,end_place)
         if "lastFile" in _GET:
             shutil.rmtree(temp_dir)
-            f = open('/tmp/CurrentFile.txt','a+')
-            filename_target_tmp = temp_base + os.path.basename(target_file_name)
-            f.write(filename_target_tmp+"\n")
-            f.close()
+            CurrentFile.append(target_file_name)
         return True
     except:
         return False
@@ -131,36 +128,8 @@ def collect(_POST):
     filesize = int(_POST['resumableTotalSize'])
     # $total_files * $chunkSize >=  ($totalSize - $chunkSize + 1)
     # if all the chunks were been received, collect all the chunk and delete all the tempory directory
-    if currentSize >= (filesize-int(_POST['resumableChunkSize'])+1):
-        #integration(_POST)
-        pass
-
-
-def integration(_POST):
-    temp_dir = "{}{}".format(temp_base, _POST['resumableIdentifier'])
-    resumableFilename = (_POST['resumableFilename']).encode('utf-8')
-    target_file_name = "{}{}".format(temp_base,resumableFilename)
-    total_file = _POST['resumableTotalChunks']
-    stored_chunk_file_name = "{}{}/{}.part".format(temp_base,_POST['resumableIdentifier'], resumableFilename)
-    libtest = cdll.LoadLibrary(os.getcwd() + '/upload/libtest.so')
-    libtest.collectFile(stored_chunk_file_name,target_file_name,int(total_file))
-#    with open(target_file_name, "ab") as target_file:
-#        print "open the file"
-#        for i in range(1,int(total_file)+1):
-#            print "in the for",i
-#            stored_chunk_file_name = "{}{}/{}.part{}".format(temp_base,_POST['resumableIdentifier'], resumableFilename,str(i))
-#            stored_chunk_file = open(stored_chunk_file_name, 'rb')
-#            target_file.write( stored_chunk_file.read() )
-#            stored_chunk_file.close()
-#            os.unlink(stored_chunk_file_name)
-#    os.rmdir(temp_dir)
-#    target_file.close()
-    # write the final path in a file txt
-    shutil.rmtree(temp_dir)
-    f = open('/tmp/CurrentFile.txt','a+')
-    filename_target_tmp = temp_base + os.path.basename(target_file_name)
-    f.write(filename_target_tmp+"\n")
-    f.close()
+    #if currentSize >= (filesize-int(_POST['resumableChunkSize'])+1):
+        #pass
 
 
 # handler for trait the POST from form
@@ -174,36 +143,18 @@ def handler_no_POST(_POST,Publication_current):
     Pub_number = _POST["pub_number"]
     
     # update all the path into the CurrentFile
-    update_CurrentFile()
     
     # Open every path and rename the file    
-    for i in range(1,len(CurrentFile)+1):
-        C_file = CurrentFile.pop()
-        logging.warning('WARNING! '+C_file)
-        file_real = C_file.replace("\n","")
 
-        if not os.path.isfile(file_real):
-            continue
-        else:
-            path_final = rename_file(file_real, Date_p,Date_f_p,Pub_number,Publication_current)
-            return path_final
-            
+    print "new try"
+    file_real = CurrentFile.pop()
 
-def update_CurrentFile():
-    '''This function is used to update the list CurrentFile, CurrentFile record the path of all the file uploaded
+    if not os.path.isfile(file_real):
+        return False
+    else:
+        path_final = rename_file(file_real, Date_p,Date_f_p,Pub_number,Publication_current)
+        return path_final
 
-       It takes no arguments, because CurrentFile is a list global'''
-
-    f2=open('/tmp/CurrentFile.txt','r+')
-    line = f2.readline()
-
-    while line !="":
-        CurrentFile.append(line)
-        line = f2.readline()
-    f2.close()
-
-    logging.warning('WARNING! remove the txt')
-    os.remove('/tmp/CurrentFile.txt')
 
 
 def rename_file(file_real, Date_p,Date_f_p,Pub_number,Publication_current):
