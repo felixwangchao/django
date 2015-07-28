@@ -41,13 +41,12 @@ def handler_rs_GET(_GET):
 def handler_delete_GET(_GET):
     deleteFileName =  (_GET['filename_delete']).encode('utf-8')
     delete_file_path = os.path.join(temp_base,deleteFileName)
-    if not os.path.isfile(delete_file_path):
-        delete_dir_path = os.path.join(temp_base,_GET['filename_delete_uniqueIdentifier'])
-        shutil.rmtree(delete_dir_path)
-    else:
+    delete_dir_path = os.path.join(temp_base,_GET['filename_delete_uniqueIdentifier'])
+    if os.path.isfile(delete_file_path):
         print "file exist"
         os.remove(delete_file_path)
-
+    if os.path.isdir(delete_dir_path):
+        shutil.rmtree(delete_dir_path)
 
 
 def handler_integration_GET(_GET):

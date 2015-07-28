@@ -87,24 +87,40 @@ def toUpload(request):
                 mesure = "octets"
                 if file_test_size/1000 > 1:
                     file_test_size = file_test_size/1000
-                    print file_test_size
                     mesure = "Ko"
                     if file_test_size/1000>1:
                         file_test_size = file_test_size/1000
-                        print file_test_size
                         mesure = "Mo"
                         if file_test_size/1000>1:
-                            file_test_size = file_test_size//1000
-                            print file_test_size
+                            file_test_size = file_test_size/1000
                             mesure = "Go"
-                print file_test_size
-                file_size_final = str(round(file_test_size,1)) + mesure
-                print file_size_final
+                file_size_tmp = round(file_test_size,1)
+                file_size_final = str(file_size_tmp) + mesure
                 context = {'filename':file_name_final,'size':file_size_final}
+
+                info={}
+                command = "pdfinfo "+ path_final.replace(' ','\\ ')
+                print command
+                string = os.popen(command).read()
+                a = string.split("\n")
+                for b in a:
+                    c = b.split(":")
+                    try:
+                        info[c[0]] = c[1]
+                    except:
+                        pass
+                if len(info.keys()) == 0 :
+                    pdfCheck = "No"
+                else:
+                    pdfCheck ="Yes"
+
+                print pdfCheck
+                context = {'filename':file_name_final,'size':file_size_final,'pdfCheck':pdfCheck}
+
+                return render(request,'upload/uploadStatus.html',context)
             except:
                 print "file not exist"
-                context = {}
-            return render(request,'upload/uploadStatus.html',context)
+                return render(request,'upload/uploadStatus.html')
 
         return HttpResponse()
 
