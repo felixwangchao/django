@@ -267,8 +267,8 @@
                     <fieldset>
                         <legend>Status:</legend>
                         <div class= "transmettre" display = "none"><p>size max: <span id = "sizeMax">{{Publication.sizeMax}}</span> needed type: <span id="typeAsk">{{Publication.typeAsk}}</span><span id="Editor">{{ Editor.Editor }}</span></p></div>
-	                    <input type="button" class="file_size" value="File size" onclick = displaysize() /><span id = "filesize"></span><br/>
-	                    <input type="button" class="file_type" value="File type" onclick = displayFiletype() /> <span id = "filetype"></span>
+	                    <input type="button" class="file_size" value="File size"  /><span id = "filesize"></span><br/>
+	                    <input type="button" class="file_type" value="File type"  /> <span id = "filetype"></span>
 	                </fieldset>
 
                     <div class="submit">
@@ -531,9 +531,9 @@
 
 
                 // this is a funciton to dispaly the size of file
-                  function displaysize()
+                  function displaysize(a)
                 {
-                    var a = r.getSize();
+
                     var b = "B";
                     if (a/1000 >= 1)
                         {
@@ -589,7 +589,7 @@
                       if(r.getSize()>sizeMax)
                       {
                         $('.file_size').css('background-color','red')
-                        document.getElementById('filesize').innerHTML = "the size max is 20MB";
+                        document.getElementById('filesize').innerHTML = "the size max is "+displaysize(sizeMax)+"";
                       }
                       else{
                         $('.file_size').css('background-color','green')
