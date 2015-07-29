@@ -337,11 +337,21 @@
                     }
 
                     if(dateCheck())
-                    {return true;}
+                    {console.log("date check pass");}
                     else
                     {
                     alert("Error: Date end publication must later than Date start publication")
                     return false;
+                    }
+                    confirm_message = "Your publicaiton date is:"+date1.value+"\nyour publication end date is:"+date2.value+"\n\nPlease confirm your date!"
+                    var se=confirm(confirm_message);
+                    if (se==true)
+                    {
+                       return true;
+                    }
+                    else
+                    {
+                        return false;
                     }
                 }
 

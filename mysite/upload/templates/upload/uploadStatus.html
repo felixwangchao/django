@@ -104,11 +104,11 @@
 
                     <tr>
                         <td>File check status:   </td>
-                        <td><span color="green">{{pdfCheck}}</span></td><br>
+                        <td><span>{{pdfCheck}}</span></td><br>
                         <ul>
                         {% if error_list %}
                             {% for mes in error_list  %}
-                                {{ mes }}<br>
+                                <font color="red">{{ mes }}</font><br>
                             {%  endfor  %}
                         {%  endif  %}
                         {% if pdfDict %}
