@@ -3,6 +3,9 @@
 # But: pour deployer automatiquement l'application de upload 
 echo auto deployement de l\'application Django de upload
 
+# Installation de pytz
+sudo pip install pytz
+
 mkdir -p ~/ENV/tutorial/
 cp -avr ../mysite ~/ENV/tutorial/
 install_dir=$(pwd)
@@ -63,13 +66,13 @@ pip install Django==1.8.3
 echo "installation de gunicorn"
 pip install gunicorn
 echo First /test
-cd mysite 
+cd mysite
 
-# Installation de pytz
-sudo easy_install $install_dir/pytz-2015.4-py2.4.egg
+
+pip install pytz 
+
+
  
-
-
 # Installation de supervisor
 sudo apt-get install supervisor
 sudo rm /etc/supervisor/conf.d/django_upload_application.conf
