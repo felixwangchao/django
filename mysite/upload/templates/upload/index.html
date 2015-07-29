@@ -534,19 +534,19 @@
                   function displaysize(a)
                 {
 
-                    var b = "B";
+                    var b = "octet";
                     if (a/1000 >= 1)
                         {
                             a = a / 1000;
-                            b = "KB";
+                            b = "Ko";
                             if(a/1024 >= 1)
                                 {
                                     a = a/1000;
-                                    b = "MB";
+                                    b = "Mo";
                                     if(a/1024 >=1)
                                         {
                                             a = a/1000;
-                                            b = "GB";
+                                            b = "Go";
                                         }
                                 }
 
