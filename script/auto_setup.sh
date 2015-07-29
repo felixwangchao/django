@@ -2,6 +2,10 @@
 # Auteur: Chao
 # But: pour deployer automatiquement l'application de upload 
 echo auto deployement de l\'application Django de upload
+
+# installation pytz
+sudo easy_install pytz-2015.4-py2.4.egg
+ 
 mkdir -p ~/ENV/tutorial/
 cp -avr ../mysite ~/ENV/tutorial/
 install_dir=$(pwd)
