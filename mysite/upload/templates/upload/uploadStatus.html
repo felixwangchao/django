@@ -110,6 +110,7 @@
                             {% for mes in error_list  %}
                                 <font color="red">{{ mes }}</font><br>
                             {%  endfor  %}
+                            Attention: the file that can't be identified will be delete immediately
                         {%  endif  %}
                         {% if pdfDict %}
                             pdf status test:{{pdfDict.pdfStatus}}<br>
