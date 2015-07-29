@@ -7,6 +7,7 @@ import base64
 import mymodule
 import os
 import subprocess
+from pdf_validator import PdfValidator
 
 
 
@@ -100,7 +101,6 @@ def toUpload(request):
 
                 info={}
                 command = "pdfinfo "+ path_final.replace(' ','\\ ')
-                print command
                 p = subprocess.Popen(command,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
                 sout = p.stdout.readlines()
                 serr = p.stderr.readlines()
@@ -114,8 +114,17 @@ def toUpload(request):
                     context = {'filename':file_name_final,'size':file_size_final,'pdfCheck':pdfCheck,'error_list':error_list}
                     os.remove(path_final)
                 else:
+                    parameters = {'pdf_validation_tests':'test.zip'}
+                    issue_context = {'parameters':parameters,'working_directory':'/tmp/resumable_images/'}
+                    a = PdfValidator(issue_context)
                     pdfCheck = "ok"
-                    context = {'filename':file_name_final,'size':file_size_final,'pdfCheck':pdfCheck}
+
+                    pdfStatus = a.get_pdfinfo_data(path_final)
+                    pdfExplore = a.get_explode_dump()
+                    pdfPortrait = a.check_portrait()
+                    pdfDict = {'pdfStatus':pdfStatus,'pdfExplore':pdfExplore,'pdfPortrait':pdfPortrait}
+
+                    context = {'filename':file_name_final,'size':file_size_final,'pdfCheck':pdfCheck,'pdfDict':pdfDict}
 
                 return render(request,'upload/uploadStatus.html',context)
             except:

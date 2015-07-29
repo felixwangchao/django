@@ -92,17 +92,18 @@
 
 
                <tabel style="width:100%" border="1">
-
                     <tr>
-                        <td>File size check:   </td>
-                        <td><span>{{size}}</span></td><br><br>
-                    </tr>
-                    <tr>
-                        <td>File name check:   </td>
+                        <td>File name:   </td>
                         <td><span>{{filename}}</span></td><br><br>
                     </tr>
+
                     <tr>
-                        <td>File collect check:   </td>
+                        <td>File size:   </td>
+                        <td><span>{{size}}</span></td><br><br>
+                    </tr>
+
+                    <tr>
+                        <td>File check status:   </td>
                         <td><span color="green">{{pdfCheck}}</span></td><br>
                         <ul>
                         {% if error_list %}
@@ -110,6 +111,11 @@
                                 {{ mes }}<br>
                             {%  endfor  %}
                         {%  endif  %}
+                        {% if pdfDict %}
+                            pdf status test:{{pdfDict.pdfStatus}}<br>
+                            pdf explore test:{{pdfDict.pdfExplore}}<br>
+                            pdf portrait test:{{pdfDict.pdfPortrait}}<br>
+                        {% endif %}
                         </ul>
                     </tr>
                </tabel>

@@ -85,10 +85,6 @@ def handler_rs_POST(_POST,Resumablefile):
     if not os.path.exists(temp_dir):
         os.makedirs(temp_dir)
 
-    if int(_POST['resumableCurrentChunkSize']) > (int(_POST['resumableChunkSize'])):
-        time.sleep(2)
-        pass
-
 
     # Save the file in the tempory directory
     counter = 0
