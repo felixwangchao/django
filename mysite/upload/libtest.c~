@@ -3,13 +3,13 @@
 #include<string.h>
   
     
-int collectFile(char* filePath,char* fileSavePath,int chunkAmount)  
+int collectFile(char* filePath,char* fileSavePath,int chunkStart,int chunkEnd)  
 {
     int i;
     char path[100];
 
     FILE * outfile, *infile;
-    for(i=1;i<=chunkAmount;i++)
+    for(i=chunkStart;i<=chunkEnd;i++)
     {       
             sprintf(path,"%s%d",filePath,i);
             infile = fopen(path,"rb");

@@ -21,7 +21,8 @@ int collectFile(char* filePath,char* fileSavePath,int chunkStart,int chunkEnd)
             {
                 fwrite( buf, sizeof( unsigned char ), rc, outfile );
             }
-            fclose(infile);  
+            fclose(infile);
+            remove(path);  
             fclose(outfile);
     } 
 return 100;
