@@ -282,7 +282,6 @@
 
                 // initialisation
                 window.onload = function(){
-                    console.log("initialisation");
                     var currentDate = new Date();
                     year = currentDate.getYear();
                     month = currentDate.getMonth();
@@ -363,7 +362,6 @@
 
                     if(date_p.value.length == 0 && date_f.value.length ==0)
                     {
-                        console.log("not all finished");
                         return true;
                     }
                     else
@@ -382,7 +380,6 @@
 
                         if(year_p < year_f)
                             {
-                                console.log("year is ok");
                                 return true;
                             }
                         else if(year_p > year_f ){
@@ -391,7 +388,6 @@
                         else{
                             if(month_p < month_f)
                             {
-                                console.log("month is ok");
                                 return true;
                             }
                             else if(month_p > month_f)
@@ -402,13 +398,10 @@
                             {
                                 if(day_p < day_f)
                                 {
-                                    console.log("day is ok");
                                     return true;
                                 }
                                 else
                                 {
-                                    console.log(day_p);
-                                    console.log(day_f);
                                     return false;
                                 }
                             }
@@ -424,7 +417,6 @@
                 {
                         if(r.isUploading())
                         {
-                            console.log("is not ok");
                             return "You have attempted to leave this page. Are you sure?";
                         }
                         else
@@ -436,17 +428,13 @@
                 // this is a funciton to when a user want to delete a file
                  function delete_File(filename_delete,element_delete)
                 {
-                    console.log("click delete");
                     r.pause();
                     file_delete = file_dictionary[filename_delete];
                     delete_file_uniqueIdentifier = file_delete.uniqueIdentifier;
-                    console.log("unique identifier is"+delete_file_uniqueIdentifier);
                     r.removeFile(file_delete);
                     document.getElementById("browseButton").disabled = null;
-                    console.log("after the remove file");
                     var url = document.URL.replace("#","");
                     var params ='filename_delete='+filename_delete+'&filename_delete_uniqueIdentifier='+delete_file_uniqueIdentifier;
-                    console.log(params);
                     var http = new XMLHttpRequest();
                     var deleteElement = element_delete.replace("delete-","")
                     $('.resumable-file-'+deleteElement+'').remove()
@@ -467,15 +455,11 @@
                         return "ok"
                     else
                     {
-                        console.log(start_place)
-                        console.log(end_place)
-                        console.log(totalChunk)
                         var url = document.URL.replace("#","");
                         var http = new XMLHttpRequest();
                         if(end_place >= totalChunk)
                         {
                             var params ='start_place='+start_place+'&end_place='+totalChunk+'&resumableFilename='+file_resumable.fileName+'&resumableIdentifier='+file_resumable.uniqueIdentifier+'&lastFile=yes';
-                            console.log(params);
                             flag = 1;
                         }
                         else
@@ -483,7 +467,7 @@
                             $('.error_message'+file_resumable.uniqueIdentifier+'').html("<span>(intergraing-----please wait)</span>");
                             $('.error_message'+file_resumable.uniqueIdentifier+'').css("visibility","visible");
                             var params ='start_place='+start_place+'&end_place='+end_place+'&resumableFilename='+file_resumable.fileName+'&resumableIdentifier='+file_resumable.uniqueIdentifier+'';
-                            console.log(params);
+
                         }
 
                         http.open("GET",url+"?"+params,true);
@@ -491,7 +475,6 @@
                         {
                             if (http.readyState==4&&http.status==200&&flag == 0)
                             {
-                                console.log("have a return positive");
                                 integration(start_place+50,end_place+50,totalChunk);
                             }
                             else if(http.readyState==4&&http.status==200&&flag == 1)
@@ -510,7 +493,6 @@
                   // this is a funciton to redirect to the modificaiton page
                   function modification()
                 {
-                    console.log("click modif");
                     var url = document.URL.replace("#","");
                     toURL = newURL(url);
                     window.location.replace(toURL);
@@ -519,13 +501,11 @@
                 // this is funciton to create a url for the page of modifcation
                   function newURL(url)
                 {
-                    console.log("the old URL is: "+url);
                     url_list = url.split('/');
                     url_tmp = url_list[url_list.length-2]
                     url_tmp = "modification/"+url_tmp;
                     url_list[url_list.length-2] = url_tmp
                     result = url_list.join('/')
-                    console.log(result);
                     return result;
                 }
 
@@ -621,7 +601,6 @@
                 });
               r.on('pause', function(){
                   // Show resume, hide pause
-                  console.log("int the pause");
                   $('.progress-resume-link').hide();
                   $('.progress-pause-link').hide();
                 });
