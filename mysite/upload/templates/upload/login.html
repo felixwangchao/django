@@ -1,0 +1,108 @@
+<html>
+  <head>
+    <title>Adaptive Publisher Portal</title>
+    <style>
+
+      body {
+        font-family: arial;
+      }
+
+      div.main {
+        text-align: center;
+      }
+
+      h1 {
+        margin-top: 50px;
+        margin-bottom: 50px;
+      }
+
+      form {
+        margin-left: 25%;
+        width: 50%;
+      }
+
+      legend {
+        text-align: left;
+      }
+
+      table {
+        margin-top: 25px;
+      }
+
+      td {
+        height: 35px;
+      }
+
+      td.left {
+        width: 20%;
+      }
+
+      td.right {
+        width: 80%;
+      }
+
+      input[type=text], input[type=password] {
+        text-align: center;
+        width: 300px;
+        height: 30px;
+      }
+
+      .checkbox {
+        margin-left: 50px;
+      }
+
+      .ref {
+        font-size: small;
+        color: blue;
+        vertical-align: super;
+      }
+
+      .remember {
+        margin-bottom: 25px;
+      }
+
+      .forgot {
+        font-size: small;
+        color: red;
+      }
+
+      .submit {
+        display: inline-block;
+        margin-left: 50px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <h1>Adaptive Publisher Portal</h1>
+      <form>
+      	<fieldset>
+      	  <legend>Sign In:</legend>
+          <table align="center" >
+            <tr>
+      	       <td class="left"><span class="ref">(1)</span> Email: </td><td class="right"><input type="text" value="bruno.lehyaric@adaptive-channel.com"/></td>
+            </tr>
+            <tr>
+              <td class="left"><span class="ref">(2)</span> Password: </td><td class="right"><input type="password" value="123456"/></td>
+            </tr>
+            <!--tr>
+              <td><span class="ref">(3)</span> Stay signed in: </td><td><input type="checkbox" class="checkbox" /></td>
+            </tr-->
+          </table>
+
+          <div class="remember">
+            <input type="checkbox" class="checkbox" />Stay signed in<span class="ref">(3)</span>
+          </div>
+
+          <a class="forgot" href="01.html">Forgot password?</a><span class="ref">(4)</span>
+
+          <div class="submit">
+        	  <input type="submit" value="Sign In" /><span class="ref">(5)</span>
+        	</div>
+
+      	</fieldset>
+      </form>
+    </div>
+  </body>
+</html>

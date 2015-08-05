@@ -233,11 +233,15 @@
         <body>
             <div class="editor_technical_contact_container">
                 <div class="editor_technical_contact">
+                    {% if Contact %}
 	                <h3>Editor Technical Contact:</h3>
-	                <p>{{ Editor.Title }} {{Editor.Name}} {{Editor.Surname}} </p>
-	                <p>Email: {{ Editor.Email }}</p>
-	                <p>Phone: {{  Editor.InternationalPhoneNumber }}</p>
-                    <button type = "button" onclick = "modification()">modification</button>
+	                <p>{{ Contact.Title }} {{Contact.Name}} {{Contact.Surname}} </p>
+	                <p>Email: {{ Contact.Email }}</p>
+	                <p>Phone: {{  Contact.InternationalMobilePhoneNumber }}</p>
+                    {% else %}
+                    <h3>There is no information of technical contact</h3>
+                    {% endif %}
+                   <!-- <button type = "button" onclick = "modification()">modification</button>-->
                 </div>
             </div>
             <div class="main">

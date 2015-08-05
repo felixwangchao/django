@@ -2,14 +2,83 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from .models import Editor,Publication
+from .models import Editor,Publication,Contact
 import base64
 import mymodule
 import os
 import subprocess
 from pdf_validator import PdfValidator
 
+#****************************************************************************************
+# New page
+#****************************************************************************************
 
+
+def tab_account_change(request):
+    current_path = request.path
+    current_message_list = current_path.split('/')
+    Editor_current = current_message_list[len(current_message_list)-2]
+    id_current = current_message_list[len(current_message_list)-3]
+    return HttpResponse("tab_account_change "+"current id is: "+id_current+" current Editor is:"+Editor_current)
+
+def tab_publication_change(request):
+    current_path = request.path
+    current_message_list = current_path.split('/')
+    Editor_current = current_message_list[len(current_message_list)-2]
+    id_current = current_message_list[len(current_message_list)-3]
+    return HttpResponse("tab_publication_change "+"current id is: "+id_current+" current Editor is:"+Editor_current)
+
+def tab_publication(request):
+    current_path = request.path
+    current_message_list = current_path.split('/')
+    Editor_current = current_message_list[len(current_message_list)-2]
+    Editor_input = Editor.objects.get( Editor = Editor_current)
+    Publication_input = Publication.objects.filter(editor = Editor_input)
+    print "success find the publication"
+    context = {'Editor':Editor_input,'Publication':Publication_input}
+    return render(request,'upload/tab-publication.html',context)
+
+def tab_publication_add(request):
+    current_path = request.path
+    current_message_list = current_path.split('/')
+    Editor_current = current_message_list[len(current_message_list)-2]
+    return HttpResponse("tab_publication_add"+Editor_current)
+
+def tab_account_contact(request):
+    current_path = request.path
+    current_message_list = current_path.split('/')
+    Editor_current = current_message_list[len(current_message_list)-2]
+    Editor_input = Editor.objects.get( Editor = Editor_current)
+    Contact_input = Contact.objects.filter(editor = Editor_input)
+    print Contact_input
+    context = {'Editor':Editor_input,'Contact':Contact_input}
+    return render(request,'upload/tab-account-contact.html',context)
+
+def tab_account_add(request):
+    current_path = request.path
+    current_message_list = current_path.split('/')
+    Editor_current = current_message_list[len(current_message_list)-2]
+    return HttpResponse("tab_account_add"+Editor_current)
+
+def tab_account(request):
+    current_path = request.path
+    current_message_list = current_path.split('/')
+    Editor_current = current_message_list[len(current_message_list)-2]
+    Editor_input = Editor.objects.get( Editor = Editor_current)
+    context = {'Editor':Editor_input}
+    return render(request,'upload/tab-account.html',context)
+
+def tab_account_general_change(request):
+    current_path = request.path
+    current_message_list = current_path.split('/')
+    Editor_current = current_message_list[len(current_message_list)-2]
+    return render(request,'upload/tab-account-general-change.html')
+
+
+
+#****************************************************************************************
+# New page end
+#****************************************************************************************
 
 # Create your views here.
 def index(request):
@@ -18,6 +87,7 @@ def index(request):
 # if upload was succeed
 def success(request):
     return render(request,'upload/uploadStatus.html')
+
 
 #*****************
 # to upload a file
@@ -162,9 +232,12 @@ def toUpload(request):
     # get the Editor et Publication object
     Editor_input = Editor.objects.get( Editor = Editor_current)
     Publication_input = Publication.objects.get(PublicationTitle = Publication_current)
+    print "before Contact"
+    try:
+        Contact_input = Contact.objects.get(Type = "Technical",editor = Editor_input,name="fdqfds")
+        context = {'Editor':Editor_input,'Publication':Publication_input,'Contact':Contact_input}
+    except:
+        context = {'Editor':Editor_input,'Publication':Publication_input}
 
-
-    # set the site
-    context = {'Editor':Editor_input,'Publication':Publication_input}
     return render(request,'upload/index.html',context)
 

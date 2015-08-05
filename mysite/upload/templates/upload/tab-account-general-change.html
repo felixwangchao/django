@@ -1,0 +1,263 @@
+<html>
+  <head>
+    <title>Adaptive Publisher Portal</title>
+    <style>
+
+    body {
+      font-family: arial;
+
+      padding: 50px 10% 50px 10%;
+    }
+
+    h1 {
+      padding-left: 50px;
+      margin-bottom: 50px;
+    }
+
+    .tabs {
+      margin-bottom: 0;
+      padding-left: 0;
+
+      list-style: none;
+    }
+
+    .tabs li {
+      display: inline;
+    }
+
+    .tabs li a {
+      color: black;
+      background: white;
+      text-decoration: none;
+
+      position: relative;
+      float: left;
+      display: block;
+
+      left: 1px;
+      padding: 4px 10px;
+      margin-left: -1px;
+    }
+
+    .tabs li a:hover {
+      background: #ccc;
+    }
+
+    .group:after {
+      visibility: hidden;
+      display: block;
+      font-size: 0;
+      content: " ";
+      clear: both;
+      height: 0;
+    }
+
+    .tabs-wrap {
+      position: relative;
+      min-height: 250px;
+    }
+
+    .tabbed-area .tabs-wrap .tab {
+      background: white;
+      padding: 20px;
+      min-width: 800px;
+      min-height: 700px;
+      position: absolute;
+      top: -1px;
+      left: 0;
+      width: 90%;
+    }
+
+    .tabbed-area .tabs-wrap .tab, .tabs li a {
+      border: 1px solid #ccc;
+    }
+
+    #tab-account {
+      z-index: 1;
+    }
+
+    #tab-account:target, #tab-publications:target, #tab-upload:target {
+      z-index: 1;
+    }
+
+    #tab-account-general {
+      z-index: 1;
+    }
+
+    #tab-account-contacts {
+      z-index: 0;
+    }
+
+    #tab-account-general:target, #tab-account-contacts:target {
+      z-index: 1;
+    }
+
+    #tab-account .tab-main .menu-area {
+    }
+
+    #tab-account .tab-main .menu-area > div {
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    #tab-account .tab-main .menu-area .left {
+      height: 100%;
+      width: 180px;
+    }
+
+    #tab-account .tab-main .menu-area .right {
+      height: 100%;
+    }
+
+    #tab-account .tab-main .menu-area .right .menu {
+      background: white;
+      position: absolute;
+      width: 600px;
+      height: 100%;
+    }
+
+    #tab-account .tab-main .menu-area .right .menu form fieldset {
+      padding: 20px;
+    }
+
+    #tab-account .tab-main .menu-area .right .menu form fieldset div {
+      margin-bottom: 15px;
+    }
+
+    #tab-account .tab-main .menu-area .right .menu form fieldset div input {
+      width: 100%;
+      margin-bottom: 5px;
+    }
+
+    #tab-account .tab-main .menu-area .right .menu form fieldset div.zipcode {
+      display: inline-block;
+    }
+
+    #tab-account .tab-main .menu-area .right .menu form fieldset div.zipcode input {
+      width: 150px;
+    }
+
+    #tab-account .tab-main .menu-area .right .menu form fieldset div.country {
+      display: inline-block;
+    }
+
+    #tab-account .tab-main .menu-area .right .menu form fieldset div.country select {
+      width: 200px;
+    }
+
+    #tab-account .tab-main .menu-area .right .menu form fieldset div.phone input {
+      width: 200px;
+    }
+
+    #tab-account .tab-main .menu-area .right .menu form fieldset div.submit input {
+      width: auto;
+    }
+
+    #tab-account .tab-main .menu-area .right .menu .contacts fieldset .tools {
+      text-align: center;
+    }
+
+    fieldset {
+      margin-top: 15px;
+      border-radius: 10px;
+    }
+
+    span.ref {
+      font-size: smaller;
+      color: blue;
+      vertical-align: super;
+    }
+
+
+
+
+    </style>
+  </head>
+    <div class="main">
+
+      <h1>Adaptive Publisher Portal</h1>
+
+      <div class="tabbed-area">
+
+        <ul class="tabs group">
+          <li><a href="#" onclick="redirect('tab-account')">My Account</a></li>
+          <li><a href="#" onclick="redirect('tab-publication')">My Publications</a></li>
+        </ul>
+
+        <div class="tabs-wrap">
+
+          <div id="tab-account" class="tab">
+            <h2>My Account</h2>
+            <div class="tab-main">
+              <div class="menu-area">
+                <div class="left menus">
+                  <ul>
+                    <li><a href="#" onclick="redirect('tab-account')"><h3>General</h3></a></li>
+                    <li><a href="#" onclick="redirect('tab-account-contact')"><h3>Contacts</h3></a></li>
+                  </ul>
+                </div>
+                <div class="right menus-wrap">
+                    <div id="tab-account-general" class="menu">
+                      <form>
+                        <fieldset>
+                          <legend>Company information</legend>
+                          <div>
+                            <label>Name</label><br/>
+                            <input type="text"/>
+                          </div>
+                          <div>
+                            <label>Website</label><br/>
+                            <input type="text"/>
+                          </div>
+                          <div>
+                            <label>Address</label><br/>
+                            <input type="text"/><br/>
+                            <input type="text"/>
+                          </div>
+                          <div class="zipcode">
+                            <label>Zipcode</label><br/>
+                            <input type="text"/>
+                          </div>
+                          <div class="country">
+                            <label>Country</label><br/>
+                            <select>
+                              <option>France</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label>Language</label><br/>
+                            <select>
+                              <option>fr</option>
+                            </select>
+                          </div>
+                          <div class="phone">
+                            <label>Phone number</label><br/>
+                            <input type="text"/>
+                          </div>
+                          <div class="submit">
+                            <input type="button" value="Cancel" />
+                            <input type="submit" />
+                          </div>
+                        </fieldset>
+                      </form>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <script>
+
+    function redirect(op)
+    {
+        var url = document.URL.replace("tab-account-general-change",op);
+        console.log(url);
+        window.location.replace(url);
+    }
+
+  </script>
+  </body>
+</html>
