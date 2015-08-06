@@ -1,8 +1,6 @@
-{% load staticfiles %}
 <html>
   <head>
     <title>Adaptive Publisher Portal</title>
-    <script src="{% static 'upload/js/jquery-2.1.4.js' %}"></script>
     <style>
 
     body {
@@ -223,12 +221,16 @@
     }
 
 
+    div.transmettre {
+      display:none
+    }
+
+
 
 
     </style>
   </head>
   <body>
-    {% if Editor %}
     <div class="main">
 
       <h1>Adaptive Publisher Portal</h1>
@@ -256,21 +258,51 @@
                     <div id="tab-account-contacts" class="menu">
                       <h3>Contacts</h3>
                       <div class="contacts">
-                        {% for contact in Contact %}
-                          <div id="contact'+{{ contact.id }}+'">
-                            <fieldset class="contact">
-                              <legend>{{contact.Title}}:  {{contact.Name}}  {{contact.Surname}}</legend>
-                              <p>Type: {{contact.Type}} </p>
-                              <p>Language: {{ contact.Language }} </p>
-                              <p>Email: {{contact.Email}}</p>
-                              <p>International fix phone number: {{contact.InternationalFixPhoneNumber}}</p>
-                              <p>International mobile phone number: {{contact.InternationalMobilePhoneNumber}}</p>
-                              <div class="tools"><a href="#" onclick="redirect2('{{ contact.id }}')">Edit</a> | <a href="" onclick="delete_contact('{{ contact.id }}')">Delete</a></div>
-                            </fieldset>
-                          </div>
-                        {% endfor %}
+                        <form  id= "infoContact" name="infoContact" method="post" action="" onsubmit="return myValidation()">
+                            {% csrf_token %}
 
-                      <div class="tools"><a href="#" onclick="redirect('tab-account-add')">Add</a></div>
+                            <fieldset class="contact">
+                                <label>Title:</label><br>
+                                <input type="radio" name="Title" id ="MR" value="Mr" >Mr
+                                <input type="radio" name="Title" id = "MISS"value="Miss">Miss
+                                <input type="radio" name="Title" id = "DOCTOR" value="Doctor">Doctor<br><br>
+
+                                <label>Name:</label><br>
+                                <input type="text" id = "Name" name = "Name" size="25" value = "{{ Contact.Name }}"> <br>
+
+                                <label>Surname:</label><br>
+                                <input type="text" id="Surname" name="Surname" size="25" value = "{{ Contact.Surname }}"><br/><br>
+
+                                <label>Type:</label><br>
+                                <input type="radio" name="Type" id ="Technical" value="Technical" >Technical
+                                <input type="radio" name="Type" id = "Commercial" value="Commercial">Commercial<br><br>
+
+                                <label>Language:</label><br>
+                                  <select id="Language" name="Language">
+                                    <option id="French" value="French">French</option>
+                                    <option id="English" value="English">English</option>
+                                    <option id="German" value="German">German</option>
+                                  </select><br/><br>
+
+                                <label>Email:</label><br>
+                                <input type="email" id="Email" name="Email" size="25" value = "{{ Contact.Email }}"/><br/><br>
+
+                                <label>International fix phone number:</label><br>
+                                <input type="text" id="InternationalFixPhoneNumber" name="InternationalFixPhoneNumber" size="25" value = "{{ Contact.InternationalFixPhoneNumber }}"/> <br/><br>
+
+                                <label>International mobile phone number:</label><br>
+                                <input type="text" id="InternationalMobilePhoneNumber" name="InternationalMobilePhoneNumber" size="25" value = "{{ Contact.InternationalMobilePhoneNumber }}"/> <br/><br>
+                            </fieldset>
+
+                            <div class="submit">
+                                <input type="button" value="Cancel" onclick = "redirect('tab-account-contact')"/>
+                                <input type="submit" />
+                            </div>
+                        </form>
+
+                        <div class= "transmettre" display = "none"><span id="Contact_Title" >{{ Contact.Title }}</span><span id="Contact_Type">{{ Contact.Type }}</span><span id="Contact_Language">{{ Contact.Language }}</span></div>
+
+                      </div>
                     </div>
                 </div>
               </div>
@@ -282,42 +314,109 @@
       </div>
 
     </div>
-    </div>
     <script>
+
+
+     window.onload = function(){
+
+        console.log("initialisation");
+
+        var title = document.getElementById("Contact_Title").innerHTML;
+        console.log(title)
+        if (title == "Mr")
+        {
+            document.getElementById('MR').checked=true;
+            console.log("after checked 1")
+        }
+        else if(title =="Miss")
+        {
+            document.getElementById('MISS').checked=true;
+        }
+        else
+        {
+            document.getElementById('DOCTOR').checked=true;
+        }
+
+        var type = document.getElementById("Contact_Type").innerHTML;
+        console.log(type);
+        if (type == "Technical")
+        {
+            document.getElementById('Technical').checked=true;
+            console.log("after checked 2")
+        }
+
+        else
+        {
+            document.getElementById('Commercial').checked=true;
+        }
+
+        var language = document.getElementById("Contact_Language").innerHTML;
+        console.log(language);
+
+        if (language == "French")
+        {
+            document.getElementById('French').selected=true;
+            console.log("after checked 2")
+        }
+
+        else if(language == "English")
+        {
+            document.getElementById('English').selected=true;
+        }
+        else
+        {
+            document.getElementById('German').selected=true;
+        }
+    }
 
     function redirect(op)
     {
-        var url = document.URL.replace("#","").replace("tab-account-contact",op);
+        var url = document.URL.replace(/tab-account-change\/[0-9]+/g,op);
+        console.log(url);
         window.location.replace(url);
     }
 
-    function redirect2(id)
+    function myValidation()
     {
-      var url = document.URL.replace("tab-account-contact","tab-account-change/"+id)
-      window.location.replace(url);
+    var name = document.getElementById("Name");
+    var surname = document.getElementById("Surname");
+    var email = document.getElementById("Email");
+    var fixphone = document.getElementById("InternationalFixPhoneNumber");
+    var mobilephone = document.getElementById("InternationalMobilePhoneNumber");
+
+
+        if(name.value.length == 0)
+        {
+            alert("your name is vide"+name.value,title);
+            return false;
+        }
+        else if(surname.value.length == 0)
+        {
+            alert("your surname is vide"+surname.value);
+            return false;
+        }
+        else if(email.value.length == 0)
+        {
+            alert("your email is vide"+email.value);
+            return false;
+        }
+        else if(fixphone.value.length == 0)
+        {
+            alert("your phone number is vide"+fixphone.value);
+            return false;
+        }
+        else if(mobilephone.value.length == 0)
+        {
+            alert("your phone number is vide"+mobilephone.value);
+            return false;
+        }
+        else{
+            return true;
+        }
+
     }
 
-    function delete_contact(id)
-    {
-      $('#contact'+id).remove()
-      var url = document.URL.replace("#","");
-      var params ='Contact_id='+id;
-      var http = new XMLHttpRequest();
-      http.open("GET",url+"?"+params,true);
-      http.onreadystatechange = function()
-      {
-        if(http.readyState==4&&http.status==200)
-        {
-          console.log("before delete");
-          delete_id = "contact"+id
-          $('#contact'+id).remove();
-          console.log("after delete");
-        }
-      }
-      http.send(null);
-    }
 
    </script>
-  {% endif %}
   </body>
 </html>

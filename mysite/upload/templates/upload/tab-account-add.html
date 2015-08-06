@@ -76,6 +76,10 @@
       z-index: 1;
     }
 
+    #tab-publications, #tab-upload {
+      z-index: 0;
+    }
+
     #tab-account:target, #tab-publications:target, #tab-upload:target {
       z-index: 1;
     }
@@ -157,9 +161,57 @@
       text-align: center;
     }
 
+    #tab-publications .tab-main .publications fieldset .tools {
+      text-align: center;
+    }
+
+    #tab-upload .tab-main form.upload {
+      margin-top: 150px;
+    }
+
+    div.editor_technical_contact_container {
+      position: relative;
+      top: 0;
+      width: 100%;
+    }
+
+    div.editor_technical_contact {
+      position: absolute;
+
+      right: 0;
+
+      text-align: left;
+
+      border: 1px solid grey;
+      border-radius: 5px;
+      padding: 10px;
+    }
+
     fieldset {
       margin-top: 15px;
       border-radius: 10px;
+    }
+
+    input.file_size {
+      background-color: green;
+      border-radius: 10px;
+    }
+
+    input.file_type {
+      background-color: red;
+      border-radius: 10px;
+    }
+
+    div.submit {
+      text-align: center;
+
+      margin-top: 50px;
+      margin-left: 100px;
+      margin-right: 100px;
+    }
+
+    div.submit input[type=submit] {
+      margin-left: 200px;
     }
 
     span.ref {
@@ -168,7 +220,8 @@
       vertical-align: super;
     }
 
-      div.transmettre {
+
+    div.transmettre {
       display:none
     }
 
@@ -178,7 +231,6 @@
     </style>
   </head>
   <body>
-    {% if Editor %}
     <div class="main">
 
       <h1>Adaptive Publisher Portal</h1>
@@ -203,121 +255,78 @@
                   </ul>
                 </div>
                 <div class="right menus-wrap">
-                    <div id="tab-account-general" class="menu">
-                      <form id= "infoEditor" name="infoEditor" method="post" action="" onsubmit="return myValidation()">
-                        {% csrf_token %}
-                        <fieldset>
-                          <legend>Company information</legend>
-                          <div>
-                            <label>Name</label><br/>
-                            <input type="text" name="Name" id="Name" value = "{{ Editor.Editor }}"/>
-                          </div>
-                          <div>
-                            <label>Website</label><br/>
-                            <input type="url" name="Website" id="Website" value = "{{ Editor.Website }}"/>
-                          </div>
-                          <div>
-                            <label>Address</label><br/>
-                            <input type="text" name="Address" id="Address" value = "{{ Editor.Address }}"/><br/>
-                          </div>
-                          <div class="zipcode">
-                            <label>Zipcode</label><br/>
-                            <input type="text" name="Zipcode" id="Zipcode" value="{{ Editor.Zipcode }}"/>
-                          </div>
-                          <div class="country">
-                            <label>Country</label><br/>
-                            <select id="Country" name="Country">
-                              <option value="France" id="France">France</option>
-                              <option value="England" id="England">England</option>
-                              <option value="Germany" id="Germany">Germany</option>
-                            </select>
-                          </div>
-                          <div>
-                            <label>Language:</label><br>
+                    <div id="tab-account-contacts" class="menu">
+                      <h3>Contacts</h3>
+                      <div class="contacts">
+                        <form  id= "infoContact" name="infoContact" method="post" action="" onsubmit="return myValidation()">
+                            {% csrf_token %}
+
+                            <fieldset class="contact">
+                                <label>Title:</label><br>
+                                <input type="radio" name="Title" id ="MR" value="Mr" checked>Mr
+                                <input type="radio" name="Title" id = "MISS"value="Miss">Miss
+                                <input type="radio" name="Title" id = "DOCTOR" value="Doctor">Doctor<br><br>
+
+                                <label>Name:</label><br>
+                                <input type="text" id = "Name" name = "Name" size="25" > <br>
+
+                                <label>Surname:</label><br>
+                                <input type="text" id="Surname" name="Surname" size="25" ><br/><br>
+
+                                <label>Type:</label><br>
+                                <input type="radio" name="Type" id ="Technical" value="Technical" checked >Technical
+                                <input type="radio" name="Type" id = "Commercial" value="Commercial">Commercial<br><br>
+
+                                <label>Language:</label><br>
                                   <select id="Language" name="Language">
                                     <option id="French" value="French" selected>French</option>
                                     <option id="English" value="English">English</option>
                                     <option id="German" value="German">German</option>
                                   </select><br/><br>
-                          </div>
-                          <div class="phone">
-                            <label>Phone number</label><br/>
-                            <input type="text" id="PhoneNumber" name="PhoneNumber" value="{{ Editor.PhoneNumber }}"/>
-                          </div>
-                          <div class="submit">
-                            <input type="button" value="Cancel" onclick = "redirect('tab-account')"/>
-                            <input type="submit" />
-                          </div>
-                        </fieldset>
-                      </form>
-                    </div>
-                  <div class= "transmettre" display = "none"><span id="Editor_Language" >{{ Editor.Language }}</span><span id="Editor_Country">{{ Editor.Country }}</span></div>
 
+                                <label>Email:</label><br>
+                                <input type="email" id="Email" name="Email" size="25"/><br/><br>
+
+                                <label>International fix phone number:</label><br>
+                                <input type="text" id="InternationalFixPhoneNumber" name="InternationalFixPhoneNumber" size="25" /> <br/><br>
+
+                                <label>International mobile phone number:</label><br>
+                                <input type="text" id="InternationalMobilePhoneNumber" name="InternationalMobilePhoneNumber" size="25" /> <br/><br>
+                            </fieldset>
+
+                            <div class="submit">
+                                <input type="button" value="Cancel" onclick = "redirect('tab-account-contact')"/>
+                                <input type="submit" />
+                            </div>
+                        </form>
+                      </div>
+                    </div>
                 </div>
               </div>
             </div>
           </div>
-          </div>
+
         </div>
+
       </div>
+
     </div>
-  <script>
+    <script>
 
     function redirect(op)
     {
-        var url = document.URL.replace("tab-account-general-change",op);
+        var url = document.URL.replace("tab-account-add",op);
         console.log(url);
         window.location.replace(url);
     }
 
-    window.onload = function(){
-
-        console.log("initialisation");
-
-        var language = document.getElementById("Editor_Language").innerHTML;
-        console.log(language);
-
-        if (language == "French")
-        {
-            document.getElementById('French').selected=true;
-            console.log("after checked 2")
-        }
-
-        else if(language == "English")
-        {
-            document.getElementById('English').selected=true;
-        }
-        else
-        {
-            document.getElementById('German').selected=true;
-        }
-
-        var country = document.getElementById("Editor_Country").innerHTML;
-        console.log(country);
-
-        if (country == "France")
-        {
-            document.getElementById('France').selected=true;
-            console.log("after checked 2")
-        }
-
-        else if(country == "England")
-        {
-            document.getElementById('England').selected=true;
-        }
-        else
-        {
-            document.getElementById('Germany').selected=true;
-        }
-    }
-
-      function myValidation()
+    function myValidation()
     {
     var name = document.getElementById("Name");
-    var website = document.getElementById("Website");
-    var address = document.getElementById("Address");
-    var zipcode = document.getElementById("Zipcode");
-    var phonenumber = document.getElementById("PhoneNumber");
+    var surname = document.getElementById("Surname");
+    var email = document.getElementById("Email");
+    var fixphone = document.getElementById("InternationalFixPhoneNumber");
+    var mobilephone = document.getElementById("InternationalMobilePhoneNumber");
 
 
         if(name.value.length == 0)
@@ -325,24 +334,24 @@
             alert("your name is vide"+name.value,title);
             return false;
         }
-        else if(website.value.length == 0)
+        else if(surname.value.length == 0)
         {
-            alert("your website is vide"+website.value);
+            alert("your surname is vide"+surname.value);
             return false;
         }
-        else if(address.value.length == 0)
+        else if(email.value.length == 0)
         {
-            alert("your address is vide"+address.value);
+            alert("your email is vide"+email.value);
             return false;
         }
-        else if(zipcode.value.length == 0)
+        else if(fixphone.value.length == 0)
         {
-            alert("your zipcode number is vide"+zipcode.value);
+            alert("your fix phone number is vide"+fixphone.value);
             return false;
         }
-        else if(phonenumber.value.length == 0)
+        else if(mobilephone.value.length == 0)
         {
-            alert("your phone number is vide"+phonenumber.value);
+            alert("your mobile phone number is vide"+mobilephone.value);
             return false;
         }
         else{
@@ -351,7 +360,7 @@
 
     }
 
-  </script>
-  {% endif %}
+
+   </script>
   </body>
 </html>

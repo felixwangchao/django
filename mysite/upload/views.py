@@ -19,14 +19,51 @@ def tab_account_change(request):
     current_message_list = current_path.split('/')
     Editor_current = current_message_list[len(current_message_list)-2]
     id_current = current_message_list[len(current_message_list)-3]
-    return HttpResponse("tab_account_change "+"current id is: "+id_current+" current Editor is:"+Editor_current)
+    Contact_input = Contact.objects.get(id = id_current)
+
+
+    if request.method == 'POST':
+        _POST = request.POST
+        Contact_input.Email = _POST['Email']
+        Contact_input.Title = _POST['Title']
+        Contact_input.Name = _POST['Name']
+        Contact_input.Surname = _POST['Surname']
+        Contact_input.Type = _POST['Type']
+        Contact_input.Language = _POST['Language']
+        Contact_input.InternationalFixPhoneNumber = _POST['InternationalFixPhoneNumber']
+        Contact_input.InternationalMobilePhoneNumber = _POST['InternationalMobilePhoneNumber']
+        Contact_input.save()
+        return HttpResponseRedirect('/upload/Editor/tab-account-contact/'+Editor_current)
+    context = {'Contact':Contact_input}
+    return render(request,'upload/tab-account-change.html',context)
 
 def tab_publication_change(request):
     current_path = request.path
     current_message_list = current_path.split('/')
     Editor_current = current_message_list[len(current_message_list)-2]
     id_current = current_message_list[len(current_message_list)-3]
-    return HttpResponse("tab_publication_change "+"current id is: "+id_current+" current Editor is:"+Editor_current)
+    Editor_input = Editor.objects.get( Editor = Editor_current)
+    Publication_input = Publication.objects.get(id = id_current)
+
+    if request.method == 'POST':
+        _POST = request.POST
+        Publication_input.PublicationTitle = _POST['PublicationTitle']
+        Publication_input.Periodicity = _POST['Periodicity']
+        print _POST['Periodicity']
+        Publication_input.PublicationDay = _POST['PublicationDay']
+        Publication_input.Language = _POST['Language']
+        print _POST['Language']
+        Publication_input.Website = _POST['Website']
+        Publication_input.TypeAsk = "pdf"
+        if _POST['Periodicity'] == "Daily":
+            Publication_input.SizeMax = 20000000
+        else:
+            Publication_input.SizeMax = 250000000
+        Publication_input.save()
+        return HttpResponseRedirect('/upload/Editor/tab-publication/'+Editor_current)
+
+    context = {'Publication':Publication_input}
+    return render(request,'upload/tab-publication-change.html',context)
 
 def tab_publication(request):
     current_path = request.path
@@ -34,7 +71,18 @@ def tab_publication(request):
     Editor_current = current_message_list[len(current_message_list)-2]
     Editor_input = Editor.objects.get( Editor = Editor_current)
     Publication_input = Publication.objects.filter(editor = Editor_input)
-    print "success find the publication"
+
+    if request.method == 'GET':
+        _GET = request.GET
+        print "in a get"
+        if 'Pub_id' in _GET:
+            print "in a delete"
+            delete_id = _GET['Pub_id']
+            print delete_id
+            e = Publication.objects.get(id = delete_id)
+            e.delete()
+            return HttpResponse('delete success',status=200)
+
     context = {'Editor':Editor_input,'Publication':Publication_input}
     return render(request,'upload/tab-publication.html',context)
 
@@ -42,7 +90,29 @@ def tab_publication_add(request):
     current_path = request.path
     current_message_list = current_path.split('/')
     Editor_current = current_message_list[len(current_message_list)-2]
-    return HttpResponse("tab_publication_add"+Editor_current)
+    Editor_input = Editor.objects.get( Editor = Editor_current)
+
+
+    if request.method == 'POST':
+        _POST = request.POST
+        Publication_input = Publication(editor = Editor_input)
+        Publication_input.PublicationTitle = _POST['PublicationTitle']
+        Publication_input.Periodicity = _POST['Periodicity']
+        Publication_input.PublicationDay = _POST['PublicationDay']
+        Publication_input.Language = _POST['Language']
+        print _POST['Language']
+        Publication_input.Website = _POST['Website']
+        Publication_input.typeAsk = "pdf"
+        print "after set the TypeAsk"
+        print
+        if _POST['Periodicity'] == "Daily":
+            Publication_input.sizeMax = "20000000"
+        else:
+            Publication_input.sizeMax = "250000000"
+        Publication_input.save()
+        return HttpResponseRedirect('/upload/Editor/tab-publication/'+Editor_current)
+
+    return render(request,'upload/tab-publication-add.html')
 
 def tab_account_contact(request):
     current_path = request.path
@@ -50,7 +120,16 @@ def tab_account_contact(request):
     Editor_current = current_message_list[len(current_message_list)-2]
     Editor_input = Editor.objects.get( Editor = Editor_current)
     Contact_input = Contact.objects.filter(editor = Editor_input)
-    print Contact_input
+    if request.method == 'GET':
+        _GET = request.GET
+        print "in a get"
+        if 'Contact_id' in _GET:
+            print "in a delete"
+            delete_id = _GET['Contact_id']
+            print delete_id
+            e = Contact.objects.get(id = delete_id)
+            e.delete()
+            return HttpResponse('delete success',status=200)
     context = {'Editor':Editor_input,'Contact':Contact_input}
     return render(request,'upload/tab-account-contact.html',context)
 
@@ -58,7 +137,23 @@ def tab_account_add(request):
     current_path = request.path
     current_message_list = current_path.split('/')
     Editor_current = current_message_list[len(current_message_list)-2]
-    return HttpResponse("tab_account_add"+Editor_current)
+    Editor_input = Editor.objects.get( Editor = Editor_current)
+
+
+    if request.method == 'POST':
+        _POST = request.POST
+        contact = Contact(editor = Editor_input)
+        contact.Title = _POST['Title']
+        contact.Name = _POST['Name']
+        contact.Surname = _POST['Surname']
+        contact.Type = _POST['Type']
+        contact.Language = _POST['Language']
+        contact.Email = _POST['Email']
+        contact.InternationalFixPhoneNumber = _POST['InternationalFixPhoneNumber']
+        contact.InternationalMobilePhoneNumber = _POST['InternationalMobilePhoneNumber']
+        contact.save()
+        return HttpResponseRedirect('/upload/Editor/tab-account-contact/'+Editor_current)
+    return render(request,'upload/tab-account-add.html')
 
 def tab_account(request):
     current_path = request.path
@@ -72,7 +167,22 @@ def tab_account_general_change(request):
     current_path = request.path
     current_message_list = current_path.split('/')
     Editor_current = current_message_list[len(current_message_list)-2]
-    return render(request,'upload/tab-account-general-change.html')
+    Editor_input = Editor.objects.get( Editor = Editor_current)
+    if request.method == 'POST':
+        _POST = request.POST
+        Editor_input.Name = _POST['Name']
+        Editor_input.Website = _POST['Website']
+        Editor_input.Address = _POST['Address']
+        Editor_input.Zipcode = _POST['Zipcode']
+        Editor_input.Country = _POST['Country']
+        Editor_input.Language = _POST['Language']
+        Editor_input.PhoneNumber = _POST['PhoneNumber']
+        Editor_input.save()
+        return HttpResponseRedirect('/upload/Editor/tab-account/'+Editor_current)
+
+
+    context = {'Editor':Editor_input}
+    return render(request,'upload/tab-account-general-change.html',context)
 
 
 

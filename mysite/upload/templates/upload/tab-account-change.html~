@@ -5,6 +5,7 @@
 
     body {
       font-family: arial;
+
       padding: 50px 10% 50px 10%;
     }
 
@@ -57,7 +58,7 @@
     }
 
     .tabbed-area .tabs-wrap .tab {
-      background: transparent;
+      background: white;
       padding: 20px;
       min-width: 800px;
       min-height: 700px;
@@ -73,6 +74,10 @@
 
     #tab-account {
       z-index: 1;
+    }
+
+    #tab-publications, #tab-upload {
+      z-index: 0;
     }
 
     #tab-account:target, #tab-publications:target, #tab-upload:target {
@@ -156,9 +161,57 @@
       text-align: center;
     }
 
+    #tab-publications .tab-main .publications fieldset .tools {
+      text-align: center;
+    }
+
+    #tab-upload .tab-main form.upload {
+      margin-top: 150px;
+    }
+
+    div.editor_technical_contact_container {
+      position: relative;
+      top: 0;
+      width: 100%;
+    }
+
+    div.editor_technical_contact {
+      position: absolute;
+
+      right: 0;
+
+      text-align: left;
+
+      border: 1px solid grey;
+      border-radius: 5px;
+      padding: 10px;
+    }
+
     fieldset {
       margin-top: 15px;
       border-radius: 10px;
+    }
+
+    input.file_size {
+      background-color: green;
+      border-radius: 10px;
+    }
+
+    input.file_type {
+      background-color: red;
+      border-radius: 10px;
+    }
+
+    div.submit {
+      text-align: center;
+
+      margin-top: 50px;
+      margin-left: 100px;
+      margin-right: 100px;
+    }
+
+    div.submit input[type=submit] {
+      margin-left: 200px;
     }
 
     span.ref {
@@ -172,7 +225,8 @@
 
     </style>
   </head>
-  {% if Editor %}
+  <body>
+    {% if Editor %}
     <div class="main">
 
       <h1>Adaptive Publisher Portal</h1>
@@ -197,37 +251,43 @@
                   </ul>
                 </div>
                 <div class="right menus-wrap">
-                    <div id="tab-account-general" class="menu">
-                        <fieldset>
-                          <legend>Company information</legend>
-                            <label>Name: {{ Editor.Editor }}</label><br/>
-                            <label>Website: {{ Editor.Website }}</label><br/>
-                            <label>Adress: {{ Editor.Address }}</label><br/>
-                            <label>Zipcode: {{ Editor.Zipcode }}</label><br/>
-                            <label>Country: {{ Editor.Country }}</label><br/>
-                            <label>Language: {{ Editor.Language }}</label><br/>
-                            <label>Phone number: {{ Editor.PhoneNumber }}</label><br/>
-                            <button onclick="redirect('tab-account-general-change')">modification</button>
+                    <div id="tab-account-contacts" class="menu">
+                      <h3>Contacts</h3>
+                      <div class="contacts">
+                        {% for contact in Contact %}
+
+                        <fieldset class="contact" id = "'+{{ contact.Name }}+'-'+{{ contact.Surname }}+'">
+                          <legend>{{contact.Title}}:  {{contact.name}}  {{contact.Surname}}</legend>
+                          <p>Type: {{contact.Type}} </p>
+                          <p>Email: {{contact.Email}}</p>
+                          <p>International fix phone number: {{contact.InternationalFixPhoneNumber}}</p>
+                          <p>International mobile phone number: {{contact.InternationalMobilePhoneNumber}}</p>
+                          <div class="tools"><span class="ref">(17)</span><a href="">Edit</a> | <a href="">Delete...</a><span class="ref">(18)</span></div>
                         </fieldset>
+                        {% endfor %}
+                      </div>
+                      <div class="tools"><a href="">Add</a><span class="ref">(19)</span></div>
                     </div>
                 </div>
               </div>
             </div>
           </div>
-          </div>
+
         </div>
+
       </div>
+
     </div>
-  <script>
+    <script>
 
     function redirect(op)
     {
-        var url = document.URL.replace("tab-account",op);
+        var url = document.URL.replace("tab-account-contact",op);
         console.log(url);
         window.location.replace(url);
     }
 
-  </script>
+   </script>
+  {% endif %}
   </body>
- {% endif %}
 </html>

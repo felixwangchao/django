@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <html>
   <head>
     <title>Adaptive Publisher Portal</title>
@@ -5,7 +6,6 @@
 
     body {
       font-family: arial;
-
       padding: 50px 10% 50px 10%;
     }
 
@@ -132,20 +132,22 @@
             <div class="tab-main">
               <div class="publications">
                 {% for pub in Publication %}
-                <fieldset class="publication" id="'+{{pub.PublicationTitle}}+'">
+                <div id="{{pub.id}}">
+                <fieldset class="publication">
                   <legend>{{ pub.PublicationTitle }}</legend>
                   <p>{{ pub.Periodicity }}</p>
                   <p>{{ pub.PublicationDay }}</p>
                   <p>{{ pub.Language}}</p>
-                  <div class="tools"><span class="ref">(25)</span><a href="">Edit</a> | <a href="">Delete...</a><span class="ref">(26)</span></div>
+                  <div class="tools"><a href="#" onclick="redirect2('{{ pub.id }}')">Edit</a> | <a href="" onclick="delete_pub('{{pub.id}}')">Delete...</a><span class="ref">(26)</span></div>
                 </fieldset>
                 {% endfor %}
               </div>
-              <div class="tools"><a href="">Add</a><span class="ref">(27)</span></div>
+              <div class="tools"><a href="#" onclick="redirect('tab-publication-add')">Add</a><span class="ref">(27)</span></div>
             </div>
           </div>
         </div>
       </div>
+    </div>
     </div>
     <script>
 
@@ -156,7 +158,33 @@
         window.location.replace(url);
     }
 
+        function redirect2(id)
+    {
+        console.log(id);
+        var url = document.URL.replace("tab-publication","tab-publication-change/"+id);
+        console.log(url);
+        window.location.replace(url);
+    }
+
+        function delete_pub(id)
+    {
+      var url = document.URL.replace("#","");
+      var params ='Pub_id='+id;
+      var http = new XMLHttpRequest();
+      http.open("GET",url+"?"+params,true);
+      http.onreadystatechange = function()
+      {
+        if(http.readyState==4&&http.status==200)
+        {
+          console.log("before delete");
+          console.log("after delete");
+        }
+      }
+      http.send(null);
+    }
+
    </script>
   {% endif %}
+
   </body>
 </html>

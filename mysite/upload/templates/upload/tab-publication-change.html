@@ -1,0 +1,270 @@
+<html>
+  <head>
+    <title>Adaptive Publisher Portal</title>
+    <style>
+
+    body {
+      font-family: arial;
+      padding: 50px 10% 50px 10%;
+    }
+
+    h1 {
+      padding-left: 50px;
+      margin-bottom: 50px;
+    }
+
+    .tabs {
+      margin-bottom: 0;
+      padding-left: 0;
+
+      list-style: none;
+    }
+
+    .tabs li {
+      display: inline;
+    }
+
+    .tabs li a {
+      color: black;
+      background: white;
+      text-decoration: none;
+
+      position: relative;
+      float: left;
+      display: block;
+
+      left: 1px;
+      padding: 4px 10px;
+      margin-left: -1px;
+    }
+
+    .tabs li a:hover {
+      background: #ccc;
+    }
+
+    .group:after {
+      visibility: hidden;
+      display: block;
+      font-size: 0;
+      content: " ";
+      clear: both;
+      height: 0;
+    }
+
+    .tabs-wrap {
+      position: relative;
+      min-height: 250px;
+    }
+
+    .tabbed-area .tabs-wrap .tab {
+      background: white;
+      padding: 20px;
+      min-width: 800px;
+      min-height: 700px;
+      position: absolute;
+      top: -1px;
+      left: 0;
+      width: 90%;
+    }
+
+    .tabbed-area .tabs-wrap .tab, .tabs li a {
+      border: 1px solid #ccc;
+    }
+
+    #tab-publications, #tab-upload {
+      z-index: 0;
+    }
+
+    #tab-publications .tab-main .publications fieldset .tools {
+      text-align: center;
+    }
+
+    div.editor_technical_contact_container {
+      position: relative;
+      top: 0;
+      width: 100%;
+    }
+
+    div.editor_technical_contact {
+      position: absolute;
+
+      right: 0;
+
+      text-align: left;
+
+      border: 1px solid grey;
+      border-radius: 5px;
+      padding: 10px;
+    }
+
+    fieldset {
+      margin-top: 15px;
+      border-radius: 10px;
+    }
+
+    span.ref {
+      font-size: smaller;
+      color: blue;
+      vertical-align: super;
+    }
+
+    div.transmettre {
+      display:none
+    }
+
+
+
+    </style>
+  </head>
+  <body>
+  {% if Publication %}
+    <div class="main">
+      <h1>Adaptive Publisher Portal</h1>
+
+      <div class="tabbed-area">
+
+        <ul class="tabs group">
+          <li><a href="#" onclick="redirect('tab-account')">My Account</a></li>
+          <li><a href="#" onclick="redirect('tab-publication')">My Publications</a></li>
+        </ul>
+
+        <div class="tabs-wrap">
+          <div id="tab-publications" class="tab">
+            <h2>My Publications</h2>
+            <div class="tab-main">
+              <div class="publications">
+                <form  id= "infoPublication" name="infoPublication" method="post" action="" onsubmit="return myValidation()">
+                            {% csrf_token %}
+                            <fieldset class="publication">
+                                <label>Title:</label><br>
+                                <input type="text" id = "PublicationTitle" name = "PublicationTitle" size="25" value = "{{ Publication.PublicationTitle }}"> <br>
+                                {{ Publication.PublicationTitle }}
+                                <label>periodicity:</label><br>
+                                 <select id="Periodicity" name="Periodicity">
+                                    <option id="Daily" value="Daily">Daily</option>
+                                    <option id="Weekly" value="Weekly">Weekly</option>
+                                    <option id="Semimonthly" value="Semimonthly">Semimonthly</option>
+                                    <option id="Monthly" value="Monthly">Monthly</option>
+                                    <option id="Quarterly" value="Quarterly">Quarterly</option>
+                                    <option id="Annual" value="Annual">Annual</option>
+                                  </select><br/><br>
+
+                                <label>PublicationDay:</label><br>
+                                <input type="text" id="PublicationDay" name="PublicationDay" size="25" value = "{{ Publication.PublicationDay }}"><br/><br>
+
+                                <label>Language:</label><br>
+                                  <select id="Language" name="Language">
+                                    <option id="French" value="French">French</option>
+                                    <option id="English" value="English">English</option>
+                                    <option id="German" value="German">German</option>
+                                  </select><br/><br>
+
+                                <label>Website:</label><br>
+                                <input type="url" id="Website" name="Website" size="25" value = "{{ Publication.Website }}"/><br/><br>
+
+                            </fieldset>
+
+                            <div class="submit">
+                                <input type="button" value="Cancel" onclick = "redirect('tab-publication')"/>
+                                <input type="submit" />
+                            </div>
+                        </form>
+                    <div class= "transmettre" display = "none"><span id="Publication_Periodicity" >{{ Publication.Periodicity }}</span><span id="Publication_Language">{{ Publication.Language }}</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+
+    function redirect(op)
+    {
+        var url = document.URL.replace(/tab-publication-change\/[0-9]+/g,op);
+        console.log(url);
+        window.location.replace(url);
+    }
+
+        function myValidation()
+    {
+    var title = document.getElementById("PublicationTitle");
+    var publicationday = document.getElementById("PublicationDay");
+    var website = document.getElementById("Website");
+
+
+        if(title.value.length == 0)
+        {
+            alert("your publication title is vide"+title.value,title);
+            return false;
+        }
+        else if(publicationday.value.length == 0)
+        {
+            alert("your publication day is vide"+publicationday.value);
+            return false;
+        }
+        else if(website.value.length == 0)
+        {
+            alert("your web site is vide"+website.value);
+            return false;
+        }
+        else{
+            return true;
+        }
+
+    }
+
+      window.onload = function(){
+
+        console.log("initialisation");
+
+        var periodicity = document.getElementById("Publication_Periodicity").innerHTML;
+        if (periodicity == "Daily")
+        {
+            document.getElementById('Daily').selected=true;
+            console.log("after checked 1")
+        }
+        else if(periodicity =="Weekly")
+        {
+            document.getElementById('Weekly').selected=true;
+        }
+        else if(periodicity =="Semimonthly")
+        {
+            document.getElementById('Semimonthly').selected=true;
+        }
+        else if(periodicity =="Monthly")
+        {
+            document.getElementById('Monthly').selected=true;
+        }
+        else if(periodicity =="Quarterly")
+        {
+            document.getElementById('Quarterly').selected=true;
+        }
+        else
+        {
+            document.getElementById('Annual').selected=true;
+        }
+
+
+        var language = document.getElementById("Publication_Language").innerHTML;
+        console.log(language);
+
+        if (language == "French")
+        {
+            document.getElementById('French').selected=true;
+            console.log("after checked 2")
+        }
+
+        else if(language == "English")
+        {
+            document.getElementById('English').selected=true;
+        }
+        else
+        {
+            document.getElementById('German').selected=true;
+        }
+    }
+
+   </script>
+  {% endif %}
+  </body>
+</html>
