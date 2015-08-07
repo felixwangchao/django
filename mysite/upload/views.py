@@ -3,14 +3,47 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from .models import Editor,Publication,Contact
+from django.contrib.auth import authenticate, login, logout
 import base64
 import mymodule
 import os
 import subprocess
 from pdf_validator import PdfValidator
 
+
+#**************************************************************************************
+# The page for authenticate
+#**************************************************************************************
+
+def my_view(request):
+    yellowPages = {'wangchao@gmail.com':'Le Monde'}
+    if request.method == 'POST':
+        email = request.POST['username']
+        password = request.POST['password']
+
+        username = yellowPages[email]
+
+        user = authenticate(username=username,password=password)
+        if user is not None:
+            if user.is_active:
+                login(request,user)
+                #Editor_current = yellowPages[username]
+                return HttpResponseRedirect('/upload/Editor/tab-account/'+username)
+            else:
+                print "user is disabled"
+
+        else:
+            print "Log in failed"
+
+    return render(request,'upload/login.html')
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect('/upload/login/')
+
+
 #****************************************************************************************
-# New page
+# The page for user
 #****************************************************************************************
 
 
@@ -18,6 +51,8 @@ def tab_account_change(request):
     current_path = request.path
     current_message_list = current_path.split('/')
     Editor_current = current_message_list[len(current_message_list)-2]
+    if not (request.user.username == Editor_current):
+        return HttpResponseRedirect('/upload/login')
     id_current = current_message_list[len(current_message_list)-3]
     Contact_input = Contact.objects.get(id = id_current)
 
@@ -41,6 +76,8 @@ def tab_publication_change(request):
     current_path = request.path
     current_message_list = current_path.split('/')
     Editor_current = current_message_list[len(current_message_list)-2]
+    if not (request.user.username == Editor_current):
+        return HttpResponseRedirect('/upload/login')
     id_current = current_message_list[len(current_message_list)-3]
     Editor_input = Editor.objects.get( Editor = Editor_current)
     Publication_input = Publication.objects.get(id = id_current)
@@ -69,6 +106,8 @@ def tab_publication(request):
     current_path = request.path
     current_message_list = current_path.split('/')
     Editor_current = current_message_list[len(current_message_list)-2]
+    if not (request.user.username == Editor_current):
+        return HttpResponseRedirect('/upload/login')
     Editor_input = Editor.objects.get( Editor = Editor_current)
     Publication_input = Publication.objects.filter(editor = Editor_input)
 
@@ -90,6 +129,8 @@ def tab_publication_add(request):
     current_path = request.path
     current_message_list = current_path.split('/')
     Editor_current = current_message_list[len(current_message_list)-2]
+    if not (request.user.username == Editor_current):
+        return HttpResponseRedirect('/upload/login')
     Editor_input = Editor.objects.get( Editor = Editor_current)
 
 
@@ -118,6 +159,8 @@ def tab_account_contact(request):
     current_path = request.path
     current_message_list = current_path.split('/')
     Editor_current = current_message_list[len(current_message_list)-2]
+    if not (request.user.username == Editor_current):
+        return HttpResponseRedirect('/upload/login')
     Editor_input = Editor.objects.get( Editor = Editor_current)
     Contact_input = Contact.objects.filter(editor = Editor_input)
     if request.method == 'GET':
@@ -137,6 +180,8 @@ def tab_account_add(request):
     current_path = request.path
     current_message_list = current_path.split('/')
     Editor_current = current_message_list[len(current_message_list)-2]
+    if not (request.user.username == Editor_current):
+        return HttpResponseRedirect('/upload/login')
     Editor_input = Editor.objects.get( Editor = Editor_current)
 
 
@@ -159,6 +204,10 @@ def tab_account(request):
     current_path = request.path
     current_message_list = current_path.split('/')
     Editor_current = current_message_list[len(current_message_list)-2]
+
+    if not (request.user.username == Editor_current):
+        return HttpResponseRedirect('/upload/login')
+
     Editor_input = Editor.objects.get( Editor = Editor_current)
     context = {'Editor':Editor_input}
     return render(request,'upload/tab-account.html',context)
@@ -167,6 +216,8 @@ def tab_account_general_change(request):
     current_path = request.path
     current_message_list = current_path.split('/')
     Editor_current = current_message_list[len(current_message_list)-2]
+    if not (request.user.username == Editor_current):
+        return HttpResponseRedirect('/upload/login')
     Editor_input = Editor.objects.get( Editor = Editor_current)
     if request.method == 'POST':
         _POST = request.POST
@@ -344,7 +395,7 @@ def toUpload(request):
     Publication_input = Publication.objects.get(PublicationTitle = Publication_current)
     print "before Contact"
     try:
-        Contact_input = Contact.objects.get(Type = "Technical",editor = Editor_input,name="fdqfds")
+        Contact_input = Contact.objects.get(Type = "Technical",editor = Editor_input)
         context = {'Editor':Editor_input,'Publication':Publication_input,'Contact':Contact_input}
     except:
         context = {'Editor':Editor_input,'Publication':Publication_input}

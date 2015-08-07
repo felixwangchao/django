@@ -200,6 +200,7 @@
                   <ul>
                     <li><a href="#" onclick="redirect('tab-account')"><h3>General</h3></a></li>
                     <li><a href="#" onclick="redirect('tab-account-contact')"><h3>Contacts</h3></a></li>
+                      <li><a href="#" onclick="logout()"> <h3>logout</h3> </a></li>
                   </ul>
                 </div>
                 <div class="right menus-wrap">
@@ -351,6 +352,13 @@
 
     }
 
+
+    function logout()
+    {
+      var url = document.URL.replace(/Editor([\s\S^/]+)/g,"logout")
+      console.log(url);
+      window.location.replace(url);
+    }
   </script>
   {% endif %}
   </body>

@@ -135,9 +135,9 @@
                 <div id="{{pub.id}}">
                 <fieldset class="publication">
                   <legend>{{ pub.PublicationTitle }}</legend>
-                  <p>{{ pub.Periodicity }}</p>
-                  <p>{{ pub.PublicationDay }}</p>
-                  <p>{{ pub.Language}}</p>
+                  <p>Periodicity: {{ pub.Periodicity }}</p>
+                  <p>Publication day: {{ pub.PublicationDay }}</p>
+                  <p>Language: {{ pub.Language}}</p>
                   <div class="tools"><a href="#" onclick="redirect2('{{ pub.id }}')">Edit</a> | <a href="" onclick="delete_pub('{{pub.id}}')">Delete...</a><span class="ref">(26)</span></div>
                 </fieldset>
                 {% endfor %}
