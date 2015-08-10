@@ -4,11 +4,17 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from .models import Editor,Publication,Contact
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from pdf_validator import PdfValidator
+from random import randint
 import base64
 import mymodule
 import os
 import subprocess
-from pdf_validator import PdfValidator
+from sendMail import notification
+
+email = ""
+code = 0
 
 
 #**************************************************************************************
@@ -16,14 +22,17 @@ from pdf_validator import PdfValidator
 #**************************************************************************************
 
 def my_view(request):
-    yellowPages = {'wangchao@gmail.com':'Le Monde'}
+    yellowPages = {'wangchao@eisti.fr':'Le Monde'}
     if request.method == 'POST':
+        if not request.POST.get('rememberMe'):
+            print "Not remember me"
+            request.session.set_expiry(0)
         email = request.POST['username']
         password = request.POST['password']
-
         username = yellowPages[email]
 
         user = authenticate(username=username,password=password)
+        print "authenticate"
         if user is not None:
             if user.is_active:
                 login(request,user)
@@ -41,6 +50,41 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect('/upload/login/')
 
+
+def forget_password(request):
+    user = User.objects.get(id = 1)
+    email =""
+    code = 0
+    if request.method == 'GET':
+        _GET = request.GET
+        if 'email' in _GET:
+            email = _GET['email']
+            print "email in the get is:",email
+            user = User.objects.get(email = email)
+            if user is not None:
+                code = randint(1000,9999)
+                notification(code,email)
+                return HttpResponse(str(code),status=200)
+            else:
+                print "user not found"
+
+    elif request.method == 'POST':
+        _POST = request.POST
+        print "in a post method"
+        if 'email' in _POST:
+            print "there is a email"
+            context = {'email':request.POST['email']}
+            return render(request,'upload/changePassword.html',context)
+
+        if 'newpass' in _POST:
+            email = _POST['emailFix']
+            user = User.objects.get(email = email)
+            user.set_password( str(_POST['newpass']))
+            user.save()
+            print "save success"
+            return HttpResponseRedirect('/upload/login/')
+
+    return render(request,'upload/Forget.html')
 
 #****************************************************************************************
 # The page for user

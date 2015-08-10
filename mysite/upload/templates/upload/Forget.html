@@ -1,0 +1,122 @@
+<html>
+  <head>
+    <title>Adaptive Publisher Portal</title>
+    <style>
+
+    body {
+      font-family: arial;
+
+      padding: 50px 10% 50px 10%;
+    }
+
+    h1 {
+      padding-left: 50px;
+      margin-bottom: 50px;
+    }
+
+    .tabs-wrap {
+      position: relative;
+      min-height: 250px;
+    }
+
+    fieldset {
+      margin-top: 15px;
+      border-radius: 10px;
+    }
+
+
+    div.submit {
+      text-align: center;
+
+      margin-top: 50px;
+      margin-left: 100px;
+      margin-right: 100px;
+    }
+
+
+
+
+
+    </style>
+  </head>
+  <body>
+    <div class="main">
+
+      <h1>Adaptive Publisher Portal</h1>
+
+        <div class="tabs-wrap">
+            <form  id= "infoContact" name="infoContact" method="post" action="" onsubmit="return myValidation()">
+                {% csrf_token %}
+
+                <fieldset class="contact">
+
+                    <label>Email:</label><br>
+                    <input type="email" id = "email" name="email" size="25" > <button type="button" value="sendMail" onclick="sendMail()">Send the security code</button><br>
+
+                    <label>Code:</label><br>
+                    <input type="text" id="code" name="code" size="25" ><br/><br>
+
+                <div class="submit">
+                    <input type="button" value="Cancel" onclick = "redirect('login')"/>
+                    <input type="submit" />
+                </div>
+
+                </fieldset>
+            </form>
+          </div>
+        </div>
+    <script>
+        var code = 0;
+         function redirect(op)
+        {
+        var url = document.URL.replace("forget",op);
+        console.log(url);
+        window.location.replace(url);
+        }
+
+
+        function sendMail()
+        {
+          var email = document.getElementById('email').value;
+          console.log(email);
+          var url = document.URL;
+          var params ='email='+email;
+          var http = new XMLHttpRequest();
+          http.open("GET",url+"?"+params,true);
+          http.onreadystatechange = function()
+          {
+            if(http.readyState==4&&http.status==200)
+            {
+                code = parseInt(http.responseText);
+                console.log(code);
+            }
+          }
+          http.send(null);
+        }
+
+        function myValidation()
+        {
+            var input_code = parseInt(document.getElementById("code").value);
+            console.log(input_code);
+            console.log(code);
+            if(input_code != code)
+            {
+                alert("security code not right");
+                return false;
+            }
+            else if(code == 0)
+            {
+                alert("security code not right")
+                return false;
+            }
+            else
+            {
+                alert("success");
+                return true;
+            }
+        }
+
+
+    </script>
+  </body>
+</html>

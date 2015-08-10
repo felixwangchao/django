@@ -1,0 +1,31 @@
+# -*- coding: utf-8 -*-
+#!/usr/bin/python
+# Filename: sendMail
+
+import smtplib
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEText import MIMEText
+
+def notification(publication,email):
+    fromaddr = "wangchao.xy.1@gmail.com"
+    toaddr = email
+    msg = MIMEMultipart()
+    msg['From'] = fromaddr
+    msg['To'] = toaddr
+    msg['Subject'] = "[e-Pass]Titre pas à jour"
+
+    body = "Bonjour,\nNous avons constaté que le(les) titre(s) suivant(s) n'étaient pas à jour:\n\n"+"\n".join(publication)+"\n\nNous faisons tout pour rétablir la situation au plus vite.\n\nCordialement"
+    msg.attach(MIMEText(body,'plain'))
+
+    mail = smtplib.SMTP('smtp.gmail.com',587)
+    mail.starttls()
+    mail.login(fromaddr,'kikyo313@')
+    text = msg.as_string()
+    mail.sendmail(fromaddr,toaddr,text)
+    mail.quit()
+    print "Sent"
+
+if __name__ == '__main__':
+    publication = []
+    publication.append("Le Monde")
+    notification(publication,"chao.wang@adaptive-channel.com")

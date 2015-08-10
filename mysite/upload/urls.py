@@ -5,6 +5,7 @@ urlpatterns = [
     url(r'^$',views.index, name = 'index'),
     url(r'^login/$', views.my_view, name = 'my_view'),
     url(r'^logout/$', views.logout_view, name = 'logout_view'),
+    url(r'^forget/$', views.forget_password, name = 'forget_password'),
     # these page who will use the id
     url(r'^Editor/tab-account-change/[0-9]+/[\s\S^/]+/$',views.tab_account_change,name = 'tab_account_change'),
     url(r'^Editor/tab-publication-change/[0-9]+/[\s\S^/]+/$',views.tab_publication_change,name = 'tab_publication_change'),

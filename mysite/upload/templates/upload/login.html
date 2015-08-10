@@ -92,10 +92,10 @@
           </table>
 
           <div class="remember">
-            <input type="checkbox" class="checkbox" />Stay signed in<span class="ref">(3)</span>
+            <input type="checkbox" class="checkbox" name="rememberMe"/>Stay signed in<span class="ref">(3)</span>
           </div>
 
-          <a class="forgot" href="01.html">Forgot password?</a><span class="ref">(4)</span>
+          <a class="forgot" href="#" onclick="redirect('forget')">Forgot password?</a><span class="ref">(4)</span>
 
           <div class="submit">
         	  <input type="submit" value="Sign In" /><span class="ref">(5)</span>
@@ -104,5 +104,13 @@
       	</fieldset>
       </form>
     </div>
+  <script>
+            function redirect(op)
+        {
+        var url = document.URL.replace("login",op);
+        console.log(url);
+        window.location.replace(url);
+        }
+  </script>
   </body>
 </html>
