@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <html>
   <head>
     <title>Adaptive Publisher Portal</title>
@@ -5,20 +6,36 @@
 
       body {
         font-family: arial;
+        background: white url("{% static 'upload/images/login.jpg' %}") no-repeat right fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
       }
 
       div.main {
-        text-align: center;
+        text-align:center;
+        margin-top:150px;
       }
 
+      .login {
+        margin-top:220px;
+        margin-left:auto;
+        margin-right:auto;
+        width:305px;
+        border-radius: 25px;
+        border:1px white solid;
+        background-color:rgba(255,255,255,0.3);
+      }
+
+
       h1 {
-        margin-top: 50px;
-        margin-bottom: 50px;
+        margin-top: 25px;
+        margin-bottom: 10px;
       }
 
       form {
-        margin-left: 25%;
-        width: 50%;
+        width: 300px;
       }
 
       legend {
@@ -34,11 +51,12 @@
       }
 
       td.left {
-        width: 20%;
+        text-align:center;
+        color:white;
       }
 
       td.right {
-        width: 80%;
+        text-align:center;;
       }
 
       input[type=text], input[type=password] {
@@ -47,8 +65,21 @@
         height: 30px;
       }
 
+      input[type=submit] {
+        color:black;
+        width:100%;
+        margin-left:auto;
+        margin-right:auto;
+      }
+
+      input[type=submit]:hover {
+        color:blue;
+
+
+      }
+
       .checkbox {
-        margin-left: 50px;
+        margin-left:10px;
       }
 
       .ref {
@@ -68,23 +99,21 @@
 
       .submit {
         display: inline-block;
-        margin-left: 50px;
       }
 
     </style>
   </head>
   <body>
     <div class="main">
-      <h1>Adaptive Publisher Portal</h1>
+      <div class="login">
+        <h3 style="color:white">Adaptive Publisher Portal</h3>
       <form method="post" action="">
-      	<fieldset>
-      	  <legend>Sign In:</legend>
           <table align="center" >
             <tr>
-      	       <td class="left">Email: </td><td class="right"><input type="text" name="username"/></td>
+      	       <td class="right"><input type="text" name="username" placeholder="Email" style="margin-left:0px"/></td>
             </tr>
             <tr>
-              <td class="left">Password: </td><td class="right"><input type="password" name="password"/></td>
+               <td class="right"><input type="password" name="password" placeholder="Password"/></td>
             </tr>
             <!--tr>
               <td><span class="ref">(3)</span> Stay signed in: </td><td><input type="checkbox" class="checkbox" /></td>
@@ -92,17 +121,16 @@
           </table>
 
           <div class="remember">
-            <input type="checkbox" class="checkbox" name="rememberMe"/>Stay signed in<span class="ref">(3)</span>
+            <input type="checkbox" class="checkbox" name="rememberMe"/><span style="color:white">Stay signed in OR <a class="forgot" href="#" onclick="redirect('forget')" style="text-decoration:none;color:blue;">Forgot password?</a></span>
           </div>
 
-          <a class="forgot" href="#" onclick="redirect('forget')">Forgot password?</a><span class="ref">(4)</span>
+
 
           <div class="submit">
-        	  <input type="submit" value="Sign In" /><span class="ref">(5)</span>
+        	  <input type="submit" value="Sign In" />
         	</div>
-
-      	</fieldset>
       </form>
+      </div>
     </div>
   <script>
             function redirect(op)
