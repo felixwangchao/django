@@ -16,13 +16,13 @@
 
     .main {
       font-family: arial;
-      padding-top: 10%;
+      padding-top: 15%;
       margin-bottom:0px;
     }
 
     .logo {
       float:left;
-      margin-left:5%;
+      margin-left:25%;
       margin-right:auto;
       margin-top:5%;
       border:1px white solid;
@@ -241,27 +241,13 @@
        background-color:blue;
 
       }
-      .picture {
-        display:inline-block;
-        background-color:white;
-        min-height:300px;
-        width:40%;
 
-        z-index:2;
-        margin-left:5%;
-        margin-top:5%
-      }
-      .picture:hover{
-      opacity:0.4;
-      filter:alpha(opacity=40);
-      }
 
 
 
     </style>
   </head>
   {% if Editor %}
-  <body>
     <div class="header">
         <a href="#" style=";float:right;margin-right:50px;margin-top:20px;" onclick="logout()">logout </a>
         <ul style="margin-left:10%;">
@@ -273,7 +259,7 @@
           </span>
         </ul>
     </div>
-    <div class="logo"></div>
+    <div class="logo"><img src="{% static 'upload/images/logo.png' %}"></div>
 
     <div class="main">
 
@@ -282,8 +268,31 @@
         <div class="tabs-wrap">
 
           <div id="tab-account" class="tab">
-            <span class="picture"><a href="#" onclick="redirect('tab-account')"><img src="{% static 'upload/images/company.jpg' %}" width="512px" height="400px"></a></span>
-            <span class="picture"><div class="pic"></div><a href="#" onclick="redirect('tab-publication')"> <img src="{% static 'upload/images/book.jpg' %}" width="512px" height="400px"></a></span>
+            <h2>My Account</h2>
+            <div class="tab-main">
+              <div class="menu-area">
+                <div class="left menus">
+                  <ul>
+                    <li><a href="#" onclick="redirect('tab-account')" ><h3>General</h3></a></li>
+                    <li><a href="#" onclick="redirect('tab-account-contact')"><h3>Contacts</h3></a></li>
+                  </ul>
+                </div>
+                <div class="right menus-wrap">
+                    <div id="tab-account-general" class="menu">
+                        <fieldset>
+                          <legend>Company information</legend>
+                            <label>Name: {{ Editor.Editor }}</label><br/>
+                            <label>Website: {{ Editor.Website }}</label><br/>
+                            <label>Adress: {{ Editor.Address }}</label><br/>
+                            <label>Zipcode: {{ Editor.Zipcode }}</label><br/>
+                            <label>Country: {{ Editor.Country }}</label><br/>
+                            <label>Language: {{ Editor.Language }}</label><br/>
+                            <label>Phone number: {{ Editor.PhoneNumber }}</label><br/>
+                            <button onclick="redirect('tab-account-general-change')">modification</button>
+                        </fieldset>
+                    </div>
+                </div>
+              </div>
             </div>
           </div>
           </div>
@@ -308,7 +317,7 @@
 
      //$('.logo').click(function(){$('.logo').effect("explode","slow");});
 
-    //$(".header").mouseover(function(){$('.header').slideUp();});
+    //$(".header").mouseover(function(){$('.header').toggle("blind",1000)});
 
   </script>
   </body>
