@@ -7,9 +7,21 @@
 
     .main {
       font-family: arial;
-      padding-top: 10%;
+      padding-top: 5%;
       margin-bottom:0px;
+      background-color:white;
     }
+
+    .left {
+      display:inline;
+      margin-left:10%;
+      }
+    .right {
+      display:inline-block;
+      position:relative;
+      width:40%;
+      margin-right:10%;
+      }
 
 
     .header {
@@ -30,194 +42,13 @@
       margin-bottom: 50px;
     }
 
-    .tabs {
-      margin-bottom: 0;
-      padding-left: 0;
-
-      list-style: none;
-    }
-
-    .tabs li {
-      display: inline;
-    }
-
-    .tabs li a {
-      color: black;
-      background: white;
-      text-decoration: none;
-
-      position: relative;
-      float: left;
-      display: block;
-
-      left: 1px;
-      padding: 4px 10px;
-      margin-left: -1px;
-    }
-
-    .tabs li a:hover {
-      background: #ccc;
-    }
-
-    .group:after {
-      visibility: hidden;
-      display: block;
-      font-size: 0;
-      content: " ";
-      clear: both;
-      height: 0;
-    }
-
-    .tabs-wrap {
-      position: relative;
-      min-height: 250px;
-    }
-
-    .tabbed-area .tabs-wrap .tab {
-      background: #F0F0F0;
-      padding: 20px;
-      min-width: 800px;
-      min-height: 400px;
-      position: absolute;
-      top: -1px;
-      left: -10px;
-      width: 100%;
-      margin-bottom:0px;
-    }
-
-    .tabbed-area .tabs-wrap .tab, .tabs li a {
-      border: 1px solid #ccc;
-    }
-
-    #tab-account {
-      z-index: 1;
-    }
-
-    #tab-publications, #tab-upload {
-      z-index: 0;
-    }
-
-    #tab-account:target, #tab-publications:target, #tab-upload:target {
-      z-index: 1;
-    }
-
-    #tab-account-general {
-      z-index: 1;
-    }
-
-    #tab-account-contacts {
-      z-index: 0;
-    }
-
-    #tab-account-general:target, #tab-account-contacts:target {
-      z-index: 1;
-    }
-
-    #tab-account .tab-main .menu-area {
-    }
-
-    #tab-account .tab-main .menu-area > div {
-      display: inline-block;
-      vertical-align: top;
-    }
-
-    #tab-account .tab-main .menu-area .left {
-      height: 100%;
-      width: 180px;
-    }
-
-    #tab-account .tab-main .menu-area .right {
-      height: 100%;
-    }
-
-    #tab-account .tab-main .menu-area .right .menu {
-      background: white;
-      position: absolute;
-      width: 600px;
-      height: 100%;
-    }
-
-    #tab-account .tab-main .menu-area .right .menu form fieldset {
-      padding: 20px;
-    }
-
-    #tab-account .tab-main .menu-area .right .menu form fieldset div {
-      margin-bottom: 15px;
-    }
-
-    #tab-account .tab-main .menu-area .right .menu form fieldset div input {
-      width: 100%;
-      margin-bottom: 5px;
-    }
-
-    #tab-account .tab-main .menu-area .right .menu form fieldset div.zipcode {
-      display: inline-block;
-    }
-
-    #tab-account .tab-main .menu-area .right .menu form fieldset div.zipcode input {
-      width: 150px;
-    }
-
-    #tab-account .tab-main .menu-area .right .menu form fieldset div.country {
-      display: inline-block;
-    }
-
-    #tab-account .tab-main .menu-area .right .menu form fieldset div.country select {
-      width: 200px;
-    }
-
-    #tab-account .tab-main .menu-area .right .menu form fieldset div.phone input {
-      width: 200px;
-    }
-
-    #tab-account .tab-main .menu-area .right .menu form fieldset div.submit input {
-      width: auto;
-    }
-
-    #tab-account .tab-main .menu-area .right .menu .contacts fieldset .tools {
-      text-align: center;
-    }
-
-    #tab-publications .tab-main .publications fieldset .tools {
-      text-align: center;
-    }
-
-    #tab-upload .tab-main form.upload {
-      margin-top: 150px;
-    }
-
-    div.editor_technical_contact_container {
-      position: relative;
-      top: 0;
-      width: 100%;
-    }
-
-    div.editor_technical_contact {
-      position: absolute;
-
-      right: 0;
-
-      text-align: left;
-
-      border: 1px solid grey;
-      border-radius: 5px;
-      padding: 10px;
-    }
-
     fieldset {
+      display:flex;
       margin-top: 15px;
       border-radius: 10px;
+
     }
 
-    input.file_size {
-      background-color: green;
-      border-radius: 10px;
-    }
-
-    input.file_type {
-      background-color: red;
-      border-radius: 10px;
-    }
 
     div.submit {
       text-align: center;
@@ -230,12 +61,6 @@
     div.submit input[type=submit] {
       margin-left: 200px;
     }
-
-    span.ref {
-      font-size: smaller;
-      color: blue;
-      vertical-align: super;
-    }
             a {
       text-decoration:none;
       color:white;
@@ -246,20 +71,28 @@
        color:white;
        font-family:Arial Times New Roman;
       }
+
     li {
-      list-style-type:none;
+        list-style-type:none;
       }
-        .header .box{
+
+    .header .box{
         margin:5px;
         background-color:black;
         padding:5px;
         border-radius:5px;
         margin-left:20px
-      }
-     .header .box:hover{
-       background-color:blue;
+    }
+   .header .box:hover{
+        background-color:blue;
 
+    }
+
+      .contacts {
+        text-align:center:
+        margin-top:5%;
       }
+
 
 
 
@@ -272,62 +105,35 @@
         <a href="#" style=";float:right;margin-right:50px;margin-top:20px;" onclick="logout()">logout </a>
         <ul style="margin-left:10%;">
           <span class="box">
-          <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account')">My Account</a></li>
+          <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account-general')">My Account</a></li>
            </span>
+           <span class="box">
+          <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account-contact')">My Contacts</a></li>
+          </span>
           <span class="box">
           <li style="display:inline-block;"><a href="#" onclick="redirect('tab-publication')">My Publications</a></li>
           </span>
         </ul>
     </div>
-
     <div class="main">
-
-      <div class="tabbed-area">
-
-        <div class="tabs-wrap">
-
-          <div id="tab-account" class="tab">
-            <h2>My Account</h2>
-            <div class="tab-main">
-              <div class="menu-area">
-                <div class="left menus">
-                  <ul>
-                    <li><a href="#" onclick="redirect('tab-account')"><h3>General</h3></a></li>
-                    <li><a href="#" onclick="redirect('tab-account-contact')"><h3>Contacts</h3></a></li>
-                    <li><a href="#" onclick="logout()"> <h3>logout</h3> </a></li>
-                  </ul>
-                </div>
-                <div class="right menus-wrap">
-                    <div id="tab-account-contacts" class="menu">
-                      <h3>Contacts</h3>
-                      <div class="contacts">
+      <h1>Adaptive Publisher Portal</h1>
                         {% for contact in Contact %}
-                          <div id="contact'+{{ contact.id }}+'">
-                            <fieldset class="contact">
-                              <legend>{{contact.Title}}:  {{contact.Name}}  {{contact.Surname}}</legend>
-                              <p>Type: {{contact.Type}} </p>
-                              <p>Language: {{ contact.Language }} </p>
-                              <p>Email: {{contact.Email}}</p>
-                              <p>International fix phone number: {{contact.InternationalFixPhoneNumber}}</p>
-                              <p>International mobile phone number: {{contact.InternationalMobilePhoneNumber}}</p>
-                              <div class="tools"><a href="#" onclick="redirect2('{{ contact.id }}')">Edit</a> | <a href="" onclick="delete_contact('{{ contact.id }}')">Delete</a></div>
-                            </fieldset>
+                          <div class="left"><img src="{% static 'upload/images/technicien.jpg' %}"></div>
+                          <div class="right">
+                            <div  class="contacts">
+                              <fieldset id="contact{{ contact.id }}">
+                                <legend style="color:blue;">{{contact.Title}}:  {{contact.Name}}  {{contact.Surname}}</legend><br>
+                                <p>Type: {{contact.Type}} </p>
+                                <p>Language: {{ contact.Language }} </p>
+                                <p>Email: {{contact.Email}}</p>
+                                <p>International fix phone number: {{contact.InternationalFixPhoneNumber}}</p>
+                                <p>International mobile phone number: {{contact.InternationalMobilePhoneNumber}}</p>
+                                <div class="tools" style="text-align:center;"><a href="#" style="color:black" onclick="redirect2('{{ contact.id }}')">Edit</a> | <a href="" style="color:black" onclick="delete_contact('{{ contact.id }}')">Delete</a></div>
+                              </fieldset>
+                            </div>
                           </div>
                         {% endfor %}
-
                       <div class="tools"><a href="#" onclick="redirect('tab-account-add')">Add</a></div>
-                    </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-    </div>
     <script>
 
     function redirect(op)
@@ -369,7 +175,22 @@
       console.log(url);
       window.location.replace(url);
     }
+
+    function display(id)
+    {
+      var dom =  document.getElementById(id);
+      if(dom.style.display == "none")
+      {$('#'+id).css("display","flex");}
+      else
+      {$('#'+id).css("display","none");}
+
+
+
+    }
+
+
    </script>
   {% endif %}
+  </div>
   </body>
 </html>

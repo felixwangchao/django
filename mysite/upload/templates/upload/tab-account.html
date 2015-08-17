@@ -16,7 +16,7 @@
 
     .main {
       font-family: arial;
-      padding-top: 10%;
+      padding-top: 5%;
       margin-bottom:0px;
     }
 
@@ -94,7 +94,7 @@
     }
 
     .tabbed-area .tabs-wrap .tab {
-      background: #F0F0F0;
+      background: #87CEEB;
       padding: 20px;
       min-width: 800px;
       min-height: 400px;
@@ -243,13 +243,14 @@
       }
       .picture {
         display:inline-block;
-        background-color:white;
+        background-color:#87CEEB;
         min-height:300px;
-        width:40%;
+        width:25%;
+        padding-top:5%;
+        padding-bottom:9%;
 
         z-index:2;
         margin-left:5%;
-        margin-top:5%
       }
       .picture:hover{
       opacity:0.4;
@@ -266,24 +267,27 @@
         <a href="#" style=";float:right;margin-right:50px;margin-top:20px;" onclick="logout()">logout </a>
         <ul style="margin-left:10%;">
           <span class="box">
-          <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account-contact')">My Account</a></li>
+          <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account-general')">My Account</a></li>
            </span>
+           <span class="box">
+          <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account-contact')">My Contacts</a></li>
+          </span>
           <span class="box">
           <li style="display:inline-block;"><a href="#" onclick="redirect('tab-publication')">My Publications</a></li>
           </span>
         </ul>
     </div>
-    <div class="logo"></div>
 
     <div class="main">
-
+        <h1>Adaptive Publisher Portal</h1>
       <div class="tabbed-area">
 
         <div class="tabs-wrap">
 
           <div id="tab-account" class="tab">
-            <span class="picture"><a href="#" onclick="redirect('tab-account-contact')"><img src="{% static 'upload/images/company.jpg' %}" width="512px" height="400px"></a></span>
-            <span class="picture"><a href="#" onclick="redirect('tab-publication')"> <img src="{% static 'upload/images/book.jpg' %}" width="512px" height="400px"></a></span>
+            <span class="picture"><a href="#" onclick="redirect('tab-account-general')"><img src="{% static 'upload/images/company.jpg' %}" width="100%" height="400px"></a></span>
+            <span class="picture"><a href="#" onclick="redirect('tab-account-contact')"> <img src="{% static 'upload/images/contact.jpg' %}" width="100%" height="400px"></a></span>
+            <span class="picture"><a href="#" onclick="redirect('tab-publication')"> <img src="{% static 'upload/images/book.jpg' %}" width="100%" height="400px"></a></span>
             </div>
           </div>
           </div>

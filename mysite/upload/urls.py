@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^Editor/tab-publication-add/[\s\S^/]+/$',views.tab_publication_add,name = 'tab_publication_add'),
     url(r'^Editor/tab-account-contact/[\s\S^/]+/$',views.tab_account_contact,name = 'tab_account_contact'),
     url(r'^Editor/tab-account-add/[\s\S^/]+/$',views.tab_account_add,name = 'tab_account_add'),
+    url(r'^Editor/tab-account-general/[\s\S^/]+/$',views.tab_account_general,name = 'tab_account_general'),
     url(r'^Editor/tab-account/[\s\S^/]+/$',views.tab_account,name = 'tab_account'),
 
     url(r'^Editor/tab-account-general-change/[\s\S^/]+/$',views.tab_account_general_change,name = 'tab_account_general_change'),

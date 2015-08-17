@@ -10,7 +10,7 @@
 
         .main {
       font-family: arial;
-      padding-top: 10%;
+      padding-top: 5%;
       margin-bottom:0px;
     }
 
@@ -76,7 +76,7 @@
     }
 
     .tabbed-area .tabs-wrap .tab {
-      background: #F0F0F0;
+      background: white;
       padding: 20px;
       min-width: 800px;
       min-height: 400px;
@@ -118,6 +118,8 @@
     }
 
     fieldset {
+      margin-left:10%;
+      margin-right:10%;
       margin-top: 15px;
       border-radius: 10px;
     }
@@ -163,8 +165,11 @@
         <a href="#" style=";float:right;margin-right:50px;margin-top:20px;" onclick="logout()">logout </a>
         <ul style="margin-left:10%;">
           <span class="box">
-          <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account')">My Account</a></li>
+          <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account-general')">My Account</a></li>
            </span>
+           <span class="box">
+          <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account-contact')">My Contacts</a></li>
+          </span>
           <span class="box">
           <li style="display:inline-block;"><a href="#" onclick="redirect('tab-publication')">My Publications</a></li>
           </span>
@@ -172,7 +177,7 @@
     </div>
 
     <div class="main">
-
+      <h1>Adaptive Publisher Portal</h1>
       <div class="tabbed-area">
 
         <div class="tabs-wrap">
@@ -187,11 +192,11 @@
                   <p>Periodicity: {{ pub.Periodicity }}</p>
                   <p>Publication day: {{ pub.PublicationDay }}</p>
                   <p>Language: {{ pub.Language}}</p>
-                  <div class="tools"><a href="#" onclick="redirect2('{{ pub.id }}')">Edit</a> | <a href="" onclick="delete_pub('{{pub.id}}')">Delete...</a><span class="ref">(26)</span></div>
+                  <div class="tools"><a href="#"  style="color:black;" onclick="redirect2('{{ pub.id }}')">Edit</a> | <a href="#" style="color:black;" onclick="delete_pub('{{pub.id}}')">Delete...</a><span class="ref">(26)</span></div>
                 </fieldset>
                 {% endfor %}
               </div>
-              <div class="tools"><a href="#" onclick="redirect('tab-publication-add')">Add</a><span class="ref">(27)</span></div>
+              <div class="tools"><a href="#"  style="color:black;" onclick="redirect('tab-publication-add')">Add</a></div>
             </div>
           </div>
         </div>

@@ -16,7 +16,7 @@
 
     .main {
       font-family: arial;
-      padding-top: 15%;
+      padding-top: 5%;
       margin-bottom:0px;
     }
 
@@ -94,7 +94,7 @@
     }
 
     .tabbed-area .tabs-wrap .tab {
-      background: #F0F0F0;
+      background: #87CEEB;
       padding: 20px;
       min-width: 800px;
       min-height: 400px;
@@ -205,6 +205,8 @@
       }
 
     fieldset {
+      margin-left:10%;
+      margin-right:10%;
       margin-top: 10px;
       border-radius: 10px;
     }
@@ -252,32 +254,26 @@
         <a href="#" style=";float:right;margin-right:50px;margin-top:20px;" onclick="logout()">logout </a>
         <ul style="margin-left:10%;">
           <span class="box">
-          <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account')">My Account</a></li>
+          <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account-general')">My Account</a></li>
            </span>
+           <span class="box">
+          <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account-contact')">My Contacts</a></li>
+          </span>
           <span class="box">
           <li style="display:inline-block;"><a href="#" onclick="redirect('tab-publication')">My Publications</a></li>
           </span>
         </ul>
     </div>
-    <div class="logo"><img src="{% static 'upload/images/logo.png' %}"></div>
 
     <div class="main">
+      <h1>Adaptive Publisher Portal</h1>
 
       <div class="tabbed-area">
 
         <div class="tabs-wrap">
 
           <div id="tab-account" class="tab">
-            <h2>My Account</h2>
             <div class="tab-main">
-              <div class="menu-area">
-                <div class="left menus">
-                  <ul>
-                    <li><a href="#" onclick="redirect('tab-account')" ><h3>General</h3></a></li>
-                    <li><a href="#" onclick="redirect('tab-account-contact')"><h3>Contacts</h3></a></li>
-                  </ul>
-                </div>
-                <div class="right menus-wrap">
                     <div id="tab-account-general" class="menu">
                         <fieldset>
                           <legend>Company information</legend>
@@ -296,14 +292,11 @@
             </div>
           </div>
           </div>
-        </div>
-      </div>
-    </div>
   <script>
 
     function redirect(op)
     {
-        var url = document.URL.replace("tab-account",op);
+        var url = document.URL.replace("tab-account-general",op);
         console.log(url);
         window.location.replace(url);
     }

@@ -256,6 +256,18 @@ def tab_account(request):
     context = {'Editor':Editor_input}
     return render(request,'upload/tab-account.html',context)
 
+def tab_account_general(request):
+    current_path = request.path
+    current_message_list = current_path.split('/')
+    Editor_current = current_message_list[len(current_message_list)-2]
+
+    if not (request.user.username == Editor_current):
+        return HttpResponseRedirect('/upload/login')
+
+    Editor_input = Editor.objects.get( Editor = Editor_current)
+    context = {'Editor':Editor_input}
+    return render(request,'upload/tab-account-general.html',context)
+
 def tab_account_general_change(request):
     current_path = request.path
     current_message_list = current_path.split('/')
