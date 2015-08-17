@@ -5,7 +5,7 @@
     <style>
 
     body {
-          background-color:white;
+          background:white url("{% static 'upload/images/general_back.jpg' %}") no-repeat right fixed;
     }
 
 
@@ -21,16 +21,15 @@
       margin-left:-10px;
       margin-right:-1px;
       padding-bottom:10px;
-      background-color:rgba(255,255,255,0.8);
-      border:1px white solid;
+      background-color:rgba(0, 0, 0, 0.8);
+      border:1px black solid;
       width:102%;
       z-index:10;
-      background-color:black;
     }
 
     h1 {
       padding-left: 50px;
-      margin-bottom: 50px;
+      margin-bottom: 25px;
     }
 
     .tabs {
@@ -77,7 +76,7 @@
     }
 
     .tabbed-area .tabs-wrap .tab {
-      background: white;
+      background: transparent;
       padding: 20px;
       min-width: 800px;
       min-height: 400px;
@@ -89,7 +88,7 @@
     }
 
     .tabbed-area .tabs-wrap .tab, .tabs li a {
-      border: 1px solid #ccc;
+      border: 0px solid #ccc;
     }
 
     #tab-account {
@@ -178,6 +177,7 @@
     }
 
     fieldset {
+      background-color:rgba(255,255,255,0.8);
       margin-left:10%;
       margin-right:10%;
 
@@ -185,14 +185,16 @@
       border-radius: 10px;
     }
 
-    span.ref {
-      font-size: smaller;
-      color: blue;
-      vertical-align: super;
+    div.submit {
+      text-align: center;
+
+      margin-top: 50px;
+      margin-left: 100px;
+      margin-right: 100px;
     }
 
-      div.transmettre {
-      display:none
+    div.submit input[type=submit] {
+      margin-left: 200px;
     }
 
       a {
@@ -218,7 +220,7 @@
         margin-left:20px
       }
      .header .box:hover{
-       background-color:blue;
+       background-color:red;
 
       }
 
@@ -227,16 +229,16 @@
   </head>
   <body>
     {% if Editor %}
-        <div class="header">
+    <div class="header">
         <a href="#" style=";float:right;margin-right:50px;margin-top:20px;" onclick="logout()">logout </a>
         <ul style="margin-left:10%;">
-          <span class="box">
+          <span class="box" style="background-color:#D14444">
           <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account-general')">My Account</a></li>
            </span>
-           <span class="box">
+           <span class="box" style="background-color:#5DBF39">
           <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account-contact')">My Contacts</a></li>
           </span>
-          <span class="box">
+          <span class="box" style="background-color:#40D7CC">
           <li style="display:inline-block;"><a href="#" onclick="redirect('tab-publication')">My Publications</a></li>
           </span>
         </ul>
@@ -257,45 +259,53 @@
                         <fieldset>
                           <legend>Company information</legend>
                           <div>
-                            <label>Name</label><br/>
+                            <label>Name</label>
                             <input type="text" name="Name" id="Name" value = "{{ Editor.Editor }}"/>
                           </div>
+                            <br/>
                           <div>
-                            <label>Website</label><br/>
+                            <label>Website</label>
                             <input type="url" name="Website" id="Website" value = "{{ Editor.Website }}"/>
                           </div>
+                            <br/>
                           <div>
-                            <label>Address</label><br/>
+                            <label>Address</label>
                             <input type="text" name="Address" id="Address" value = "{{ Editor.Address }}"/><br/>
                           </div>
+                            <br/>
                           <div class="zipcode">
-                            <label>Zipcode</label><br/>
+                            <label>Zipcode</label>
                             <input type="text" name="Zipcode" id="Zipcode" value="{{ Editor.Zipcode }}"/>
                           </div>
+                            <br/>
                           <div class="country">
-                            <label>Country</label><br/>
+                            <label>Country</label>
                             <select id="Country" name="Country">
                               <option value="France" id="France">France</option>
                               <option value="England" id="England">England</option>
                               <option value="Germany" id="Germany">Germany</option>
                             </select>
                           </div>
+                            <br/>
                           <div>
-                            <label>Language:</label><br>
+                            <label>Language:</label>
                                   <select id="Language" name="Language">
                                     <option id="French" value="French" selected>French</option>
                                     <option id="English" value="English">English</option>
                                     <option id="German" value="German">German</option>
                                   </select><br/><br>
                           </div>
+                            <br/>
                           <div class="phone">
-                            <label>Phone number</label><br/>
+                            <label>Phone number</label>
                             <input type="text" id="PhoneNumber" name="PhoneNumber" value="{{ Editor.PhoneNumber }}"/>
                           </div>
+                            <br/>
                           <div class="submit">
                             <input type="button" value="Cancel" onclick = "redirect('tab-account')"/>
                             <input type="submit" />
                           </div>
+                            <br/>
                         </fieldset>
                       </form>
                     </div>

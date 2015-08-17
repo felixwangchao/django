@@ -5,13 +5,14 @@
     <style>
 
     body {
-          background-color:white;
+          background:white url("{% static 'upload/images/publication_back.jpg' %}") no-repeat right fixed;
     }
 
         .main {
       font-family: arial;
       padding-top: 5%;
       margin-bottom:0px;
+
     }
 
     h1 {
@@ -19,17 +20,16 @@
       margin-bottom: 50px;
     }
 
-     .header {
+    .header {
       position:fixed;
       margin-top:-10px;
       margin-left:-10px;
       margin-right:-1px;
       padding-bottom:10px;
-      background-color:rgba(255,255,255,0.8);
-      border:1px white solid;
+      background-color:rgba(0, 0, 0, 0.8);
+      border:1px black solid;
       width:102%;
       z-index:10;
-      background-color:black;
     }
 
     .tabs {
@@ -76,7 +76,7 @@
     }
 
     .tabbed-area .tabs-wrap .tab {
-      background: white;
+      background-color:transparent;
       padding: 20px;
       min-width: 800px;
       min-height: 400px;
@@ -88,7 +88,7 @@
     }
 
     .tabbed-area .tabs-wrap .tab, .tabs li a {
-      border: 1px solid #ccc;
+      border: 0px solid #ccc;
     }
 
     #tab-publications, #tab-upload {
@@ -122,6 +122,7 @@
       margin-right:10%;
       margin-top: 15px;
       border-radius: 10px;
+      background-color:rgba(255,255,255,0.8);
     }
 
     span.ref {
@@ -150,7 +151,7 @@
         margin-left:20px
       }
      .header .box:hover{
-       background-color:blue;
+       background-color:red;
 
       }
 
@@ -161,16 +162,16 @@
   </head>
   <body>
   {% if Editor %}
-      <div class="header">
+    <div class="header">
         <a href="#" style=";float:right;margin-right:50px;margin-top:20px;" onclick="logout()">logout </a>
         <ul style="margin-left:10%;">
-          <span class="box">
+          <span class="box" style="background-color:#D14444">
           <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account-general')">My Account</a></li>
            </span>
-           <span class="box">
+           <span class="box" style="background-color:#5DBF39">
           <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account-contact')">My Contacts</a></li>
           </span>
-          <span class="box">
+          <span class="box" style="background-color:#40D7CC">
           <li style="display:inline-block;"><a href="#" onclick="redirect('tab-publication')">My Publications</a></li>
           </span>
         </ul>
@@ -182,7 +183,6 @@
 
         <div class="tabs-wrap">
           <div id="tab-publications" class="tab">
-            <h2>My Publications</h2>
             <div class="tab-main">
               <div class="publications">
                 {% for pub in Publication %}
@@ -235,6 +235,13 @@
         }
       }
       http.send(null);
+    }
+
+    function logout()
+    {
+      var url = document.URL.replace(/Editor([\s\S^/]+)/g,"logout")
+      console.log(url);
+      window.location.replace(url);
     }
 
    </script>

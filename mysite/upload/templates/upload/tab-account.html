@@ -41,11 +41,10 @@
       margin-left:-10px;
       margin-right:-1px;
       padding-bottom:10px;
-      background-color:rgba(255,255,255,0.8);
-      border:1px white solid;
+      background-color:rgba(0, 0, 0, 0.8);
+      border:1px black solid;
       width:102%;
       z-index:10;
-      background-color:black;
     }
 
 
@@ -238,7 +237,7 @@
         margin-left:20px
       }
      .header .box:hover{
-       background-color:blue;
+       background-color:red;
 
       }
       .picture {
@@ -266,13 +265,13 @@
     <div class="header">
         <a href="#" style=";float:right;margin-right:50px;margin-top:20px;" onclick="logout()">logout </a>
         <ul style="margin-left:10%;">
-          <span class="box">
+          <span class="box" style="background-color:#D14444">
           <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account-general')">My Account</a></li>
            </span>
-           <span class="box">
+           <span class="box" style="background-color:#5DBF39">
           <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account-contact')">My Contacts</a></li>
           </span>
-          <span class="box">
+          <span class="box" style="background-color:#40D7CC">
           <li style="display:inline-block;"><a href="#" onclick="redirect('tab-publication')">My Publications</a></li>
           </span>
         </ul>

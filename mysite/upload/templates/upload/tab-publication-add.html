@@ -5,7 +5,7 @@
     <style>
 
     body {
-          background-color:white;
+          background:white url("{% static 'upload/images/publication_back.jpg' %}") no-repeat right fixed;
     }
 
 
@@ -21,16 +21,15 @@
       margin-left:-10px;
       margin-right:-1px;
       padding-bottom:10px;
-      background-color:rgba(255,255,255,0.8);
-      border:1px white solid;
+      background-color:rgba(0, 0, 0, 0.8);
+      border:1px black solid;
       width:102%;
       z-index:10;
-      background-color:black;
     }
 
     h1 {
       padding-left: 50px;
-      margin-bottom: 50px;
+      margin-bottom: 25px;
     }
 
     .tabs {
@@ -77,7 +76,7 @@
     }
 
     .tabbed-area .tabs-wrap .tab {
-      background: white;
+      background: transparent;
       padding: 20px;
       min-width: 800px;
       min-height: 400px;
@@ -89,7 +88,7 @@
     }
 
     .tabbed-area .tabs-wrap .tab, .tabs li a {
-      border: 1px solid #ccc;
+      border: 0px solid #ccc;
     }
 
     #tab-publications, #tab-upload {
@@ -119,6 +118,9 @@
     }
 
     fieldset {
+      margin-left:10%;
+      margin-right:10%;
+      background-color:rgba(255,255,255,0.8);
       margin-top: 15px;
       border-radius: 10px;
     }
@@ -129,8 +131,16 @@
       vertical-align: super;
     }
 
-    div.transmettre {
-      display:none
+    div.submit {
+      text-align: center;
+
+      margin-top: 50px;
+      margin-left: 100px;
+      margin-right: 100px;
+    }
+
+    div.submit input[type=submit] {
+      margin-left: 200px;
     }
 
       a {
@@ -156,23 +166,23 @@
         margin-left:20px
       }
      .header .box:hover{
-       background-color:blue;
+       background-color:red;
 
       }
 
     </style>
   </head>
   <body>
-        <div class="header">
+    <div class="header">
         <a href="#" style=";float:right;margin-right:50px;margin-top:20px;" onclick="logout()">logout </a>
         <ul style="margin-left:10%;">
-          <span class="box">
+          <span class="box" style="background-color:#D14444">
           <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account-general')">My Account</a></li>
            </span>
-           <span class="box">
+           <span class="box" style="background-color:#5DBF39">
           <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account-contact')">My Contacts</a></li>
           </span>
-          <span class="box">
+          <span class="box" style="background-color:#40D7CC">
           <li style="display:inline-block;"><a href="#" onclick="redirect('tab-publication')">My Publications</a></li>
           </span>
         </ul>
@@ -184,7 +194,6 @@
       <div class="tabbed-area">
         <div class="tabs-wrap">
           <div id="tab-publications" class="tab">
-            <h2>My Publications</h2>
             <div class="tab-main">
               <div class="publications">
                 <form  id= "infoPublication" name="infoPublication" method="post" action="" onsubmit="return myValidation()">
@@ -263,6 +272,12 @@
             return true;
         }
 
+    }
+    function logout()
+    {
+      var url = document.URL.replace(/Editor([\s\S^/]+)/g,"logout")
+      console.log(url);
+      window.location.replace(url);
     }
 
    </script>
