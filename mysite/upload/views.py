@@ -60,13 +60,13 @@ def forget_password(request):
         if 'email' in _GET:
             email = _GET['email']
             print "email in the get is:",email
-            user = User.objects.get(email = email)
-            if user is not None:
+            try:
+                user = User.objects.get(email = email)
                 code = randint(1000,9999)
                 notification(code,email)
                 return HttpResponse(str(code),status=200)
-            else:
-                print "user not found"
+            except:
+                return HttpResponse("Not Found",status=404)
 
     elif request.method == 'POST':
         _POST = request.POST
@@ -451,7 +451,9 @@ def toUpload(request):
     Publication_input = Publication.objects.get(PublicationTitle = Publication_current)
     print "before Contact"
     try:
-        Contact_input = Contact.objects.get(Type = "Technical",editor = Editor_input)
+        Contact_tmp = Contact.objects.filter(Type = "Technical",editor = Editor_input)
+        if Contact_tmp:
+            Contact_input = Contact_tmp[0]
         context = {'Editor':Editor_input,'Publication':Publication_input,'Contact':Contact_input}
     except:
         context = {'Editor':Editor_input,'Publication':Publication_input}
