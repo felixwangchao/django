@@ -166,6 +166,7 @@ def tab_publication(request):
             e.delete()
             return HttpResponse('delete success',status=200)
 
+
     context = {'Editor':Editor_input,'Publication':Publication_input}
     return render(request,'upload/tab-publication.html',context)
 
