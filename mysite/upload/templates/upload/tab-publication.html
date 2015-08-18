@@ -4,6 +4,11 @@
     <title>Adaptive Publisher Portal</title>
     <style>
 
+      @font-face {
+      font-family: blackchancery;
+      src: url("{% static 'upload/font/blackchancery.ttf' %}");
+    }
+
     body {
           background:white url("{% static 'upload/images/publication_back.jpg' %}") no-repeat right fixed;
     }
@@ -16,8 +21,9 @@
     }
 
     h1 {
-      padding-left: 50px;
-      margin-bottom: 25px;
+      margin-top:0px;
+      margin-left: 10px;
+      font-family:"blackchancery";
     }
 
     .header {
@@ -178,7 +184,7 @@
     </div>
 
     <div class="main">
-      <h1>Adaptive Publisher Portal</h1>
+      <button onclick="redirect('tab-publication-add')" style="background-color:#40D7CC;color:white;float:right;margin-right:12%;border-radius:20px;font-size:20;">Add a new Publication</button><h1>My Publications</h1>
       <div class="tabbed-area">
 
         <div class="tabs-wrap">
@@ -192,11 +198,10 @@
                   <p>Periodicity: {{ pub.Periodicity }}</p>
                   <p>Publication day: {{ pub.PublicationDay }}</p>
                   <p>Language: {{ pub.Language}}</p>
-                  <div class="tools"><a href="#"  style="color:black;" onclick="redirect2('{{ pub.id }}')">Edit</a> | <a href="#" style="color:black;" onclick="delete_pub('{{pub.id}}')">Delete...</a><span class="ref">(26)</span></div>
+                  <div class="tools"><a href="#"  style="color:black;" onclick="redirect2('{{ pub.id }}')">Edit</a> | <a href="#" style="color:black;" onclick="delete_pub('{{pub.id}}')">Delete...</a></div>
                 </fieldset>
                 {% endfor %}
               </div>
-              <div class="tools"><a href="#"  style="color:black;" onclick="redirect('tab-publication-add')">Add</a></div>
             </div>
           </div>
         </div>

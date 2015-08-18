@@ -3,7 +3,10 @@
   <head>
     <title>Adaptive Publisher Portal</title>
     <style>
-
+      @font-face {
+      font-family: blackchancery;
+      src: url("{% static 'upload/font/blackchancery.ttf' %}");
+    }
     body {
           background:white url("{% static 'upload/images/general_back.jpg' %}") no-repeat right fixed;
     }
@@ -28,8 +31,9 @@
     }
 
     h1 {
-      padding-left: 50px;
-      margin-bottom: 25px;
+      margin-top:0px;
+      margin-left: 10px;
+      font-family:"blackchancery";
     }
 
     .tabs {
@@ -250,7 +254,7 @@
 
     <div class="main">
 
-      <h1>Adaptive Publisher Portal</h1>
+      <h1>Modif your company information</h1>
 
       <div class="tabbed-area">
         <div class="tabs-wrap">
@@ -261,7 +265,7 @@
                       <form id= "infoEditor" name="infoEditor" method="post" action="" onsubmit="return myValidation()">
                         {% csrf_token %}
                         <fieldset>
-                          <legend>Company information</legend>
+                          <legend>Company information</legend><br/>
                           <div>
                             <label>Name</label>
                             <input type="text" name="Name" id="Name" value = "{{ Editor.Editor }}"/>
@@ -306,7 +310,7 @@
                           </div>
                             <br/>
                           <div class="submit">
-                            <input type="button" value="Cancel" onclick = "redirect('tab-account')"/>
+                            <input type="button" value="Cancel" onclick = "redirect('tab-account-general')"/>
                             <input type="submit" />
                           </div>
                             <br/>

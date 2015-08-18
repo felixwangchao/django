@@ -4,10 +4,13 @@
     <title>Adaptive Publisher Portal</title>
     <script src="{% static 'upload/js/jquery-2.1.4.js' %}"></script>
     <script src="{% static 'upload/js/jquery-ui.js' %}"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="{% static 'upload/js/modernizr.custom.js' %}"></script>
     <style>
+
+    @font-face {
+      font-family: blackchancery;
+      src: url("{% static 'upload/font/blackchancery.ttf' %}");
+    }
 
     body {
           background-color:white;
@@ -34,6 +37,7 @@
     h1 {
       margin-top:0px;
       margin-left: 10px;
+      font-family:"blackchancery";
     }
     .header {
       position:fixed;
@@ -93,7 +97,7 @@
     }
 
     .tabbed-area .tabs-wrap .tab {
-      background: #87CEEB;
+      background: #109CD5;
       padding: 20px;
       min-width: 800px;
       min-height: 400px;
@@ -240,7 +244,7 @@
       }
       .picture {
         display:inline-block;
-        background-color:#87CEEB;
+        background-color:#109CD5 ;
         min-height:300px;
         width:25%;
         padding-top:5%;
@@ -249,10 +253,113 @@
         z-index:2;
         margin-left:5%;
       }
-      .picture:hover{
-      opacity:0.4;
-      filter:alpha(opacity=40);
+
+      .grid {
+          padding: 20px 20px 100px 20px;
+          max-width: 1300px;
+          margin: 0 auto;
+          list-style: none;
+          text-align: center;
       }
+
+      .grid li {
+          display: inline-block;
+          width: 440px;
+          margin: 0;
+          padding: 20px;
+          text-align: left;
+          position: relative;
+      }
+
+      figure {
+          margin: 0;
+          position: relative;
+      }
+
+       figure img {
+          max-width: 100%;
+          display: block;
+          position: relative;
+      }
+
+       figcaption {
+          position: absolute;
+          top: 0;
+          left: 0;
+          padding: 20px;
+          background: #2c3f52;
+          color: #ed4e6e;
+      }
+
+       figcaption h3 {
+          margin: 0;
+          padding: 0;
+          color: #fff;
+      }
+
+       figcaption span:before {
+          content: 'by ';
+      }
+
+       figcaption a {
+          text-align: center;
+          padding: 5px 10px;
+          border-radius: 2px;
+          display: inline-block;
+          background: #ed4e6e;
+          color: #fff;
+      }
+
+      @media screen and (max-width: 31.5em) {
+          .grid {
+              padding: 10px 10px 100px 10px;
+          }
+          .grid li {
+              width: 100%;
+              min-width: 300px;
+          }
+      }
+
+      .cs-style-3 figure {
+         overflow: hidden;
+      }
+
+      .cs-style-3 figure img {
+          transition: transform 0.4s;
+      }
+
+      .no-touch .cs-style-3 figure:hover img,
+      .cs-style-3 figure.cs-hover img {
+          transform: translateY(-50px);
+      }
+
+      .cs-style-3 figcaption {
+          height: 100px;
+          width: 100%;
+          top: auto;
+          bottom: 0;
+          opacity: 0;
+          transform: translateY(100%);
+          transition: transform 0.4s, opacity 0.1s 0.3s;
+      }
+
+      .no-touch .cs-style-3 figure:hover figcaption,
+      .cs-style-3 figure.cs-hover figcaption {
+          opacity: 1;
+          transform: translateY(0px);
+          transition: transform 0.4s, opacity 0.1s;
+      }
+
+      .cs-style-3 img:hover {
+        opacity:0.5;
+      }
+
+      .cs-style-3 figcaption a {
+          position: absolute;
+          top: 20%;
+          left: 10%;
+      }
+
 
 
 
@@ -281,10 +388,37 @@
 
         <div class="tabs-wrap">
 
-          <div id="tab-account" class="tab">
-            <span class="picture"><a href="#" onclick="redirect('tab-account-general')"><img src="{% static 'upload/images/company.jpg' %}" width="100%" height="400px"></a></span>
-            <span class="picture"><a href="#" onclick="redirect('tab-account-contact')"> <img src="{% static 'upload/images/contact.jpg' %}" width="100%" height="400px"></a></span>
-            <span class="picture"><a href="#" onclick="redirect('tab-publication')"> <img src="{% static 'upload/images/book.jpg' %}" width="100%" height="400px"></a></span>
+          <div id="tab-account" class="tab cs-style-3">
+            <span class="picture">
+              <a href="#" onclick="redirect('tab-account-general')">
+                    <figure>
+			            <img src="{% static 'upload/images/company.jpg' %}" width="400px" height="400px" alt="img3">
+			            <figcaption>
+				            <a href="#" onclick="redirect('tab-account-general')" style="background-color:#D14444">My Account</a>
+			            </figcaption>
+		            </figure>
+              </a>
+            </span>
+            <span class="picture">
+              <a href="#" onclick="redirect('tab-account-contact')">
+                    <figure>
+			            <img src="{% static 'upload/images/contact.jpg' %}" width="400px" height="400px">
+			            <figcaption>
+				            <a href="#" onclick="redirect('tab-account-contact')" style="background-color:#5DBF39">My Contacts</a>
+			            </figcaption>
+		            </figure>
+              </a>
+            </span>
+            <span class="picture">
+              <a href="#" onclick="redirect('tab-publication')">
+                    <figure>
+			            <img src="{% static 'upload/images/book.jpg' %}" width="400px" height="400px">
+			            <figcaption>
+				            <a href="#" onclick="redirect('tab-publication')" style="background-color:#40D7CC">My Publications</a>
+			            </figcaption>
+		            </figure>
+              </a>
+            </span>
             </div>
           </div>
           </div>
@@ -310,6 +444,13 @@
      //$('.logo').click(function(){$('.logo').effect("explode","slow");});
 
     //$(".header").mouseover(function(){$('.header').slideUp();});
+
+    $('#myAccount').mouseover(function(){$('#myAccount').css("opacity","0.3");})
+    $('#myAccount').mouseout(function(){$('#myAccount').css("opacity","1");})
+    $('#myContacts').mouseover(function(){$('#myContacts').css("opacity","0.3")})
+    $('#myContacts').mouseout(function(){$('#myContacts').css("opacity","1")})
+    $('#myPublications').mouseover(function(){$('#myPublications').css("opacity","0.3")})
+    $('#myPublications').mouseout(function(){$('#myPublications').css("opacity","1")})
 
   </script>
   </body>

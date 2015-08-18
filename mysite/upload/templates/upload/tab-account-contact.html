@@ -4,8 +4,12 @@
     <title>Adaptive Publisher Portal</title>
     <script src="{% static 'upload/js/jquery-2.1.4.js' %}"></script>
     <style>
+      @font-face {
+      font-family: blackchancery;
+      src: url("{% static 'upload/font/blackchancery.ttf' %}");
+    }
 
-          body {
+    body {
           background:white url("{% static 'upload/images/contact_back.jpg' %}") no-repeat right fixed;
     }
 
@@ -39,10 +43,10 @@
       width:102%;
       z-index:10;
     }
-
     h1 {
-      padding-left: 50px;
-      margin-bottom: 50px;
+      margin-top:0px;
+      margin-left: 10px;
+      font-family:"blackchancery";
     }
 
     fieldset {
@@ -120,7 +124,7 @@
         </ul>
     </div>
     <div class="main">
-      <h1>Adaptive Publisher Portal</h1>
+          <button onclick="redirect('tab-account-add')" style="background-color:#5DBF39;color:white;float:right;margin-right:12%;border-radius:20px;font-size:20;">Add a new Contact</button><h1>My Contacts</h1>
                         {% for contact in Contact %}
                           <div class="left"><img src="{% static 'upload/images/technicien.jpg' %}" height="240px" width="240px"></div>
                           <div class="right">
@@ -137,7 +141,7 @@
                             </div>
                           </div>
                         {% endfor %}
-                      <div class="tools"><a href="#" onclick="redirect('tab-account-add')">Add</a></div>
+
     <script>
 
     function redirect(op)
