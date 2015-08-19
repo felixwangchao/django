@@ -286,7 +286,7 @@ def tab_account_general_change(request):
         Editor_input.Language = _POST['Language']
         Editor_input.PhoneNumber = _POST['PhoneNumber']
         Editor_input.save()
-        return HttpResponseRedirect('/upload/Editor/tab-account/'+Editor_current)
+        return HttpResponseRedirect('/upload/Editor/tab-account-general/'+Editor_current)
 
 
     context = {'Editor':Editor_input}
