@@ -181,10 +181,9 @@
     }
 
     fieldset {
+      margin-left:25%;
+      margin-right:25%;
       background-color:rgba(255,255,255,0.8);
-      margin-left:10%;
-      margin-right:10%;
-
       margin-top: 15px;
       border-radius: 10px;
     }
@@ -193,8 +192,6 @@
       text-align: center;
 
       margin-top: 50px;
-      margin-left: 100px;
-      margin-right: 100px;
     }
 
     .transmettre {
@@ -238,8 +235,11 @@
   <body>
     {% if Editor %}
     <div class="header">
-        <a href="#" style=";float:right;margin-right:50px;margin-top:20px;" onclick="logout()">logout </a>
-        <ul style="margin-left:10%;">
+        <a href="#" style=";float:right;margin-right:50px;margin-top:20px;font-family:blackchancery;font-size:20" onclick="logout()">logout </a>
+        <ul style="margin-left:1%;">
+            <span class="box" style="background-color:transparent;margin:right:10%">
+          <li style="display:inline-block;padding-left:8px;padding-right:8px;"><a href="#" onclick="redirect('tab-account')" style="font-family:blackchancery;font-size:20">Home</a></li>
+           </span>
           <span class="box" style="background-color:#D14444">
           <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account-general')">My Account</a></li>
            </span>
@@ -265,29 +265,29 @@
                       <form id= "infoEditor" name="infoEditor" method="post" action="" onsubmit="return myValidation()">
                         {% csrf_token %}
                         <fieldset>
-                          <legend>Company information</legend><br/>
+                            <br/>
                           <div>
-                            <label>Name</label>
+                            <label>Name</label><br>
                             <input type="text" name="Name" id="Name" value = "{{ Editor.Editor }}"/>
                           </div>
                             <br/>
                           <div>
-                            <label>Website</label>
+                            <label>Website</label><br>
                             <input type="url" name="Website" id="Website" value = "{{ Editor.Website }}"/>
                           </div>
                             <br/>
                           <div>
-                            <label>Address</label>
+                            <label>Address</label><br>
                             <input type="text" name="Address" id="Address" value = "{{ Editor.Address }}"/><br/>
                           </div>
                             <br/>
                           <div class="zipcode">
-                            <label>Zipcode</label>
+                            <label>Zipcode</label><br>
                             <input type="text" name="Zipcode" id="Zipcode" value="{{ Editor.Zipcode }}"/>
                           </div>
                             <br/>
                           <div class="country">
-                            <label>Country</label>
+                            <label>Country</label><br>
                             <select id="Country" name="Country">
                               <option value="France" id="France">France</option>
                               <option value="England" id="England">England</option>
@@ -296,7 +296,7 @@
                           </div>
                             <br/>
                           <div>
-                            <label>Language:</label>
+                            <label>Language:</label><br>
                                   <select id="Language" name="Language">
                                     <option id="French" value="French" selected>French</option>
                                     <option id="English" value="English">English</option>
@@ -305,7 +305,7 @@
                           </div>
                             <br/>
                           <div class="phone">
-                            <label>Phone number</label>
+                            <label>Phone number</label><br>
                             <input type="text" id="PhoneNumber" name="PhoneNumber" value="{{ Editor.PhoneNumber }}"/>
                           </div>
                             <br/>

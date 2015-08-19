@@ -254,12 +254,16 @@
 
 
 
+
     </style>
   </head>
   {% if Editor %}
     <div class="header">
-        <a href="#" style=";float:right;margin-right:50px;margin-top:20px;" onclick="logout()">logout </a>
-        <ul style="margin-left:10%;">
+        <a href="#" style=";float:right;margin-right:50px;margin-top:20px;font-family:blackchancery;font-size:20" onclick="logout()">logout </a>
+        <ul style="margin-left:1%;">
+            <span class="box" style="background-color:transparent;margin:right:10%">
+          <li style="display:inline-block;padding-left:8px;padding-right:8px;"><a href="#" onclick="redirect('tab-account')" style="font-family:blackchancery;font-size:20">Home</a></li>
+           </span>
           <span class="box" style="background-color:#D14444">
           <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account-general')">My Account</a></li>
            </span>
@@ -283,7 +287,7 @@
             <div class="tab-main">
                     <div id="tab-account-general" class="menu">
                         <fieldset>
-                          <legend>Company information</legend><br/>
+                          <br/>
                             <label>Name: {{ Editor.Editor }}</label><br/><br/>
                             <label>Website: {{ Editor.Website }}</label><br/><br/>
                             <label>Adress: {{ Editor.Address }}</label><br/><br/>

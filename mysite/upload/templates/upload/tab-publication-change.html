@@ -122,8 +122,8 @@
     }
 
     fieldset {
-      margin-left:10%;
-      margin-right:10%;
+      margin-left:25%;
+      margin-right:25%;
       background-color:rgba(255,255,255,0.8);
       margin-top: 15px;
       border-radius: 10px;
@@ -174,8 +174,12 @@
       }
      .header .box:hover{
        background-color:red;
-
       }
+
+      input {
+           margin-left:auto;
+           margin-right:auto;
+        }
 
 
     </style>
@@ -183,8 +187,11 @@
   <body>
   {% if Publication %}
     <div class="header">
-        <a href="#" style=";float:right;margin-right:50px;margin-top:20px;" onclick="logout()">logout </a>
-        <ul style="margin-left:10%;">
+        <a href="#" style=";float:right;margin-right:50px;margin-top:20px;font-family:blackchancery;font-size:20" onclick="logout()">logout </a>
+        <ul style="margin-left:1%;">
+            <span class="box" style="background-color:transparent;margin:right:10%">
+          <li style="display:inline-block;padding-left:8px;padding-right:8px;"><a href="#" onclick="redirect('tab-account')" style="font-family:blackchancery;font-size:20">Home</a></li>
+           </span>
           <span class="box" style="background-color:#D14444">
           <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account-general')">My Account</a></li>
            </span>

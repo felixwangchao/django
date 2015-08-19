@@ -213,8 +213,8 @@
     }
 
     fieldset {
-      margin-left:10%;
-      margin-right:10%;
+      margin-left:25%;
+      margin-right:25%;
       background-color:rgba(255,255,255,0.8);
       margin-top: 15px;
       border-radius: 10px;
@@ -287,8 +287,11 @@
   </head>
   <body>
     <div class="header">
-        <a href="#" style=";float:right;margin-right:50px;margin-top:20px;" onclick="logout()">logout </a>
-        <ul style="margin-left:10%;">
+        <a href="#" style=";float:right;margin-right:50px;margin-top:20px;font-family:blackchancery;font-size:20" onclick="logout()">logout </a>
+        <ul style="margin-left:1%;">
+            <span class="box" style="background-color:transparent;margin:right:10%">
+          <li style="display:inline-block;padding-left:8px;padding-right:8px;"><a href="#" onclick="redirect('tab-account')" style="font-family:blackchancery;font-size:20">Home</a></li>
+           </span>
           <span class="box" style="background-color:#D14444">
           <li style="display:inline-block;"><a href="#" onclick="redirect('tab-account-general')">My Account</a></li>
            </span>
@@ -315,36 +318,36 @@
                         <form  id= "infoContact" name="infoContact" method="post" action="" onsubmit="return myValidation()">
                             {% csrf_token %}
 
-                            <fieldset class="contact">
+                            <fieldset class="contact"><br>
                                 <label>Title:</label><br>
                                 <input type="radio" name="Title" id ="MR" value="Mr" checked>Mr
                                 <input type="radio" name="Title" id = "MISS"value="Miss">Miss
                                 <input type="radio" name="Title" id = "DOCTOR" value="Doctor">Doctor<br><br>
 
-                                <label>Name:</label>
+                                <label>Name:</label><br>
                                 <input type="text" id = "Name" name = "Name" size="25" > <br>
 
-                                <label>Surname:</label>
+                                <label>Surname:</label><br>
                                 <input type="text" id="Surname" name="Surname" size="25" ><br/><br>
 
                                 <label>Type:</label><br>
                                 <input type="radio" name="Type" id ="Technical" value="Technical" checked >Technical
                                 <input type="radio" name="Type" id = "Commercial" value="Commercial">Commercial<br><br>
 
-                                <label>Language:</label>
+                                <label>Language:</label><br>
                                   <select id="Language" name="Language">
                                     <option id="French" value="French" selected>French</option>
                                     <option id="English" value="English">English</option>
                                     <option id="German" value="German">German</option>
                                   </select><br/><br>
 
-                                <label>Email:</label>
+                                <label>Email:</label><br>
                                 <input type="email" id="Email" name="Email" size="25"/><br/><br>
 
-                                <label>International fix phone number:</label>
+                                <label>International fix phone number:</label><br>
                                 <input type="text" id="InternationalFixPhoneNumber" name="InternationalFixPhoneNumber" size="25" /> <br/><br>
 
-                                <label>International mobile phone number:</label>
+                                <label>International mobile phone number:</label><br>
                                 <input type="text" id="InternationalMobilePhoneNumber" name="InternationalMobilePhoneNumber" size="25" /> <br/><br>
                             </fieldset>
 
