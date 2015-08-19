@@ -312,6 +312,7 @@ def success(request):
 #*****************
 def toUpload(request):
 
+
     # get current url
     current_path = request.path
     current_message_list = current_path.split('/')
@@ -324,6 +325,9 @@ def toUpload(request):
     message = get_message.split('!')
     # Get the name of editor
     Editor_current = message[0]
+
+    if not (request.user.username == Editor_current):
+        return HttpResponseRedirect('/upload/login')
     # Get the name of publicaiton
     Publication_current = message[1]
 
