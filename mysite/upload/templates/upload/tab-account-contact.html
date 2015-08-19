@@ -126,7 +126,12 @@
     <div class="main">
           <button onclick="redirect('tab-account-add')" style="background-color:#5DBF39;color:white;float:right;margin-right:12%;border-radius:20px;font-size:20;">Add a new Contact</button><h1>My Contacts</h1>
                         {% for contact in Contact %}
-                          <div class="left"><img src="{% static 'upload/images/technicien.jpg' %}" height="240px" width="240px"></div>
+                          {% if contact.Type == 'Technical' %}
+                          <div class="left"><img src="{% static 'upload/images/code.jpg' %}" height="240px" width="240px"></div>
+                          {% endif %}
+                          {% if contact.Type == 'Commercial' %}
+                          <div class="left"><img src="{% static 'upload/images/commercia.jpg' %}" height="240px" width="240px"></div>
+                          {% endif %}
                           <div class="right">
                             <div  class="contacts">
                               <fieldset id="contact{{ contact.id }}">
@@ -191,10 +196,12 @@
       {$('#'+id).css("display","flex");}
       else
       {$('#'+id).css("display","none");}
-
-
-
     }
+
+      window.onload = function(){
+          console.log("initialisation");
+          document.getElementById('newpass').value = "";
+      }
 
 
    </script>
