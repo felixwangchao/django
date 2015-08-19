@@ -276,7 +276,7 @@
 	                </fieldset>
 
                     <div class="submit">
-	                    <input type="button" value="Cancel" id = "Cancel" onclick="cancel()" />
+	                    <input type="button" value="Cancel" id = "Cancel" onclick="cancel('{{Editor.Editor}}','{{Publication.PublicationTitle}}')" />
 	                    <input type="submit" onsubmit="validate()"/>
 	                </div>
                 </form>
@@ -304,10 +304,11 @@
                 var file_resumable;
                 var file_dictionary = {};
 
-                function cancel()
+                function cancel(editor,pub)
                 {
-                    var url = document.URL.replace("#","");
-                    window.location.replace(url);
+                    var url = document.URL.replace(/upload([\s\S^/]+)/g,"upload/")
+                    newUrl = url + "Editor/"+"tab-publication/"+editor;
+                    window.location.replace(newUrl);
                 }
 
                 // this is a form validation

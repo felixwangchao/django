@@ -371,6 +371,7 @@ def toUpload(request):
         else:
             # Becasue we need to rename the file by also the name of the publication, so add the publication number
             path_final = mymodule.handler_no_POST(_POST,Publication_current.decode('utf-8'))
+            print "etape 1:",path_final
             try:
                 file_test_size = float(os.path.getsize(path_final))
                 file_name_final = path_final.split('/').pop()
@@ -386,14 +387,14 @@ def toUpload(request):
                             mesure = "Go"
                 file_size_tmp = round(file_test_size,1)
                 file_size_final = str(file_size_tmp) + mesure
-
+                print "etape_2:"
                 info={}
                 command = "pdfinfo "+ path_final.replace(' ','\\ ')
                 p = subprocess.Popen(command,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
                 sout = p.stdout.readlines()
                 serr = p.stderr.readlines()
                 streamdata = p.communicate()[0]
-
+                print "etape_3:",p.returncode
                 if p.returncode != 0:
                     print "exit code:",p.returncode
                     print serr
@@ -402,18 +403,27 @@ def toUpload(request):
                     context = {'filename':file_name_final,'size':file_size_final,'pdfCheck':pdfCheck,'error_list':error_list}
                     os.remove(path_final)
                 else:
+                    print "in the else"
                     parameters = {'pdf_validation_tests':'test.zip'}
+                    print "set a parametre"
                     issue_context = {'parameters':parameters,'working_directory':'/tmp/resumable_images/'}
+                    print "set a issure context"
                     a = PdfValidator(issue_context)
+                    print "after a"
                     pdfCheck = "ok"
+                    print "before set pdfCHeck"
 
-                    pdfStatus = a.get_pdfinfo_data(path_final)
+
+                    pdfStatus = a.get_pdfinfo_data(path_final.encode('utf-8'))
+                    print "etape4"
                     pdfExplore = a.get_explode_dump()
+                    print "etape 5"
                     pdfPortrait = a.check_portrait()
+                    print "etape 6"
                     pdfDict = {'pdfStatus':pdfStatus,'pdfExplore':pdfExplore,'pdfPortrait':pdfPortrait}
-
+                    print "etape 7"
                     context = {'filename':file_name_final,'size':file_size_final,'pdfCheck':pdfCheck,'pdfDict':pdfDict}
-
+                print "etape 8"
                 return render(request,'upload/uploadStatus.html',context)
             except:
                 print "file not exist"
@@ -424,7 +434,6 @@ def toUpload(request):
     # if we receive a method GET
     elif request.method == 'GET':
         _GET = request.GET
-        print "a get"
         # if this is a GET sended by resumable.js
         if 'resumableChunkNumber' in _GET:
             if mymodule.handler_rs_GET(_GET) == True:

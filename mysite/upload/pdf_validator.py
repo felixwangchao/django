@@ -29,9 +29,12 @@ class PdfValidator(Gear):
 
     def get_pdfinfo_data(self, filename):
         try:
+            print 'pdfinfo -meta ',filename
             self.dump = subprocess.check_output('pdfinfo -meta "{0}"'.format(filename), shell=True)
+            print "find no error"
             return True
         except subprocess.CalledProcessError:
+            print "find error"
             self.context['pdf_validator_dump'] = self.dump
             return False
 
